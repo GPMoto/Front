@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#fff',
-      alignItems: 'center',
+      alignItems: 'stretch',
       justifyContent: 'center',
     },
     TextInput:{
@@ -17,6 +17,9 @@ export const styles = StyleSheet.create({
         borderColor:"#41C526",
         backgroundColor:"white",
         padding:16
+    },
+    pageColor:{
+        backgroundColor:"#0C0C0C"
     }
 
 })
