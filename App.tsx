@@ -41,7 +41,6 @@ export default function App() {
       <Screen name='Adicionar Rastreador'>
         {(props:ParamListBase)=><AdicionarRastreador {...props}></AdicionarRastreador>}
       </Screen>
-
       
 
       </Navigator>
