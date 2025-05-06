@@ -3,9 +3,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
       alignItems: 'stretch',
-      justifyContent: 'center',
     },
     TextInput:{
         color:"white",
@@ -16,10 +14,15 @@ export const styles = StyleSheet.create({
         borderWidth:4,
         borderColor:"#41C526",
         backgroundColor:"white",
-        padding:16
+        padding:8,
+        display:'flex',
+        flexDirection:"row",
     },
     pageColor:{
         backgroundColor:"#0C0C0C"
+    },
+    whiteText:{
+        color:"#FFFFFF"
     }
 
 })
