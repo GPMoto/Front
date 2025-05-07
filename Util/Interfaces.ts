@@ -15,6 +15,10 @@ export interface motoInterface{
 }
 
 
+export interface loginInterface{
+    nome:string;
+    senha:string;
+}
 
 export interface tipoMotoInterface{
     id_tipo_moto:number;

@@ -9,7 +9,7 @@ interface ButtonAreaProps{
 export default function ButtonArea(props:ButtonAreaProps) {
   return (
     <View>
-        <Button title={props.title} onPress={()=> props.action} color={"white"}></Button>
+        <Button title={props.title} onPress={()=> props.action()} color={"#41C526"}></Button>
     </View>
   )
 }
