@@ -63,12 +63,12 @@ export default function ProcurarMoto() {
         <View style={{width:"80%"}}>
           <InputLabel onPress={onPress} show={true} title="Procurar Moto" value={identificador} setValue={setIdentificador} placeholder="Identificador da moto"></InputLabel>
         </View>
-        <View style={[estilo.contentArea]}>
+        <View style={[estiloLocal.contentArea]}>
 
-          <View style={[estilo.listArea]}>
+          <View style={[estiloLocal.listArea]}>
             <ListaMotos data={motos}></ListaMotos>
           </View>
-        </View>
+        </View> 
 
         <View>
           {paginas.map((page)=>{
@@ -84,13 +84,11 @@ export default function ProcurarMoto() {
   )
 }
 
-const estilo = StyleSheet.create({
+const estiloLocal = StyleSheet.create({
   listArea:{
     display:"flex",
     flexDirection:"column",
     padding:8,
-    borderBottomWidth:2,
-    borderBottomColor:"#41C526",
     width:"80%",
     height:"80%",
     backgroundColor:"#C4C4C4",
