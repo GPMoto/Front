@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Text, ToastAndroid, View } from "react-native";
-import { styles } from "../../styles/styles";
 import Fontisto from "@expo/vector-icons/Fontisto";
+import React, { useState } from "react";
+import { FlatList, ListRenderItemInfo, Text, ToastAndroid, View } from "react-native";
+import { styles } from "../../styles/styles";
 
 type Moto = {
   id: number;
@@ -36,7 +36,6 @@ export default function Mapa() {
           : moto
       )
     );
-    ToastAndroid.show("Moto selecionada!", ToastAndroid.SHORT);
   };
 
   return (
@@ -49,7 +48,9 @@ export default function Mapa() {
         padding: 20,
         gap: 15,
         maxWidth: 550,
-        alignItems: 'center'
+        width: "80%",
+        alignItems: 'center',
+        alignSelf: 'center'
       }}
     >
       <Text style={styles.paragraph_black}>Pátio</Text>
@@ -66,17 +67,21 @@ export default function Mapa() {
           flexDirection: "row",
           gap: 20,
           justifyContent: "center",
+          height: 200
         }}
       >
-        {listaMotos.map((moto, index) => (
-          <Fontisto
+        <FlatList style={{flexDirection: 'row'}} data={listaMotos} renderItem={({item, index} : ListRenderItemInfo<Moto>) => <Fontisto
             name="motorcycle"
             size={24}
-            color={moto.color}
+            color={item.color}
             key={index}
-            onPress={() => atualizarCorMoto(moto.id)}
-          />
-        ))}
+            horizontal
+            onPress={() => {
+              atualizarCorMoto(item.id)
+              ToastAndroid.show(`Moto selecionada ${item.id}: uwb ${item.uwb}!`, ToastAndroid.SHORT);
+
+            }}
+          />} keyExtractor={(item : Moto) => "moto_key_" + item.id} /> 
       </View>
     </View>
   );

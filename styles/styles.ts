@@ -8,6 +8,13 @@ export const styles = StyleSheet.create({
       justifyContent: 'flex-start',
       padding: 10
     },
+    container_center :{
+        flex: 1,
+        backgroundColor: '#0C0C0C',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        padding: 10
+    },
     TextInput:{
         color:"white",
         fontSize:24,
