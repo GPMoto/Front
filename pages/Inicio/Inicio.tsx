@@ -1,9 +1,14 @@
 import { Text, View } from 'react-native'
+import { styles } from '../../styles/styles'
+import Mapa from '../../components/MapaComponent/MapaComponent'
 
 export default function Inicio() {
   return (
-    <View>
-        <Text>Inicio</Text>
+    <View style={styles.container}>
+        <Text style={styles.paragraph}>Olá, seja bem vindo de volta</Text>
+        <Text style={styles.highlight}>Gustavo</Text>
+        <View style={{height: 20}}></View>
+        <Mapa /> 
     </View>
   )
 }
