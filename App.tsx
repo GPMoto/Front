@@ -20,7 +20,8 @@ export default function App() {
   useEffect(()=>{
     const get = async()=>{
       const userLocal = await getLogin()
-      setUser(userLocal)
+      console.log(userLocal)
+      setUser(()=>userLocal)
     }
     get()
   },[])
@@ -28,13 +29,17 @@ export default function App() {
   return (
 
     <NavigationContainer>
-      <Navigator initialRouteName={user?'Home':'Login'} screenOptions={{
+      <Navigator screenOptions={{
         headerShown:false,
       }}>
-        <Screen name='Login' >{(props:ParamListBase)=><LoginCadastro{...props}></LoginCadastro>}</Screen>
-        <Screen name='Home' component={DrawerNav}></Screen>
+        {user === null ? (
+          <Screen name="Login">
+            {(props: ParamListBase) => <LoginCadastro {...props} />}
+          </Screen>
+        ) : (
+          <Screen name="Home" component={DrawerNav} />
+        )}
       </Navigator>
-      
     </NavigationContainer>
   );
 }
