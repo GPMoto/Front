@@ -4,11 +4,17 @@ import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import ButtonArea from '../../../../components/Button/ButtonArea';
 import { FontAwesome } from '@expo/vector-icons';
 
-export default function CameraSecao() {
+interface cameraSecaoProps{
+  uri:string | null;
+  setUri:(uri:string | null)=>void
+}
+
+
+export default function CameraSecao(props : cameraSecaoProps) {
     const [facing, setFacing] = useState<CameraType>('back');
     const [show,setShow] = useState(false)
     const ref = useRef<CameraView>(null);
-    const [uri, setUri] = useState<string | null>(null);
+
     const [permission, requestPermission] = useCameraPermissions();
   
     if (!permission) {
@@ -31,14 +37,14 @@ export default function CameraSecao() {
         const foto = await ref.current?.takePictureAsync();
         if(foto){
             ToastAndroid.show("Foto tirada com sucesso.",ToastAndroid.LONG)
-            setUri(foto?.uri)
+            props.setUri(foto?.uri)
             setShow(!show)
         }else{
             ToastAndroid.show("Não foi possível tirar a foto tente novamente.",ToastAndroid.LONG)
         }
     }
     return (
-      <View style={estiloLocal.container}>
+      <View style={{flex:1,justifyContent:'flex-end'}}>
         {(show?
         <CameraView mode='picture' ref={ref} style={estiloLocal.camera} facing={facing}>
           <View style={estiloLocal.buttonContainer}>
@@ -48,7 +54,7 @@ export default function CameraSecao() {
           </View>
           <View style={estiloLocal.buttonContainer}>
             <TouchableOpacity style={{flex:1,alignSelf:'flex-end',alignItems:'center',marginBottom:32}} onPress={()=>tirarFoto()}>
-                <FontAwesome name="circle-o" size={70} style={{borderWidth:10}} color="#41C526" light/>
+                <FontAwesome name="circle-o" size={70} color="#41C526" light/>
             </TouchableOpacity>
           </View>
         </CameraView>
