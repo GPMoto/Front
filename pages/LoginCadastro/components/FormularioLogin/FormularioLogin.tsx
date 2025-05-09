@@ -35,7 +35,7 @@ export default function FormularioLogin(props:any) {
             if(true){
                 ToastAndroid.show("Login Realizado com sucesso", ToastAndroid.LONG);
                 await saveLogin(login)
-                navigation.popTo("Home")
+                navigation.popTo("Mapa")
                 
             }else{
                 ToastAndroid.show("Email ou senha invalidos", ToastAndroid.LONG);
