@@ -1,8 +1,8 @@
 import { ParamListBase } from "@react-navigation/native";
 import React from "react";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { styles } from "../../styles/styles";
-import { AntDesign, Entypo, FontAwesome } from "@expo/vector-icons";
+import { AntDesign, Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
 
 interface Relatorio {
   incidente: string;
@@ -63,7 +63,41 @@ export default function Relatorio() {
         <Text style={{ color: "#A44949", fontWeight: "bold" }}>
           33 consertos a fazer
         </Text>
-        <View style={{}}></View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <View>
+            <Text style={{ color: "#49A44C", fontWeight: "bold" }}>
+              Principal incidente
+            </Text>
+            <Text style={{ color: "white" }}>Chassi enferrujado</Text>
+          </View>
+          <View>
+            <Text style={{ color: "#49A44C", fontWeight: "bold" }}>
+              Outros incidentes
+            </Text>
+            <Pressable
+              style={{
+                paddingVertical: 3,
+                paddingHorizontal: 12,
+                backgroundColor: "#3D3D3D",
+                borderRadius: 8,
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                }}
+              >
+                Motor falhando, vol...
+              </Text>
+              <Ionicons name="resize-sharp" size={24} color="#49A44C" />
+            </Pressable>
+          </View>
+        </View>
       </View>
     </View>
   );
