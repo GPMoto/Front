@@ -1,53 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { styles } from './styles/styles';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, ParamListBase } from '@react-navigation/native';
-import Inicio from './pages/Inicio/Inicio';
-import Mapa from './pages/Mapa/Mapa';
-import ProcurarMoto from './pages/ProcurarMoto/ProcurarMoto';
-import AdicionarRastreador from './pages/AdicionarRastreador/AdicionarRastreador';
-import Relatorio from './pages/Relatorios/Relatorio';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginCadastro from './pages/LoginCadastro/LoginCadastro';
+import DrawerNav from './components/DrawerNav/DrawerNav';
+import { useEffect, useState } from 'react';
+import { loginInterface } from './Util/Interfaces';
+import getLogin from './Util/GetLogin';
 
 export default function App() {
+  const {Navigator,Screen} = createNativeStackNavigator();
+  
+  const [user,setUser] = useState<loginInterface | null>();
 
-  const {Screen, Navigator} = createDrawerNavigator()
+
+  useEffect(()=>{
+    const get = async()=>{
+      const userLocal = await getLogin()
+      console.log(userLocal)
+      setUser(()=>userLocal)
+    }
+    get()
+  },[])
 
   return (
+
     <NavigationContainer>
-      <Navigator initialRouteName='Mapa' screenOptions={{
-        headerStyle:{backgroundColor:"#2C2C2C"},
-        headerTitleStyle:{
-          fontSize:24
-        },
-        drawerActiveBackgroundColor: '#41C52620',
-        drawerLabelStyle:{
-          color:"#41C526",
-          fontSize:18
-        },
-        headerTintColor:"#41C526",
-        drawerStyle:{
-          backgroundColor:"#2C2C2C",
-        }
+      <Navigator screenOptions={{
+        headerShown:false,
       }}>
-      {/* <Screen name='Inicio'>
-        {(props:ParamListBase)=><Inicio {...props}></Inicio>}
-      </Screen> */}
-      <Screen name='Mapa'>
-        {(props:ParamListBase)=><Mapa {...props}></Mapa>}
-      </Screen>
-      <Screen name='Procurar Moto'>
-        {(props:ParamListBase)=><ProcurarMoto {...props}></ProcurarMoto>}
-      </Screen>
-      <Screen name='Adicionar Rastreador'>
-        {(props:ParamListBase)=><AdicionarRastreador {...props}></AdicionarRastreador>}
-      </Screen>
-      <Screen name='Relatórios'>
-        {(props:ParamListBase)=><Relatorio {...props}></Relatorio>}
-      </Screen>
-
-      
-
+        {user === null ? (
+          <Screen name="Login">
+            {(props: ParamListBase) => <LoginCadastro {...props} />}
+          </Screen>
+        ) : (
+          <Screen name="Home" component={DrawerNav} />
+        )}
       </Navigator>
     </NavigationContainer>
   );
