@@ -11,6 +11,7 @@
   "dependencies": {
     "@expo/metro-runtime": "~5.0.4",
     "@expo/vector-icons": "^14.1.0",
+    "@openspacelabs/react-native-zoomable-view": "^2.4.2",
     "@react-navigation/drawer": "^7.3.11",
     "@react-navigation/native": "^7.1.8",
     "expo": "^53.0.8",
@@ -18,7 +19,8 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.2",
-    "react-native-web": "^0.20.0"
+    "react-native-web": "^0.20.0",
+    "react-native-zoomable-view": "^0.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
