@@ -5,12 +5,13 @@ import Inicio from '../../pages/Inicio/Inicio'
 import Mapa from '../../pages/Mapa/Mapa'
 import ProcurarMoto from '../../pages/ProcurarMoto/ProcurarMoto'
 import AdicionarRastreador from '../../pages/AdicionarRastreador/AdicionarRastreador'
+import Relatorio from '../../pages/Relatorios/Relatorio'
 
 export default function DrawerNav() {
     const {Screen, Navigator} = createDrawerNavigator()
 
     return (
-    <Navigator initialRouteName='Inicio' screenOptions={{
+    <Navigator initialRouteName='Mapa' screenOptions={{
         headerStyle:{backgroundColor:"#2C2C2C"},
         headerTitleStyle:{
           fontSize:24
@@ -25,9 +26,9 @@ export default function DrawerNav() {
           backgroundColor:"#2C2C2C",
         }
       }}>
-      <Screen name='Inicio'>
+      {/* <Screen name='Inicio'>
         {(props:ParamListBase)=><Inicio {...props}></Inicio>}
-      </Screen>
+      </Screen> */}
       <Screen name='Mapa'>
         {(props:ParamListBase)=><Mapa {...props}></Mapa>}
       </Screen>
@@ -37,7 +38,12 @@ export default function DrawerNav() {
       <Screen name='Adicionar Rastreador'>
         {(props:ParamListBase)=><AdicionarRastreador {...props}></AdicionarRastreador>}
       </Screen>
+      <Screen name='Relatórios'>
+        {(props:ParamListBase)=><Relatorio {...props}></Relatorio>}
+      </Screen>
+
       
+
 
       </Navigator>
   )
