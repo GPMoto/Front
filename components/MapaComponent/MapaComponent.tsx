@@ -8,13 +8,10 @@ import {
   View,
 } from "react-native";
 import { styles } from "../../styles/styles";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-
-type Moto = {
-  id: number;
-  uwb: number;
-  color: string;
-};
+import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
+import ModalMapaComponent from "./ModalMapaComponent";
+import { MotoData, MotoView } from "../../utils/types/Moto";
+import { motoViewMockList } from "../../utils/motoMockList";
 
 export default function MapaComponent() {
   // const obj: Moto = {
@@ -24,15 +21,32 @@ export default function MapaComponent() {
   //   clicked: false
   // };
 
-  const inicializarMotos = (): Moto[] => {
-    return Array.from({ length: 100 }, () => ({
-      id: Math.floor(Math.random() * 10000),
-      uwb: Math.floor(Math.random() * 10000),
-      color: "black",
-    }));
-  };
+  // const inicializarMotos = (): MotoView[] => {
+  //   return Array.from({ length: 100 }, () => ({
+  //     id: Math.floor(Math.random() * 10000),
+  //     uwb: Math.floor(Math.random() * 10000),
+  //     color: "black",
+  //     motoData: {
+  //       id: Math.floor(Math.random() * 10000),
+  //       nome: "Moto Sport",
+  //       identificador: "ABC-9090",
+  //       status: "Manutenção: Na área de conserto, motor quebrado",
+  //       uwb: 100,
+  //     },
+  //   }));
+  // };
 
-  const [listaMotos, setListaMotos] = useState<Moto[]>(inicializarMotos);
+  const [listaMotos, setListaMotos] = useState<MotoView[]>(motoViewMockList);
+
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+  const [motoData, setMotoData] = useState<MotoData>({
+    id: 2,
+    identificador: "DOG-1010",
+    nome: "Mottu",
+    status: "Problema no motor",
+    uwb: 900,
+  });
 
   const atualizarCorMoto = (motoId: number) => {
     setListaMotos((listaAntiga) =>
@@ -77,13 +91,15 @@ export default function MapaComponent() {
         <FlatList
           numColumns={8} // Define o número de colunas
           data={listaMotos}
-          renderItem={({ item }: ListRenderItemInfo<Moto>) => (
+          renderItem={({ item }: ListRenderItemInfo<MotoView>) => (
             <Fontisto
               name="motorcycle"
               size={20}
               color={item.color}
               onPress={() => {
-                atualizarCorMoto(item.id);
+                atualizarCorMoto(item.id!);
+                setMotoData(item.motoData);
+                setModalVisible(true);
                 ToastAndroid.show(
                   `Moto selecionada ${item.id}: uwb ${item.uwb}!`,
                   ToastAndroid.SHORT
@@ -91,7 +107,7 @@ export default function MapaComponent() {
               }}
             />
           )}
-          keyExtractor={(item: Moto) => "moto_key_" + item.id}
+          keyExtractor={(item: MotoView) => "moto_key_" + item.id}
           contentContainerStyle={{
             gap: 10, // Espaçamento entre os itens
             justifyContent: "center",
@@ -136,7 +152,7 @@ export default function MapaComponent() {
           </View>
         </View>
         <View style={{ paddingVertical: 4, gap: 2 }}>
-          <Text style={{ fontSize: 14, color: "black" }}>Conserto</Text>
+          <Text style={{ fontSize: 14, color: "black" }}>Qualidade</Text>
           <View
             style={{
               borderRadius: 8,
@@ -152,10 +168,10 @@ export default function MapaComponent() {
               alignSelf: "center",
               alignItems: "flex-start",
               height: 100,
-              width: 170
+              width: 170,
             }}
           >
-            <MaterialIcons name="report-problem" size={16} color="black" />
+            <Ionicons name="ribbon-sharp" size={20} color="black" />
           </View>
         </View>
       </View>
@@ -211,12 +227,12 @@ export default function MapaComponent() {
                 height: 100,
               }}
             >
-              <MaterialIcons name="content-paste" size={24} color="black" />
+              <Entypo name="box" size={24} color="black" />
             </View>
           </View>
         </View>
-        <View style={{alignItems: 'flex-start', height: '100%'}}>
-          <View style={{ paddingVertical: 4, gap: 2}}>
+        <View style={{ alignItems: "flex-start", height: "100%" }}>
+          <View style={{ paddingVertical: 4, gap: 2 }}>
             <Text style={{ fontSize: 14, color: "black" }}>Recepção</Text>
             <View
               style={{
@@ -239,6 +255,11 @@ export default function MapaComponent() {
           </View>
         </View>
       </View>
+      <ModalMapaComponent
+        motoData={motoData}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </View>
   );
 }
