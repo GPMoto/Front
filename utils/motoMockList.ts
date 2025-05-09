@@ -12,6 +12,7 @@ export const motoViewMockList: MotoView[] = [
       status: "Manutenção: Na área de conserto, motor quebrado",
       uwb: 100,
     },
+    clicked: false,
   },
   {
     id: 2,
@@ -24,6 +25,8 @@ export const motoViewMockList: MotoView[] = [
       status: "Problema no motor",
       uwb: 900,
     },
+    clicked: false,
+
   },
   {
     id: 3,
@@ -36,6 +39,7 @@ export const motoViewMockList: MotoView[] = [
       status: "Funcionando",
       uwb: 300,
     },
+    clicked: false,
   },
   {
     id: 4,
@@ -48,6 +52,7 @@ export const motoViewMockList: MotoView[] = [
       status: "Em manutenção",
       uwb: 400,
     },
+    clicked: false,
   },
   {
     id: 5,
@@ -60,6 +65,7 @@ export const motoViewMockList: MotoView[] = [
       status: "Disponível",
       uwb: 500,
     },
+    clicked: false,
   },
   {
     id: 6,
@@ -72,6 +78,7 @@ export const motoViewMockList: MotoView[] = [
       status: "Em manutenção",
       uwb: 600,
     },
+    clicked: false,
   },
   {
     id: 7,
@@ -84,6 +91,8 @@ export const motoViewMockList: MotoView[] = [
       status: "Disponível",
       uwb: 700,
     },
+    clicked: false,
+
   },
   {
     id: 8,
@@ -96,6 +105,8 @@ export const motoViewMockList: MotoView[] = [
       status: "Em manutenção",
       uwb: 800,
     },
+    clicked: false,
+
   },
   {
     id: 9,
@@ -108,6 +119,8 @@ export const motoViewMockList: MotoView[] = [
       status: "Funcionando",
       uwb: 900,
     },
+    clicked: false,
+
   },
   {
     id: 10,
@@ -120,6 +133,8 @@ export const motoViewMockList: MotoView[] = [
       status: "Problema no motor",
       uwb: 1000,
     },
+    clicked: false,
+
   },
   {
     id: 11,
@@ -132,6 +147,8 @@ export const motoViewMockList: MotoView[] = [
       status: "Disponível",
       uwb: 1100,
     },
+    clicked: false,
+
   },
   {
     id: 12,
@@ -144,6 +161,8 @@ export const motoViewMockList: MotoView[] = [
       status: "Em manutenção",
       uwb: 1200,
     },
+    clicked: false,
+
   },
   {
     id: 13,
@@ -156,6 +175,8 @@ export const motoViewMockList: MotoView[] = [
       status: "Funcionando",
       uwb: 1300,
     },
+    clicked: false,
+
   },
   {
     id: 14,
@@ -168,6 +189,8 @@ export const motoViewMockList: MotoView[] = [
       status: "Problema no motor",
       uwb: 1400,
     },
+    clicked: false,
+
   },
   {
     id: 15,
@@ -180,6 +203,8 @@ export const motoViewMockList: MotoView[] = [
       status: "Disponível",
       uwb: 1500,
     },
+    clicked: false,
+
   },
   {
     id: 16,
@@ -192,5 +217,7 @@ export const motoViewMockList: MotoView[] = [
       status: "Em manutenção",
       uwb: 1600,
     },
+    clicked: false,
+
   },
 ];
