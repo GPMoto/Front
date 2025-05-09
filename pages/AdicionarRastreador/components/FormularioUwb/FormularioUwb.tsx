@@ -40,7 +40,7 @@ export default function FormularioUwb(props:FormularioUwbProps) {
         <View>
             <InputLabel title='Id do rastreador' show={false} setValue={(e)=>setId(parseInt(e))} value={id.toString()} placeholder='Adicionar id do rastreador'></InputLabel>
             <InputLabel title='Condições de manutenção' show={false} setValue={(e)=>setCondicoesManutencao(e)} value={condicoesManutencao} placeholder='Coloque a condição de manutenção'></InputLabel>
-            <ButtonArea title='Salvar rastreador' action={()=>enviaDados()}></ButtonArea>
+            <ButtonArea size='medium' title='Salvar rastreador' action={()=>enviaDados()}></ButtonArea>
         </View>
     </View>
   )

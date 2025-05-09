@@ -60,7 +60,7 @@ export default function CameraSecao(props : cameraSecaoProps) {
         </CameraView>
         :
         <View>
-            <ButtonArea title="Abrir camera" action={()=>setShow(!show)}/>
+            <ButtonArea size='medium' title="Abrir camera" action={()=>setShow(!show)}/>
         </View>)
         }
       </View>

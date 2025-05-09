@@ -50,7 +50,7 @@ export default function FormularioLogin(props:any) {
         <InputLabel title='Email' value={email} setValue={setEmail} placeholder='Digite o seu email' show={false}></InputLabel>
         <InputLabel secure={true} title='Senha' value={senha} setValue={setSenha} placeholder='Digite a sua senha' show={false}></InputLabel>
         <View style={{width:'50%',alignSelf:'center'}}>
-        <ButtonArea title='Acessar' action={()=>logar()}></ButtonArea>
+        <ButtonArea size='medium' title='Acessar' action={()=>logar()}></ButtonArea>
         </View>
     </View>
   )
