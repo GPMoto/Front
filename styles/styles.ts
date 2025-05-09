@@ -24,10 +24,15 @@ export const styles = StyleSheet.create({
         borderWidth:4,
         borderColor:"#41C526",
         backgroundColor:"white",
-        padding:16
+        padding:8,
+        display:'flex',
+        flexDirection:"row",
     },
     pageColor:{
         backgroundColor:"#0C0C0C"
+    },
+    whiteText:{
+        color:"#FFFFFF"
     },
     paragraph:{
         color:"white",
