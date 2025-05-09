@@ -1,27 +1,27 @@
 import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
 import {
-  Button,
   Image,
-  ImageSourcePropType,
   Modal,
   Text,
   ToastAndroid,
-  View,
+  View
 } from "react-native";
-import { MotoData } from "../../utils/types/Moto";
+import { MotoView } from "../../utils/types/Moto";
 import ButtonArea from "../Button/ButtonArea";
 
 interface ModalMapaProps {
   modalVisible: boolean;
   setModalVisible: (value: boolean) => void;
-  motoData: MotoData;
+  motoView: MotoView;
+  atualizarComMoto: (motoId: number) => void;
 }
 
 export default function ModalMapaComponent({
   modalVisible,
   setModalVisible,
-  motoData,
+  motoView,
+  atualizarComMoto
 }: ModalMapaProps) {
   const catchRightImage = {
     "Mottu Sport": require(`../../assets/sport.png`),
@@ -62,7 +62,7 @@ export default function ModalMapaComponent({
           style={{
             width: 300,
             padding: 20,
-            backgroundColor: "#C4C4C4",
+            backgroundColor: "rgba(196, 196, 196, 0.85)",
             borderRadius: 10,
             alignItems: "center",
             shadowColor: "#000",
@@ -86,7 +86,10 @@ export default function ModalMapaComponent({
               name="close"
               color="#41C526"
               size={30}
-              onPress={() => setModalVisible(false)}
+              onPress={() => {
+                atualizarComMoto(motoView.id!);
+                setModalVisible(false);
+              }}
             />
           </View>
           <View
@@ -97,19 +100,19 @@ export default function ModalMapaComponent({
             }}
           >
             <Text style={{ fontSize: 28, color: "black", fontWeight: "bold" }}>
-              {motoData.nome}
+              {motoView.motoData.nome}
             </Text>
             <Text style={{ fontSize: 16, color: "black" }}>
-              {motoData.identificador}
+              {motoView.motoData.identificador}
             </Text>
             <Text style={{ fontSize: 28, color: "green", fontWeight: "bold" }}>
               Status
             </Text>
             <Text style={{ fontSize: 16, color: "black" }}>
-              {motoData.status}
+              {motoView.motoData.status}
             </Text>
             <Image
-              source={rightName(motoData.nome)}
+              source={rightName(motoView.motoData.nome)}
               style={{ width: 150, height: 150, alignSelf: "center" }}
             />
             <View
@@ -124,7 +127,7 @@ export default function ModalMapaComponent({
                 action={() =>
                   ToastAndroid.show("Está funcionando", ToastAndroid.LONG)
                 }
-              />                     
+              />
               <ButtonArea
                 size="small"
                 title="Localizar"

@@ -1,3 +1,4 @@
+import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import React, { useState } from "react";
 import {
@@ -8,10 +9,9 @@ import {
   View,
 } from "react-native";
 import { styles } from "../../styles/styles";
-import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
-import ModalMapaComponent from "./ModalMapaComponent";
-import { MotoData, MotoView } from "../../utils/types/Moto";
 import { motoViewMockList } from "../../utils/motoMockList";
+import { MotoView } from "../../utils/types/Moto";
+import ModalMapaComponent from "./ModalMapaComponent";
 
 export default function MapaComponent() {
   // const obj: Moto = {
@@ -40,21 +40,35 @@ export default function MapaComponent() {
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const [motoData, setMotoData] = useState<MotoData>({
+  const [motoView, setMotoView] = useState<MotoView>({
     id: 2,
-    identificador: "DOG-1010",
-    nome: "Mottu",
-    status: "Problema no motor",
+    clicked: false,
+    color: "black",
     uwb: 900,
+    motoData: {
+      id: 2,
+      identificador: "DOG-1010",
+      nome: "Mottu",
+      status: "Problema no motor",
+      uwb: 900,
+    }
+
   });
 
+
+  /*
+  moto.clicked ? { ...moto, color: "black", clicked: true }
+            : { ...moto, color: "#41C526", clicked: false }
+            */
   const atualizarCorMoto = (motoId: number) => {
     setListaMotos((listaAntiga) =>
       listaAntiga.map((moto) =>
         moto.id === motoId
-          ? moto.color === "#41C526"
-            ? { ...moto, color: "black" }
-            : { ...moto, color: "#41C526" }
+          ? {
+            ...moto,
+            clicked: !moto.clicked,
+            color: !moto.clicked ? "#41C526" : "black",
+          }
           : moto
       )
     );
@@ -98,12 +112,13 @@ export default function MapaComponent() {
               color={item.color}
               onPress={() => {
                 atualizarCorMoto(item.id!);
-                setMotoData(item.motoData);
+                setMotoView(item);
                 setModalVisible(true);
                 ToastAndroid.show(
                   `Moto selecionada ${item.id}: uwb ${item.uwb}!`,
                   ToastAndroid.SHORT
                 );
+
               }}
             />
           )}
@@ -256,9 +271,10 @@ export default function MapaComponent() {
         </View>
       </View>
       <ModalMapaComponent
-        motoData={motoData}
+        motoView={motoView}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        atualizarComMoto={atualizarCorMoto}
       />
     </View>
   );
