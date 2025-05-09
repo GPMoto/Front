@@ -1,7 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { styles } from './styles/styles';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, ParamListBase } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginCadastro from './pages/LoginCadastro/LoginCadastro';
@@ -9,7 +5,6 @@ import DrawerNav from './components/DrawerNav/DrawerNav';
 import { useEffect, useState } from 'react';
 import { loginInterface } from './Util/Interfaces';
 import getLogin from './Util/GetLogin';
-
 
 export default function App() {
   const {Navigator,Screen} = createNativeStackNavigator();
