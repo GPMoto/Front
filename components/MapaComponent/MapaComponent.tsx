@@ -14,27 +14,6 @@ import { MotoView } from "../../utils/types/Moto";
 import ModalMapaComponent from "./ModalMapaComponent";
 
 export default function MapaComponent() {
-  // const obj: Moto = {
-  //   id: Math.floor(Math.random() * 10000),
-  //   uwb: Math.floor(Math.random() * 10000),
-  //   color: "black",
-  //   clicked: false
-  // };
-
-  // const inicializarMotos = (): MotoView[] => {
-  //   return Array.from({ length: 100 }, () => ({
-  //     id: Math.floor(Math.random() * 10000),
-  //     uwb: Math.floor(Math.random() * 10000),
-  //     color: "black",
-  //     motoData: {
-  //       id: Math.floor(Math.random() * 10000),
-  //       nome: "Moto Sport",
-  //       identificador: "ABC-9090",
-  //       status: "Manutenção: Na área de conserto, motor quebrado",
-  //       uwb: 100,
-  //     },
-  //   }));
-  // };
 
   const [listaMotos, setListaMotos] = useState<MotoView[]>(motoViewMockList);
 
@@ -55,11 +34,6 @@ export default function MapaComponent() {
 
   });
 
-
-  /*
-  moto.clicked ? { ...moto, color: "black", clicked: true }
-            : { ...moto, color: "#41C526", clicked: false }
-            */
   const atualizarCorMoto = (motoId: number) => {
     setListaMotos((listaAntiga) =>
       listaAntiga.map((moto) =>

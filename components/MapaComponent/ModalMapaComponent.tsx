@@ -119,6 +119,7 @@ export default function ModalMapaComponent({
               style={{
                 flexDirection: "row",
                 gap: 10,
+                justifyContent: 'center'
               }}
             >
               <ButtonArea
@@ -127,14 +128,11 @@ export default function ModalMapaComponent({
                 action={() =>
                   ToastAndroid.show("Está funcionando", ToastAndroid.LONG)
                 }
+                additionalStyles={{
+                  paddingHorizontal: 60
+                }}
               />
-              <ButtonArea
-                size="small"
-                title="Localizar"
-                action={() =>
-                  ToastAndroid.show("Está funcionando", ToastAndroid.LONG)
-                }
-              />
+             
             </View>
           </View>
         </View>
