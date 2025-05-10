@@ -27,7 +27,7 @@ export default function App() {
       <Navigator screenOptions={{
         headerShown:false,
       }}>
-        {user !== null ? (
+        {user === null ? (
           <Screen name="Login">
             {(props: ParamListBase) => <LoginCadastro {...props} />}
           </Screen>

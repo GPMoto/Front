@@ -31,11 +31,11 @@ export default function FormularioLogin(props:any) {
     const logar = async ()=>{
         if( email && senha){
             let login = {email,senha}
-            const res = await postLogin(login)
+            // const res = await postLogin(login)
             if(true){
                 ToastAndroid.show("Login Realizado com sucesso", ToastAndroid.LONG);
                 await saveLogin(login)
-                navigation.popTo("Mapa")
+                navigation.popTo("Home")
                 
             }else{
                 ToastAndroid.show("Email ou senha invalidos", ToastAndroid.LONG);

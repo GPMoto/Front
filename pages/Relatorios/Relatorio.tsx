@@ -26,8 +26,8 @@ export default function Relatorio() {
       </Text>
       <View
         style={{
-          backgroundColor: "#3D3D3D",
-          borderColor: "#2C2C2C",
+          backgroundColor: "#2C2C2C",
+          borderColor: "#1A1A1A",
           borderRadius: 16,
           padding: 15,
           borderWidth: 3,
@@ -85,6 +85,7 @@ export default function Relatorio() {
                 paddingHorizontal: 12,
                 backgroundColor: "#3D3D3D",
                 borderRadius: 8,
+                flexDirection: 'row'
               }}
             >
               <Text
@@ -92,7 +93,7 @@ export default function Relatorio() {
                   color: "white",
                 }}
               >
-                Motor falhando, vol...
+                Motor falhando...
               </Text>
               <Ionicons name="resize-sharp" size={24} color="#49A44C" />
             </Pressable>
