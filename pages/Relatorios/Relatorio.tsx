@@ -10,7 +10,7 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import ModalIncidentes from "./ModalIncidentes";
-import { incidentes } from "../../Util/listaIncidentes";
+import { incidentes } from "../../utils/listaIncidentes";
 
 interface Relatorio {
   incidente: string;
