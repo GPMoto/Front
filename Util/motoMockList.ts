@@ -1,4 +1,24 @@
-import { MotoView } from "./types/Moto";
+import { MotoView } from "./Interfaces";
+/*
+export interface motoViewInterface {
+    id?: number;
+    uwb: number;
+    color: string;
+    motoData: motoInterface;
+    clicked: boolean;
+}
+
+export interface motoInterface{
+    idMoto:number;
+    identificador:string;
+    condicoes:string;
+    condicoesManutencao:string;
+    lastPage:number;
+    idTipoMoto:tipoMotoInterface;
+    idFilial:filialInterface;
+}
+
+*/
 
 export const motoViewMockList: MotoView[] = [
   {
@@ -7,12 +27,13 @@ export const motoViewMockList: MotoView[] = [
     color: "black",
     motoData: {
       id: 1,
-      nome: "Moto Sport",
-      identificador: "ABC-9090",
-      status: "Manutenção: Na área de conserto, motor quebrado",
-      uwb: 100,
+      nome: "Mottu E",
+      identificador: "DOG-1010",
+      status: "Problema no motor",
+      uwb: 900,
     },
     clicked: false,
+
   },
   {
     id: 2,
