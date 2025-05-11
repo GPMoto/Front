@@ -9,8 +9,8 @@ import {
   View,
 } from "react-native";
 import { styles } from "../../styles/styles";
-import { motoViewMockList } from "../../utils/motoMockList";
-import { MotoView } from "../../utils/types/Moto";
+import { motoViewMockList } from "../../Util/motoMockList";
+import { MotoView } from "../../Util/Interfaces";
 import ModalMapaComponent from "./ModalMapaComponent";
 
 export default function MapaComponent() {
