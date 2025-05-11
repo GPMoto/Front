@@ -1,6 +1,6 @@
 import React from 'react'
 import { FlatList, View } from 'react-native'
-import { motoInterface } from '../../../../Util/Interfaces'
+import { motoInterface } from '../../../../utils/Interfaces'
 import { ParamListBase } from '@react-navigation/native';
 import MotoItem from '../MotoItem/MotoItem';
 

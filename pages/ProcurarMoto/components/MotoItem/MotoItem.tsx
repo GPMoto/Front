@@ -1,6 +1,6 @@
 import React from 'react'
 import { ListRenderItemInfo, Text, View } from 'react-native'
-import { motoInterface } from '../../../../Util/Interfaces'
+import { motoInterface } from '../../../../utils/Interfaces'
 
 export default function MotoItem(props: ListRenderItemInfo<motoInterface>) {
   return (

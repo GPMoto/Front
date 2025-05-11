@@ -3,9 +3,9 @@ import axios from "axios";
 import { styles } from "../../styles/styles";
 import InputLabel from "../../components/InputLabel/InputLabel";
 import { use, useEffect, useState } from "react";
-import { motoInterface } from "../../Util/Interfaces";
+import { motoInterface } from "../../utils/Interfaces";
 import ListaMotos from "./components/ListaMotos/ListaMotos";
-import { motoViewMockList } from "../../Util/motoMockList";
+import { motoViewMockList } from "../../utils/motoMockList";
 
 
 
