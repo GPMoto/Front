@@ -6,6 +6,7 @@ import { use, useEffect, useState } from "react";
 import { motoInterface } from "../../utils/Interfaces";
 import ListaMotos from "./components/ListaMotos/ListaMotos";
 import { motoViewMockList } from "../../utils/motoMockList";
+import { motoInterfaceTesteList } from "../../utils/motoInterfaceList";
 
 
 
@@ -17,9 +18,9 @@ export default function ProcurarMoto() {
   const [paginas,setPaginas] = useState<number[]>([]);
   const [loading,setLoading] = useState(false);
 
-  const mockFetch = () => {
-    return motoViewMockList
-  }
+  // const mockFetch = () => {
+  //   setMotos(motoInterfaceTesteList)
+  // }
 
   const fetchMotos = async (pagina:number,quantidade:number) => {
     try {
@@ -39,7 +40,7 @@ export default function ProcurarMoto() {
 
   useEffect(()=>{
     // fetchMotos(0,10);
-
+    // mockFetch()
   },[])
 
 
