@@ -7,13 +7,14 @@ import {
   ToastAndroid,
   View
 } from "react-native";
-import { MotoView } from "../../utils/types/Moto";
+// import { MotoView } from "../../utils/types/Moto";
 import ButtonArea from "../Button/ButtonArea";
+import { MotoViewTeste } from "../../utils/interfacesTeste";
 
 interface ModalMapaProps {
   modalVisible: boolean;
   setModalVisible: (value: boolean) => void;
-  motoView: MotoView;
+  motoView: MotoViewTeste;
   atualizarComMoto: (motoId: number) => void;
 }
 
@@ -100,19 +101,39 @@ export default function ModalMapaComponent({
             }}
           >
             <Text style={{ fontSize: 28, color: "black", fontWeight: "bold" }}>
-              {motoView.motoData.nome}
+              {motoView.motoData.idTipoMoto.nmTipo}
             </Text>
             <Text style={{ fontSize: 16, color: "black" }}>
               {motoView.motoData.identificador}
             </Text>
-            <Text style={{ fontSize: 28, color: "green", fontWeight: "bold" }}>
-              Status
-            </Text>
-            <Text style={{ fontSize: 16, color: "black" }}>
-              {motoView.motoData.status}
-            </Text>
+            <View style={{
+              flexDirection: 'row',
+              gap: 10, 
+              justifyContent: 'flex-start',
+              alignItems: 'center'
+            }}>
+              <Text style={{ fontSize: 18, color: "green", fontWeight: "bold" }}>
+                Status:
+              </Text>
+              <Text style={{ fontSize: 16, color: "black" }}>
+                {motoView.motoData.condicoes}
+              </Text>
+            </View>
+            <View style={{
+              flexDirection: 'row',
+              gap: 10, 
+              justifyContent: 'flex-start',
+              alignItems: 'baseline'
+            }}>
+              <Text style={{ fontSize: 18, color: "green", fontWeight: "bold" }}>
+                Manutenção:
+              </Text>
+              <Text style={{ fontSize: 16, color: "black", width: 100, flexWrap: "wrap", textAlign: 'center' }}>
+                {motoView.motoData.condicoesManutencao}
+              </Text>
+            </View>
             <Image
-              source={rightName(motoView.motoData.nome)}
+              source={rightName(motoView.motoData.idTipoMoto.nmTipo)}
               style={{ width: 150, height: 150, alignSelf: "center" }}
             />
             <View

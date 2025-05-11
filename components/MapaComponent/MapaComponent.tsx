@@ -10,29 +10,34 @@ import {
 } from "react-native";
 import { styles } from "../../styles/styles";
 import { motoViewMockList } from "../../utils/motoMockList";
-import { MotoView } from "../../utils/Interfaces";
+// import { MotoView } from "../../utils/Interfaces";
 import ModalMapaComponent from "./ModalMapaComponent";
+import { MotoViewTeste } from "../../utils/interfacesTeste";
 
 export default function MapaComponent() {
 
-  const [listaMotos, setListaMotos] = useState<MotoView[]>(motoViewMockList);
+  const [listaMotos, setListaMotos] = useState<MotoViewTeste[]>(motoViewMockList);
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const [motoView, setMotoView] = useState<MotoView>({
-    id: 2,
-    clicked: false,
+  const [motoView, setMotoView] = useState<MotoViewTeste>({
+    id: 1,
+    uwb: 100,
     color: "black",
-    uwb: 900,
     motoData: {
-      id: 2,
+      idMoto: 1,
+      idTipoMoto: {
+        id_tipo_moto: 1,
+        nmTipo: "Mottu E",
+      },
       identificador: "DOG-1010",
-      nome: "Mottu",
-      status: "Problema no motor",
-      uwb: 900,
-    }
-
-  });
+      condicoesManutencao: "Problema no motor",
+      condicoes: "Manuntenção",
+      idFilial: 1,
+      lastPage: 10,
+    },
+    clicked: false,
+  },);
 
   const atualizarCorMoto = (motoId: number) => {
     setListaMotos((listaAntiga) =>
@@ -79,7 +84,7 @@ export default function MapaComponent() {
         <FlatList
           numColumns={8} // Define o número de colunas
           data={listaMotos}
-          renderItem={({ item }: ListRenderItemInfo<MotoView>) => (
+          renderItem={({ item }: ListRenderItemInfo<MotoViewTeste>) => (
             <Fontisto
               name="motorcycle"
               size={20}
@@ -96,7 +101,7 @@ export default function MapaComponent() {
               }}
             />
           )}
-          keyExtractor={(item: MotoView) => "moto_key_" + item.id}
+          keyExtractor={(item: MotoViewTeste) => "moto_key_" + item.id}
           contentContainerStyle={{
             gap: 10, // Espaçamento entre os itens
             justifyContent: "center",

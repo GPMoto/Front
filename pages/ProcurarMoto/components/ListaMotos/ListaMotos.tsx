@@ -3,10 +3,12 @@ import { FlatList, View } from 'react-native'
 import { motoInterface } from '../../../../utils/Interfaces'
 import { ParamListBase } from '@react-navigation/native';
 import MotoItem from '../MotoItem/MotoItem';
+import { motoInterfaceTeste } from '../../../../utils/interfacesTeste';
 
 
 interface ListaMotosProps extends ParamListBase {
     data:motoInterface[];
+    // data : motoInterfaceTeste[];
 }
 
 export default function ListaMotos(props:ListaMotosProps) {
