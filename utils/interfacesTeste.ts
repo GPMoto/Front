@@ -14,6 +14,14 @@ export interface motoInterfaceTeste{
     idFilial:number;
 }
 
+export interface uwbInterfaceTeste {
+    idUwb: number;
+    vlUwb: string;
+    moto: motoInterfaceTeste;
+}
+
+
+
 
 export interface loginInterfaceTeste{
     nome:string;

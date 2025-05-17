@@ -24,7 +24,7 @@ interface InputLabelProps {
 export default function InputLabel(props: InputLabelProps) {
   return (
     <View>
-      <Text style={styles.TextInput}>{props.title}</Text>
+      <Text style={[styles.TextInput, {fontSize: 20, paddingVertical: 5}]}>{props.title}</Text>
       <View style={[styles.Input, { justifyContent: "space-between" }]}>
         <TextInput
           secureTextEntry={props.secure}
