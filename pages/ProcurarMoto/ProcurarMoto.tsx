@@ -8,6 +8,7 @@ import ListaMotos from "./components/ListaMotos/ListaMotos";
 import { motoViewMockList } from "../../utils/motoMockList";
 import { motoInterfaceTesteList } from "../../utils/motoInterfaceList";
 import { motoInterfaceTeste } from "../../utils/interfacesTeste";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ProcurarMoto() {
   const [identificador, setIdentificador] = useState("");
@@ -15,19 +16,21 @@ export default function ProcurarMoto() {
   const [motos, setMotos] = useState<motoInterfaceTeste[]>([]);
   const [paginas, setPaginas] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
-  const [isSearched, setIsSearched] = useState<boolean>(false)
+  const [isSearched, setIsSearched] = useState<boolean>(false);
 
   // const mockFetch = () => {
   //   setMotos(motoInterfaceTesteList)
   // }
-  console.log(process.env.EXPO_PUBLIC_API)
+  console.log(process.env.EXPO_PUBLIC_API);
   const api = axios.create({
-    baseURL: 'http://localhost:8080/',
+    baseURL: "http://localhost:8080/",
   });
   const fetchMotos = async (pagina: number, quantidade: number) => {
     try {
       //procurar so a da filial da conta da pessoa porque se nn vai ter moto dms se for de todas as filiais
-      const response = await api.get(`/moto/filial/1/paginados/?pagina=${pagina}&quantidade=${quantidade}`);
+      const response = await api.get(
+        `/moto/filial/1/paginados/?pagina=${pagina}&quantidade=${quantidade}`
+      );
 
       /*
         export interface motoInterfaceTeste{
@@ -52,30 +55,37 @@ export default function ProcurarMoto() {
     }
   };
 
-  const mockFetch = () => {
+  const mockFetch = async () => {
     try {
-      const data = motoInterfaceTesteList
-      setMotos(data)
-      const tempPages : number[] = []
-      for (let i = 1; i <= tempPages.length; i++) {
+      // Tenta buscar do AsyncStorage
+      const stored = await AsyncStorage.getItem("motos");
+      let data: motoInterfaceTeste[] = [];
+      if (stored) {
+        data = JSON.parse(stored);
+      } else {
+        data = motoInterfaceTesteList;
+        await AsyncStorage.setItem("motos", JSON.stringify(data));
+      }
+      setMotos(data);
+      const tempPages: number[] = [];
+      for (let i = 1; i <= data.length; i++) {
         tempPages.push(i);
       }
       setPaginas(tempPages);
     } catch (error) {
       console.error("Erro ao buscar motos:", error);
-      
     }
-  }
+  };
 
   const clearSearch = () => {
-    setIdentificador("")
-    mockFetch()
-    setIsSearched(false)
-  }
+    setIdentificador("");
+    mockFetch();
+    setIsSearched(false);
+  };
 
   useEffect(() => {
     // fetchMotos(0,10);
-    mockFetch()
+    mockFetch();
   }, []);
 
   const onPress = () => {
@@ -100,19 +110,33 @@ export default function ProcurarMoto() {
     }
   };
 
-  const onPressMock = () => {
-  if (identificador) {
-    const resultado = motoInterfaceTesteList.filter(moto => moto.identificador.toUpperCase().includes(identificador));
-    if (resultado) {
-      setMotos(resultado);
-      setIsSearched(true)
+  const onPressMock = async () => {
+    if (identificador) {
+      try {
+        const stored = await AsyncStorage.getItem("motos");
+        let motosList: motoInterfaceTeste[] = [];
+        if (stored) {
+          motosList = JSON.parse(stored);
+        } else {
+          motosList = motoInterfaceTesteList;
+          await AsyncStorage.setItem("motos", JSON.stringify(motosList));
+        }
+        const resultado = motosList.filter((moto) =>
+          moto.identificador.toUpperCase().includes(identificador)
+        );
+        if (resultado.length > 0) {
+          setMotos(resultado);
+          setIsSearched(true);
+        } else {
+          ToastAndroid.show("Moto não encontrada!", ToastAndroid.LONG);
+        }
+      } catch (error) {
+        ToastAndroid.show("Erro ao procurar moto!", ToastAndroid.LONG);
+      }
     } else {
-      ToastAndroid.show("Moto não encontrada!", ToastAndroid.LONG);
+      ToastAndroid.show("Digite um identificador!", ToastAndroid.LONG);
     }
-  } else {
-    ToastAndroid.show("Digite um identificador!", ToastAndroid.LONG);
-  }
-}
+  };
 
   return (
     <View
@@ -147,7 +171,7 @@ export default function ProcurarMoto() {
               key={page}
               onPress={() => {
                 // fetchMotos(page, 10);
-                mockFetch()
+                mockFetch();
               }}
             >
               <Text>{page}</Text>
