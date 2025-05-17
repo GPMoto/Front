@@ -31,6 +31,7 @@ export default function FormularioLogin(props:any) {
     const logar = async ()=>{
         if( email && senha){
             let login = {email,senha}
+            console.log(login)
             // const res = await postLogin(login)
             if(true){
                 ToastAndroid.show("Login Realizado com sucesso", ToastAndroid.LONG);
