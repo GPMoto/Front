@@ -189,7 +189,7 @@ const estiloLocal = StyleSheet.create({
     flexDirection: "column",
     padding: 8,
     width: "80%",
-    height: "80%",
+    flex: 1,
     backgroundColor: "#C4C4C4",
     borderRadius: 16,
   },
@@ -198,7 +198,7 @@ const estiloLocal = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-    width: "100%",
+    width: "80%",
     height: "100%",
   },
 });
