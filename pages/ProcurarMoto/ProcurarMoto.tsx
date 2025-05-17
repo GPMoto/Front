@@ -7,106 +7,164 @@ import { motoInterface } from "../../utils/Interfaces";
 import ListaMotos from "./components/ListaMotos/ListaMotos";
 import { motoViewMockList } from "../../utils/motoMockList";
 import { motoInterfaceTesteList } from "../../utils/motoInterfaceList";
-
-
-
+import { motoInterfaceTeste } from "../../utils/interfacesTeste";
 
 export default function ProcurarMoto() {
-  const [identificador,setIdentificador] = useState("");
-  const [moto,setMoto] = useState<motoInterface>();
-  const [motos,setMotos] = useState<motoInterface[]>([]);
-  const [paginas,setPaginas] = useState<number[]>([]);
-  const [loading,setLoading] = useState(false);
+  const [identificador, setIdentificador] = useState("");
+  const [moto, setMoto] = useState<motoInterfaceTeste>();
+  const [motos, setMotos] = useState<motoInterfaceTeste[]>([]);
+  const [paginas, setPaginas] = useState<number[]>([]);
+  const [loading, setLoading] = useState(false);
 
   // const mockFetch = () => {
   //   setMotos(motoInterfaceTesteList)
   // }
-
-  const fetchMotos = async (pagina:number,quantidade:number) => {
+  console.log(process.env.EXPO_PUBLIC_API)
+  const api = axios.create({
+    baseURL: 'http://localhost:8080/',
+  });
+  const fetchMotos = async (pagina: number, quantidade: number) => {
     try {
       //procurar so a da filial da conta da pessoa porque se nn vai ter moto dms se for de todas as filiais
-      const response = await axios.get(`http://procura/motos/filial/paginados?pagina=${pagina}}&quantidade=${quantidade}`);
-      const data = response.data as motoInterface[];
+      const response = await api.get(`/moto/filial/1/paginados/?pagina=${pagina}&quantidade=${quantidade}`);
+
+      /*
+        export interface motoInterfaceTeste{
+            idMoto:number;
+            identificador:string;
+            condicoes:string;
+            condicoesManutencao:string;
+            lastPage:number;
+            idTipoMoto:tipoMotoInterfaceTeste;
+            idFilial:number;
+        }
+      */
+      const data = response.data.content as motoInterfaceTeste[];
       setMotos(data);
       const tempPages: number[] = [];
-        for (let i = 1; i <= data[0].lastPage; i++) {
-          tempPages.push(i);
-        }
+      for (let i = 1; i <= response.data.totalPages; i++) {
+        tempPages.push(i);
+      }
       setPaginas(tempPages);
     } catch (error) {
       console.error("Erro ao buscar motos:", error);
     }
   };
 
-  useEffect(()=>{
-    // fetchMotos(0,10);
-    // mockFetch()
-  },[])
-
-
-  const onPress=()=>{
-    if(identificador){
+  const mockFetch = () => {
+    try {
+      const data = motoInterfaceTesteList
+      setMotos(data)
+      const tempPages : number[] = []
+      for (let i = 1; i <= tempPages.length; i++) {
+        tempPages.push(i);
+      }
+      setPaginas(tempPages);
+    } catch (error) {
+      console.error("Erro ao buscar motos:", error);
       
-      axios.get(`http://procura/motos/${identificador}`)
-      .then(data=>{
-        let moto = data.data as motoInterface;
-        setMoto(moto);
-        setIdentificador("");
-      }).catch(err=>{
-        console.log(err);
-        if(err.response.status == 404){
-          ToastAndroid.show("Moto não encontrada!",ToastAndroid.LONG)
-        }else{
-          ToastAndroid.show("Erro ao procurar moto!",ToastAndroid.LONG)
-        }
-      })
-    }else{
-      ToastAndroid.show("Digite um identificador!",ToastAndroid.LONG)
     }
   }
 
-  return (
-    <View style={[styles.pageColor,styles.container,{alignItems:"center",gap:16}]}>
-        <View style={{width:"80%"}}>
-          <InputLabel onPress={onPress} show={true} title="Procurar Moto" value={identificador} setValue={setIdentificador} placeholder="Identificador da moto"></InputLabel>
-        </View>
-        <View style={[estiloLocal.contentArea]}>
+  useEffect(() => {
+    // fetchMotos(0,10);
+    mockFetch()
+  }, []);
 
-          <View style={[estiloLocal.listArea]}>
-            <ListaMotos data={motos}></ListaMotos>
-          </View>
-        </View> 
-
-        <View>
-          {paginas.map((page)=>{
-            return(
-              <Pressable key={page} onPress={()=>{fetchMotos(page,10)}}>
-                <Text>{page}</Text>
-              </Pressable>
-            )
+  const onPress = () => {
+    if (identificador) {
+      axios
+        .get(`http://procura/motos/${identificador}`)
+        .then((data) => {
+          let moto = data.data as motoInterfaceTeste;
+          setMoto(moto);
+          setIdentificador("");
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response.status == 404) {
+            ToastAndroid.show("Moto não encontrada!", ToastAndroid.LONG);
+          } else {
+            ToastAndroid.show("Erro ao procurar moto!", ToastAndroid.LONG);
           }
-          )}
+        });
+    } else {
+      ToastAndroid.show("Digite um identificador!", ToastAndroid.LONG);
+    }
+  };
+
+  const onPressMock = () => {
+  if (identificador) {
+    const resultado = motoInterfaceTesteList.find(moto => moto.identificador.includes(identificador));
+    if (resultado) {
+      setMoto(resultado);
+      setIdentificador("");
+    } else {
+      ToastAndroid.show("Moto não encontrada!", ToastAndroid.LONG);
+    }
+  } else {
+    ToastAndroid.show("Digite um identificador!", ToastAndroid.LONG);
+  }
+}
+
+  return (
+    <View
+      style={[
+        styles.pageColor,
+        styles.container,
+        { alignItems: "center", gap: 16 },
+      ]}
+    >
+      <View style={{ width: "80%" }}>
+        <InputLabel
+          onPress={onPressMock}
+          show={true}
+          title="Procurar Moto"
+          value={identificador}
+          setValue={setIdentificador}
+          placeholder="Identificador da moto"
+        ></InputLabel>
+      </View>
+      <View style={[estiloLocal.contentArea]}>
+        <View style={[estiloLocal.listArea]}>
+          <ListaMotos data={motos}></ListaMotos>
         </View>
+      </View>
+
+      <View>
+        {paginas.map((page) => {
+          return (
+            <Pressable
+              key={page}
+              onPress={() => {
+                fetchMotos(page, 10);
+              }}
+            >
+              <Text>{page}</Text>
+            </Pressable>
+          );
+        })}
+      </View>
     </View>
-  )
+  );
 }
 
 const estiloLocal = StyleSheet.create({
-  listArea:{
-    display:"flex",
-    flexDirection:"column",
-    padding:8,
-    width:"80%",
-    height:"80%",
-    backgroundColor:"#C4C4C4",
-    borderRadius:16,
+  listArea: {
+    display: "flex",
+    flexDirection: "column",
+    padding: 8,
+    width: "80%",
+    height: "80%",
+    backgroundColor: "#C4C4C4",
+    borderRadius: 16,
   },
-  contentArea:{
-    flex:1,
-    display:"flex",
-    flexDirection:"row",
-    justifyContent:"center",
-    width:"100%",
-    height:"100%",
-  }
-})
+  contentArea: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
+  },
+});

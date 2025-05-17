@@ -7,7 +7,7 @@ import { motoInterfaceTeste } from '../../../../utils/interfacesTeste';
 
 
 interface ListaMotosProps extends ParamListBase {
-    data:motoInterface[];
+    data:motoInterfaceTeste[];
     // data : motoInterfaceTeste[];
 }
 
