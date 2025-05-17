@@ -10,6 +10,7 @@ export default function MotoItem(props: ListRenderItemInfo<motoInterfaceTeste>) 
       padding: 5,
     }}>
         <Text style={{fontWeight: 'bold'}}>Identificador {props.item.identificador}</Text>
+        <Text style={{fontWeight: '700'}}> {props.item.idTipoMoto.nmTipo}</Text>
         <Text>Conserto: {props.item.condicoesManutencao}</Text>
         <Text>Localização: {Math.floor(Math.random() * 100)} x, {Math.floor(Math.random() * 100)} y</Text>
     </View>

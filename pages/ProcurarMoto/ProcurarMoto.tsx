@@ -15,6 +15,7 @@ export default function ProcurarMoto() {
   const [motos, setMotos] = useState<motoInterfaceTeste[]>([]);
   const [paginas, setPaginas] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isSearched, setIsSearched] = useState<boolean>(false)
 
   // const mockFetch = () => {
   //   setMotos(motoInterfaceTesteList)
@@ -66,6 +67,12 @@ export default function ProcurarMoto() {
     }
   }
 
+  const clearSearch = () => {
+    setIdentificador("")
+    mockFetch()
+    setIsSearched(false)
+  }
+
   useEffect(() => {
     // fetchMotos(0,10);
     mockFetch()
@@ -95,10 +102,10 @@ export default function ProcurarMoto() {
 
   const onPressMock = () => {
   if (identificador) {
-    const resultado = motoInterfaceTesteList.find(moto => moto.identificador.includes(identificador));
+    const resultado = motoInterfaceTesteList.filter(moto => moto.identificador.toUpperCase().includes(identificador));
     if (resultado) {
-      setMoto(resultado);
-      setIdentificador("");
+      setMotos(resultado);
+      setIsSearched(true)
     } else {
       ToastAndroid.show("Moto não encontrada!", ToastAndroid.LONG);
     }
@@ -123,6 +130,8 @@ export default function ProcurarMoto() {
           value={identificador}
           setValue={setIdentificador}
           placeholder="Identificador da moto"
+          isSearched={isSearched}
+          clearSearch={clearSearch}
         ></InputLabel>
       </View>
       <View style={[estiloLocal.contentArea]}>
@@ -137,7 +146,8 @@ export default function ProcurarMoto() {
             <Pressable
               key={page}
               onPress={() => {
-                fetchMotos(page, 10);
+                // fetchMotos(page, 10);
+                mockFetch()
               }}
             >
               <Text>{page}</Text>
