@@ -137,11 +137,13 @@ export default function AdicionarRastreador() {
       </View>
 
       {identificador && !loading ? (
+        <View style={styles.container}>
         <FormularioPagina
           identificador={identificador}
           setIdentificador={setIdentificador}
           setLoading={setLoading}
         />
+        </View>
       ) : (
         <View></View>
       )}
