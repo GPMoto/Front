@@ -13,7 +13,8 @@ export const styles = StyleSheet.create({
         backgroundColor: '#0C0C0C',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        padding: 10
+        padding: 10,
+        gap: 10
     },
     TextInput:{
         color:"white",
