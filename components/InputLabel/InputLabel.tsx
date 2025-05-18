@@ -17,8 +17,8 @@ interface InputLabelProps {
   show: boolean;
   onPress?: () => void;
   secure?: boolean;
-  isSearched: boolean;
-  clearSearch: () => void;
+  isSearched?: boolean;
+  clearSearch?: () => void;
 }
 
 export default function InputLabel(props: InputLabelProps) {
