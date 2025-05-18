@@ -1,33 +1,65 @@
-import { Text, View, TextInput, Image, Pressable, KeyboardType } from "react-native";
+import {
+  Text,
+  View,
+  TextInput,
+  Image,
+  Pressable,
+  KeyboardType,
+} from "react-native";
 import { styles } from "../../styles/styles";
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 
-
-interface InputLabelProps{
-    title:string;
-    value : string;
-    setValue : (value:string)=>void;
-    placeholder:string
-    show:boolean
-    onPress?:()=>void;
-    secure ?: boolean;
+interface InputLabelProps {
+  title: string;
+  value: string;
+  setValue: (value: string) => void;
+  placeholder: string;
+  show: boolean;
+  onPress?: () => void;
+  secure?: boolean;
+  isSearched?: boolean;
+  clearSearch?: () => void;
 }
 
-
-export default function InputLabel(props:InputLabelProps) {
+export default function InputLabel(props: InputLabelProps) {
   return (
     <View>
-        <Text style={styles.TextInput}>{props.title}</Text>
-        <View style={[styles.Input,{justifyContent:"space-between"}]}>
-          <TextInput secureTextEntry={props.secure} style={{width:"90%"}} placeholder={props.placeholder} placeholderTextColor={"#8B8B8B"} value={props.value} onChangeText={e=>props.setValue(e)}></TextInput>
-          {props.show ? 
-          <Pressable style={{alignItems:"center",justifyContent:"center"}} onPress={props.onPress}>
-            <FontAwesome name="search" size={30} color="#41C526" />
+      <Text style={[styles.TextInput, {fontSize: 20, paddingVertical: 5}]}>{props.title}</Text>
+      <View style={[styles.Input, { justifyContent: "space-between" }]}>
+        <TextInput
+          secureTextEntry={props.secure}
+          style={{ flex: 1 }}
+          placeholder={props.placeholder}
+          placeholderTextColor={"#8B8B8B"}
+          value={props.value}
+          onChangeText={(e) => props.setValue(e.toUpperCase())}
+        ></TextInput>
+        {props.show ? (
+          <Pressable
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "row",
+              gap: 10,
+              minWidth : props.isSearched ? 60 : 30,
+              paddingHorizontal: 4
+            }}
+            onPress={props.onPress}
+          >
+            <FontAwesome name="search" size={20} color="#41C526" />
+            {props.isSearched ? (
+              <MaterialIcons
+                name="clear"
+                size={24}
+                color="red"
+                onPress={props.clearSearch}
+              />
+            ) : null}
           </Pressable>
-          :
+        ) : (
           <></>
-          }
-        </View>
+        )}
+      </View>
     </View>
-  )
+  );
 }

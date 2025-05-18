@@ -1,196 +1,313 @@
-import { MotoView } from "./types/Moto";
+import { MotoView } from "./Interfaces";
+import { MotoViewTeste } from "./interfacesTeste";
+/*
+export interface motoViewInterface {
+    id?: number;
+    uwb: number;
+    color: string;
+    motoData: motoInterface;
+    clicked: boolean;
+}
 
-export const motoViewMockList: MotoView[] = [
+export interface motoInterface{
+    idMoto:number;
+    identificador:string;
+    condicoes:string;
+    condicoesManutencao:string;
+    lastPage:number;
+    idTipoMoto:tipoMotoInterface;
+    idFilial:filialInterface;
+}
+
+*/
+
+export const motoViewMockList: MotoViewTeste[] = [
   {
     id: 1,
     uwb: 100,
     color: "black",
     motoData: {
-      id: 1,
-      nome: "Moto Sport",
-      identificador: "ABC-9090",
-      status: "Manutenção: Na área de conserto, motor quebrado",
-      uwb: 100,
+      idMoto: 1,
+      idTipoMoto: {
+        id_tipo_moto: 1,
+        nmTipo: "Mottu E",
+      },
+      identificador: "DOG-1010",
+      condicoesManutencao: "Problema no motor",
+      condicoes: "Manuntenção",
+      idFilial: 1,
+      lastPage: 10,
     },
+    clicked: false,
   },
   {
     id: 2,
     uwb: 200,
     color: "black",
     motoData: {
-      id: 2,
-      nome: "Mottu E",
+      idMoto: 2,
+      idTipoMoto: {
+        id_tipo_moto: 2,
+        nmTipo: "Mottu Sport",
+      },
       identificador: "DOG-1010",
-      status: "Problema no motor",
-      uwb: 900,
+      condicoesManutencao: "Problema no motor",
+      condicoes: "Manuntenção",
+      idFilial: 1,
+      lastPage: 10,
     },
+    clicked: false,
   },
   {
     id: 3,
     uwb: 300,
     color: "black",
     motoData: {
-      id: 3,
-      nome: "Mottu Pop",
+      idMoto: 3,
+      idTipoMoto: {
+        id_tipo_moto: 3,
+        nmTipo: "Mottu Pop",
+      },
       identificador: "ABC-1234",
-      status: "Funcionando",
-      uwb: 300,
+      condicoesManutencao: "Funcionando",
+      condicoes: "Operacional",
+      idFilial: 1,
+      lastPage: 10,
     },
+    clicked: false,
   },
   {
     id: 4,
     uwb: 400,
     color: "black",
     motoData: {
-      id: 4,
-      nome: "Mottu Pop",
+      idMoto: 4,
+      idTipoMoto: {
+        id_tipo_moto: 3,
+        nmTipo: "Mottu Pop",
+      },
       identificador: "DEF-5678",
-      status: "Em manutenção",
-      uwb: 400,
+      condicoesManutencao: "Em manutenção",
+      condicoes: "Manuntenção",
+      idFilial: 1,
+      lastPage: 10,
     },
+    clicked: false,
   },
   {
     id: 5,
     uwb: 500,
     color: "black",
     motoData: {
-      id: 5,
-      nome: "Mottu Sport",
+      idMoto: 5,
+      idTipoMoto: {
+        id_tipo_moto: 2,
+        nmTipo: "Mottu Sport",
+      },
       identificador: "GHI-9012",
-      status: "Disponível",
-      uwb: 500,
+      condicoesManutencao: "Disponível",
+      condicoes: "Operacional",
+      idFilial: 1,
+      lastPage: 10,
     },
+    clicked: false,
   },
   {
     id: 6,
     uwb: 600,
     color: "black",
     motoData: {
-      id: 6,
-      nome: "Mottu E",
+      idMoto: 6,
+      idTipoMoto: {
+        id_tipo_moto: 1,
+        nmTipo: "Mottu E",
+      },
       identificador: "JKL-3456",
-      status: "Em manutenção",
-      uwb: 600,
+      condicoesManutencao: "Em manutenção",
+      condicoes: "Manuntenção",
+      idFilial: 1,
+      lastPage: 10,
     },
+    clicked: false,
   },
   {
     id: 7,
     uwb: 700,
     color: "black",
     motoData: {
-      id: 7,
-      nome: "Mottu Sport",
+      idMoto: 7,
+      idTipoMoto: {
+        id_tipo_moto: 2,
+        nmTipo: "Mottu Sport",
+      },
       identificador: "MNO-7890",
-      status: "Disponível",
-      uwb: 700,
+      condicoesManutencao: "Disponível",
+      condicoes: "Operacional",
+      idFilial: 1,
+      lastPage: 10,
     },
+    clicked: false,
   },
   {
     id: 8,
     uwb: 800,
     color: "black",
     motoData: {
-      id: 8,
-      nome: "Mottu E",
+      idMoto: 8,
+      idTipoMoto: {
+        id_tipo_moto: 1,
+        nmTipo: "Mottu E",
+      },
       identificador: "PQR-1234",
-      status: "Em manutenção",
-      uwb: 800,
+      condicoesManutencao: "Em manutenção",
+      condicoes: "Manuntenção",
+      idFilial: 1,
+      lastPage: 10,
     },
+    clicked: false,
   },
   {
     id: 9,
     uwb: 900,
     color: "black",
     motoData: {
-      id: 9,
-      nome: "Mottu Pop",
+      idMoto: 9,
+      idTipoMoto: {
+        id_tipo_moto: 3,
+        nmTipo: "Mottu Pop",
+      },
       identificador: "STU-5678",
-      status: "Funcionando",
-      uwb: 900,
+      condicoesManutencao: "Funcionando",
+      condicoes: "Operacional",
+      idFilial: 1,
+      lastPage: 10,
     },
+    clicked: false,
   },
   {
     id: 10,
     uwb: 1000,
     color: "black",
     motoData: {
-      id: 10,
-      nome: "Mottu Sport",
+      idMoto: 10,
+      idTipoMoto: {
+        id_tipo_moto: 2,
+        nmTipo: "Mottu Sport",
+      },
       identificador: "VWX-9012",
-      status: "Problema no motor",
-      uwb: 1000,
+      condicoesManutencao: "Problema no motor",
+      condicoes: "Manuntenção",
+      idFilial: 1,
+      lastPage: 10,
     },
+    clicked: false,
   },
   {
     id: 11,
     uwb: 1100,
     color: "black",
     motoData: {
-      id: 11,
-      nome: "Mottu E",
+      idMoto: 11,
+      idTipoMoto: {
+        id_tipo_moto: 1,
+        nmTipo: "Mottu E",
+      },
       identificador: "YZA-3456",
-      status: "Disponível",
-      uwb: 1100,
+      condicoesManutencao: "Disponível",
+      condicoes: "Operacional",
+      idFilial: 1,
+      lastPage: 10,
     },
+    clicked: false,
   },
   {
     id: 12,
     uwb: 1200,
     color: "black",
     motoData: {
-      id: 12,
-      nome: "Mottu Pop",
+      idMoto: 12,
+      idTipoMoto: {
+        id_tipo_moto: 3,
+        nmTipo: "Mottu Pop",
+      },
       identificador: "BCD-7890",
-      status: "Em manutenção",
-      uwb: 1200,
+      condicoesManutencao: "Em manutenção",
+      condicoes: "Manuntenção",
+      idFilial: 1,
+      lastPage: 10,
     },
+    clicked: false,
   },
   {
     id: 13,
     uwb: 1300,
     color: "black",
     motoData: {
-      id: 13,
-      nome: "Mottu Sport",
+      idMoto: 13,
+      idTipoMoto: {
+        id_tipo_moto: 2,
+        nmTipo: "Mottu Sport",
+      },
       identificador: "EFG-1234",
-      status: "Funcionando",
-      uwb: 1300,
+      condicoesManutencao: "Funcionando",
+      condicoes: "Operacional",
+      idFilial: 1,
+      lastPage: 10,
     },
+    clicked: false,
   },
   {
     id: 14,
     uwb: 1400,
     color: "black",
     motoData: {
-      id: 14,
-      nome: "Mottu E",
+      idMoto: 14,
+      idTipoMoto: {
+        id_tipo_moto: 1,
+        nmTipo: "Mottu E",
+      },
       identificador: "HIJ-5678",
-      status: "Problema no motor",
-      uwb: 1400,
+      condicoesManutencao: "Problema no motor",
+      condicoes: "Manuntenção",
+      idFilial: 1,
+      lastPage: 10,
     },
+    clicked: false,
   },
   {
     id: 15,
     uwb: 1500,
     color: "black",
     motoData: {
-      id: 15,
-      nome: "Mottu Pop",
+      idMoto: 15,
+      idTipoMoto: {
+        id_tipo_moto: 3,
+        nmTipo: "Mottu Pop",
+      },
       identificador: "KLM-9012",
-      status: "Disponível",
-      uwb: 1500,
+      condicoesManutencao: "Disponível",
+      condicoes: "Operacional",
+      idFilial: 1,
+      lastPage: 10,
     },
+    clicked: false,
   },
   {
     id: 16,
     uwb: 1600,
     color: "black",
     motoData: {
-      id: 16,
-      nome: "Mottu Sport",
+      idMoto: 16,
+      idTipoMoto: {
+        id_tipo_moto: 2,
+        nmTipo: "Mottu Sport",
+      },
       identificador: "NOP-3456",
-      status: "Em manutenção",
-      uwb: 1600,
+      condicoesManutencao: "Em manutenção",
+      condicoes: "Manuntenção",
+      idFilial: 1,
+      lastPage: 10,
     },
+    clicked: false,
   },
 ];

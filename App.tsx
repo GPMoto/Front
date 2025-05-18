@@ -3,8 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginCadastro from './pages/LoginCadastro/LoginCadastro';
 import DrawerNav from './components/DrawerNav/DrawerNav';
 import { useEffect, useState } from 'react';
-import { loginInterface } from './Util/Interfaces';
-import getLogin from './Util/GetLogin';
+import { loginInterface } from './utils/Interfaces';
+import getLogin from './utils/GetLogin';
 
 export default function App() {
   const {Navigator,Screen} = createNativeStackNavigator();

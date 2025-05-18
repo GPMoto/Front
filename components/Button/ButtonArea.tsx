@@ -1,4 +1,4 @@
-import { View, Button, StyleSheet, Pressable, Text } from "react-native";
+import { View, Button, StyleSheet, Pressable, Text, ViewStyle } from "react-native";
 
 interface ButtonAreaProps {
   title: string;
@@ -6,6 +6,7 @@ interface ButtonAreaProps {
   size: "small" | "medium" | "large";
   actionWithParameters?: (info : any) => any
   infoForActionWithParameters? : any
+  additionalStyles? : ViewStyle
 }
 
 export default function ButtonArea(props: ButtonAreaProps) {
@@ -17,7 +18,7 @@ export default function ButtonArea(props: ButtonAreaProps) {
   return (
     <Pressable>
       <Text
-        style={{
+        style={[{
           backgroundColor: "#49A44C",
           borderColor: "#41C526",
           borderWidth: 3,
@@ -27,7 +28,7 @@ export default function ButtonArea(props: ButtonAreaProps) {
           paddingHorizontal: 36,
           borderRadius: 8,
           paddingVertical: 6
-        }}
+        }, props.additionalStyles]}
         onPress={() => props.action ? props.action() : props.actionWithParameters?(props.infoForActionWithParameters) : '' }
       >
         {props.title}

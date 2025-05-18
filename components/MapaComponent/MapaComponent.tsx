@@ -1,3 +1,4 @@
+import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import React, { useState } from "react";
 import {
@@ -8,53 +9,45 @@ import {
   View,
 } from "react-native";
 import { styles } from "../../styles/styles";
-import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
-import ModalMapaComponent from "./ModalMapaComponent";
-import { MotoData, MotoView } from "../../utils/types/Moto";
 import { motoViewMockList } from "../../utils/motoMockList";
+// import { MotoView } from "../../utils/Interfaces";
+import ModalMapaComponent from "./ModalMapaComponent";
+import { MotoViewTeste } from "../../utils/interfacesTeste";
 
 export default function MapaComponent() {
-  // const obj: Moto = {
-  //   id: Math.floor(Math.random() * 10000),
-  //   uwb: Math.floor(Math.random() * 10000),
-  //   color: "black",
-  //   clicked: false
-  // };
 
-  // const inicializarMotos = (): MotoView[] => {
-  //   return Array.from({ length: 100 }, () => ({
-  //     id: Math.floor(Math.random() * 10000),
-  //     uwb: Math.floor(Math.random() * 10000),
-  //     color: "black",
-  //     motoData: {
-  //       id: Math.floor(Math.random() * 10000),
-  //       nome: "Moto Sport",
-  //       identificador: "ABC-9090",
-  //       status: "Manutenção: Na área de conserto, motor quebrado",
-  //       uwb: 100,
-  //     },
-  //   }));
-  // };
-
-  const [listaMotos, setListaMotos] = useState<MotoView[]>(motoViewMockList);
+  const [listaMotos, setListaMotos] = useState<MotoViewTeste[]>(motoViewMockList);
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const [motoData, setMotoData] = useState<MotoData>({
-    id: 2,
-    identificador: "DOG-1010",
-    nome: "Mottu",
-    status: "Problema no motor",
-    uwb: 900,
-  });
+  const [motoView, setMotoView] = useState<MotoViewTeste>({
+    id: 1,
+    uwb: 100,
+    color: "black",
+    motoData: {
+      idMoto: 1,
+      idTipoMoto: {
+        id_tipo_moto: 1,
+        nmTipo: "Mottu E",
+      },
+      identificador: "DOG-1010",
+      condicoesManutencao: "Problema no motor",
+      condicoes: "Manuntenção",
+      idFilial: 1,
+      lastPage: 10,
+    },
+    clicked: false,
+  },);
 
   const atualizarCorMoto = (motoId: number) => {
     setListaMotos((listaAntiga) =>
       listaAntiga.map((moto) =>
         moto.id === motoId
-          ? moto.color === "#41C526"
-            ? { ...moto, color: "black" }
-            : { ...moto, color: "#41C526" }
+          ? {
+            ...moto,
+            clicked: !moto.clicked,
+            color: !moto.clicked ? "#41C526" : "black",
+          }
           : moto
       )
     );
@@ -91,23 +84,24 @@ export default function MapaComponent() {
         <FlatList
           numColumns={8} // Define o número de colunas
           data={listaMotos}
-          renderItem={({ item }: ListRenderItemInfo<MotoView>) => (
+          renderItem={({ item }: ListRenderItemInfo<MotoViewTeste>) => (
             <Fontisto
               name="motorcycle"
               size={20}
               color={item.color}
               onPress={() => {
                 atualizarCorMoto(item.id!);
-                setMotoData(item.motoData);
+                setMotoView(item);
                 setModalVisible(true);
                 ToastAndroid.show(
                   `Moto selecionada ${item.id}: uwb ${item.uwb}!`,
                   ToastAndroid.SHORT
                 );
+
               }}
             />
           )}
-          keyExtractor={(item: MotoView) => "moto_key_" + item.id}
+          keyExtractor={(item: MotoViewTeste) => "moto_key_" + item.id}
           contentContainerStyle={{
             gap: 10, // Espaçamento entre os itens
             justifyContent: "center",
@@ -256,9 +250,10 @@ export default function MapaComponent() {
         </View>
       </View>
       <ModalMapaComponent
-        motoData={motoData}
+        motoView={motoView}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        atualizarComMoto={atualizarCorMoto}
       />
     </View>
   );

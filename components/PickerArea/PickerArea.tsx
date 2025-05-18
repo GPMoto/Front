@@ -1,6 +1,6 @@
 import { Picker } from "@react-native-picker/picker";
 import { Text, View } from "react-native";
-import { optionsInterface } from "../../Util/Interfaces";
+import { optionsInterface } from "../../utils/Interfaces";
 import { styles } from "../../styles/styles";
 
 

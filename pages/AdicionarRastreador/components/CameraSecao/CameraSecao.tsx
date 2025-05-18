@@ -7,6 +7,7 @@ import { FontAwesome } from '@expo/vector-icons';
 interface cameraSecaoProps{
   uri:string | null;
   setUri:(uri:string | null)=>void
+  mandarParaForm : () => void
 }
 
 
@@ -39,6 +40,7 @@ export default function CameraSecao(props : cameraSecaoProps) {
             ToastAndroid.show("Foto tirada com sucesso.",ToastAndroid.LONG)
             props.setUri(foto?.uri)
             setShow(!show)
+            props.mandarParaForm()
         }else{
             ToastAndroid.show("Não foi possível tirar a foto tente novamente.",ToastAndroid.LONG)
         }
