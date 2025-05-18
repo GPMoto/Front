@@ -106,7 +106,7 @@ export default function FormularioUwb(props: FormularioUwbProps) {
         <InputLabel
           title="Condições de manutenção"
           show={false}
-          setValue={(e) => setCondicoesManutencao(e)}
+          setValue={setCondicoesManutencao}
           value={condicoesManutencao}
           placeholder="Coloque a condição de manutenção"
         ></InputLabel>
