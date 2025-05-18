@@ -68,8 +68,10 @@ export default function ProcurarMoto() {
       }
       setMotos(data);
       const tempPages: number[] = [];
-      for (let i = 1; i <= data.length; i++) {
-        tempPages.push(i);
+      let x = 0
+      for (let i = 1; i <= data.length; i+=2) {
+        x+=1;
+        tempPages.push(x);
       }
       setPaginas(tempPages);
     } catch (error) {
@@ -164,17 +166,16 @@ export default function ProcurarMoto() {
         </View>
       </View>
 
-      <View>
+      <View style={{flexDirection: "row", flexWrap: 'wrap', gap: 5, marginVertical: 15}}>
         {paginas.map((page) => {
           return (
             <Pressable
               key={page}
               onPress={() => {
-                // fetchMotos(page, 10);
                 mockFetch();
               }}
             >
-              <Text>{page}</Text>
+              <Text style={{color: 'white', fontSize: 20}}>{page}</Text>
             </Pressable>
           );
         })}
