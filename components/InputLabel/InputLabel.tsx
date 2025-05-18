@@ -32,7 +32,8 @@ export default function InputLabel(props: InputLabelProps) {
           placeholder={props.placeholder}
           placeholderTextColor={"#8B8B8B"}
           value={props.value}
-          onChangeText={(e) => props.setValue(e.toUpperCase())}
+          autoCapitalize="characters"
+          onChangeText={(e) => props.setValue(e)}
         ></TextInput>
         {props.show ? (
           <Pressable
