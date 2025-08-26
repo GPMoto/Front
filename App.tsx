@@ -14,9 +14,9 @@ export default function App() {
 
   useEffect(()=>{
     const get = async()=>{
-      const userLocal = await getLogin()
-      console.log(userLocal)
-      setUser(()=>userLocal)
+      // const userLocal = await getLogin()
+      // console.log(userLocal)
+      // setUser(()=>userLocal)
     }
     get()
   },[])
