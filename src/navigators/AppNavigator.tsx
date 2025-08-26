@@ -1,11 +1,5 @@
-import DrawerNavigator from "@/navigators/DrawerNavigator"
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import DrawerNavigator from "@/navigators/DrawerNavigator";
 
-export default function AppNavigator(){
-    const Stack = createNativeStackNavigator()
-    return (
-        <Stack.Navigator>
-            <Stack.Screen name="Home" component={DrawerNavigator} />
-        </Stack.Navigator>
-    )
+export default function AppNavigator() {
+  return <DrawerNavigator />;
 }
