@@ -40,7 +40,7 @@ export default function ModalMapaComponent({
     }
   };
 
-  if (!data) return null; // Não renderiza nada se não houver dados
+  if (!data) return null;
 
   return (
     <Modal

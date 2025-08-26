@@ -24,7 +24,7 @@ const useMoto = () => {
     );
   };
 
-  const abrirModal = (item : MotoViewTeste) => {
+  const abrirModal = (item: MotoViewTeste) => {
     atualizarCorMoto(item.id!);
     setMotoView(item);
     setModalVisible(true);
@@ -36,7 +36,7 @@ const useMoto = () => {
     modalVisible,
     motoView,
     abrirModal,
-    setModalVisible
+    setModalVisible,
   };
 };
 
