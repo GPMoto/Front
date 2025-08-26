@@ -1,10 +1,10 @@
 import { NavigationContainer, ParamListBase } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginCadastro from './pages/LoginCadastro/LoginCadastro';
-import DrawerNav from './components/DrawerNav/DrawerNav';
+import LoginCadastro from '@/screens/LoginCadastro/LoginCadastro';
+import DrawerNavigator from '@/navigators/DrawerNavigator';
 import { useEffect, useState } from 'react';
-import { loginInterface } from './utils/Interfaces';
-import getLogin from './utils/GetLogin';
+import { loginInterface } from '@/utils/Interfaces';
+import getLogin from '@/utils/GetLogin';
 
 export default function App() {
   const {Navigator,Screen} = createNativeStackNavigator();
@@ -32,7 +32,7 @@ export default function App() {
             {(props: ParamListBase) => <LoginCadastro {...props} />}
           </Screen>
         ) : (
-          <Screen name="Home" component={DrawerNav} />
+          <Screen name="Home" component={DrawerNavigator} />
         )}
       </Navigator>
     </NavigationContainer>
