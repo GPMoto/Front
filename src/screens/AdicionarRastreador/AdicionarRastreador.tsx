@@ -1,6 +1,6 @@
 import { Text, ToastAndroid, View } from "react-native";
 import CameraSecao from "./components/CameraSecao/CameraSecao";
-import { styles } from "../../styles/styles";
+import { globalStyles } from "../../styles/styles";
 import { useEffect, useState } from "react";
 import * as FileSystem from "expo-file-system";
 import axios from "axios";
@@ -102,14 +102,14 @@ export default function AdicionarRastreador() {
   return (
     <View
       style={[
-        styles.container,
-        styles.pageColor,
+        globalStyles.container,
+        globalStyles.pageColor,
         { justifyContent: "space-between", paddingBottom: 64 },
       ]}
     >
       <View
         style={[
-          styles.container,
+          globalStyles.container,
           {
             display: identificador ? "none" : "flex",
           },
@@ -122,7 +122,7 @@ export default function AdicionarRastreador() {
         ></CameraSecao>
         <Text
           style={[
-            styles.whiteText,
+            globalStyles.whiteText,
             {
               fontSize: 16,
               textAlign: "center",
@@ -137,7 +137,7 @@ export default function AdicionarRastreador() {
       </View>
 
       {identificador && !loading ? (
-        <View style={styles.container}>
+        <View style={globalStyles.container}>
         <FormularioPagina
           identificador={identificador}
           setIdentificador={setIdentificador}

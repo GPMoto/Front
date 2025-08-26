@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, ToastAndroid, View } from "react-native";
 import axios from "axios";
-import { styles } from "../../styles/styles";
+import { globalStyles } from "../../styles/styles";
 import InputLabel from "../../components/InputLabel/InputLabel";
 import { use, useEffect, useState } from "react";
 import { motoInterface } from "../../utils/Interfaces";
@@ -143,8 +143,8 @@ export default function ProcurarMoto() {
   return (
     <View
       style={[
-        styles.pageColor,
-        styles.container,
+        globalStyles.pageColor,
+        globalStyles.container,
         { alignItems: "center", gap: 16 },
       ]}
     >

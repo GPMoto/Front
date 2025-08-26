@@ -1,7 +1,7 @@
 import { ParamListBase } from "@react-navigation/native";
 import React, { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { styles } from "../../styles/styles";
+import { globalStyles } from "../../styles/styles";
 import {
   AntDesign,
   Entypo,
@@ -24,7 +24,7 @@ export default function Relatorio() {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   return (
-    <View style={styles.container_center}>
+    <View style={globalStyles.container_center}>
       <Text
         style={{
           color: "#41C526",

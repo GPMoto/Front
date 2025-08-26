@@ -1,260 +1,63 @@
 import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Fontisto from "@expo/vector-icons/Fontisto";
-import React, { useState } from "react";
-import {
-  FlatList,
-  ListRenderItemInfo,
-  Text,
-  ToastAndroid,
-  View,
-} from "react-native";
-import { styles } from "../../styles/styles";
-import { motoViewMockList } from "../../utils/motoMockList";
-// import { MotoView } from "../../utils/Interfaces";
+import React from "react";
+import { FlatList, ListRenderItemInfo, Text, View } from "react-native";
+import { globalStyles } from "../../styles/styles";
 import ModalMapaComponent from "./ModalMapaComponent";
+import { mapaComponentStyles } from "./MapaComponentStyles";
+import SecaoMapa from "./SecaoMapa";
 import { MotoViewTeste } from "../../utils/interfacesTeste";
+import { useMoto } from "@/control/MotoControl";
+import VisualizadorMotos from "./VisualizadorMotos";
 
 export default function MapaComponent() {
-
-  const [listaMotos, setListaMotos] = useState<MotoViewTeste[]>(motoViewMockList);
-
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-
-  const [motoView, setMotoView] = useState<MotoViewTeste>({
-    id: 1,
-    uwb: 100,
-    color: "black",
-    motoData: {
-      idMoto: 1,
-      idTipoMoto: {
-        id_tipo_moto: 1,
-        nmTipo: "Mottu E",
-      },
-      identificador: "DOG-1010",
-      condicoesManutencao: "Problema no motor",
-      condicoes: "Manuntenção",
-      idFilial: 1,
-      lastPage: 10,
-    },
-    clicked: false,
-  },);
-
-  const atualizarCorMoto = (motoId: number) => {
-    setListaMotos((listaAntiga) =>
-      listaAntiga.map((moto) =>
-        moto.id === motoId
-          ? {
-            ...moto,
-            clicked: !moto.clicked,
-            color: !moto.clicked ? "#41C526" : "black",
-          }
-          : moto
-      )
-    );
-  };
-
+  const {
+    atualizarCorMoto,
+    listaMotos,
+    modalVisible,
+    abrirModal,
+    motoView,
+    setModalVisible,
+  } = useMoto();
   return (
-    <View
-      style={{
-        // borderWidth: 1,
-        // borderColor: "#41C526",
-        backgroundColor: "#D9D9D9",
-        borderRadius: 4,
-        padding: 10,
-        gap: 2,
-        maxWidth: "90%",
-        alignSelf: "center",
-      }}
-    >
-      <Text style={styles.paragraph_black}>Pátio</Text>
-      <View
-        style={{
-          borderRadius: 8,
-          padding: 10,
-          borderColor: "black",
-          borderWidth: 1,
-          flexWrap: "wrap",
-          flexDirection: "row",
-          gap: 20,
-          justifyContent: "center",
-          height: 200,
-          alignSelf: "center",
-        }}
-      >
-        <FlatList
-          numColumns={8} // Define o número de colunas
-          data={listaMotos}
-          renderItem={({ item }: ListRenderItemInfo<MotoViewTeste>) => (
-            <Fontisto
-              name="motorcycle"
-              size={20}
-              color={item.color}
-              onPress={() => {
-                atualizarCorMoto(item.id!);
-                setMotoView(item);
-                setModalVisible(true);
-                ToastAndroid.show(
-                  `Moto selecionada ${item.id}: uwb ${item.uwb}!`,
-                  ToastAndroid.SHORT
-                );
-
-              }}
+    <View style={mapaComponentStyles.container}>
+      <Text style={globalStyles.paragraph_black}>Pátio</Text>
+      <VisualizadorMotos listaMotos={listaMotos} abrirModal={abrirModal}  /> 
+      <View style={mapaComponentStyles.sectionsRow}>
+        <SecaoMapa titulo="Conserto" areaStyle={mapaComponentStyles.consertoArea}>
+          <MaterialIcons name="report-problem" size={16} color="black" />
+        </SecaoMapa>
+        <SecaoMapa titulo="Qualidade" areaStyle={mapaComponentStyles.qualidadeArea}>
+          <Ionicons name="ribbon-sharp" size={20} color="black" />
+        </SecaoMapa>
+      </View>
+      <View style={mapaComponentStyles.bottomSectionsRow}>
+        <View style={mapaComponentStyles.leftSectionsContainer}>
+          <SecaoMapa titulo="Administrativo" areaStyle={mapaComponentStyles.administrativoArea}>
+            <MaterialIcons
+              name="admin-panel-settings"
+              size={24}
+              color="black"
             />
-          )}
-          keyExtractor={(item: MotoViewTeste) => "moto_key_" + item.id}
-          contentContainerStyle={{
-            gap: 10, // Espaçamento entre os itens
-            justifyContent: "center",
-          }}
-          columnWrapperStyle={{
-            justifyContent: "center", // Centraliza as colunas
-            gap: 20, // Espaçamento entre as colunas
-          }}
-          style={{
-            maxHeight: 180, // Limita a altura visível
-          }}
+          </SecaoMapa>
+          <SecaoMapa titulo="Estoque" areaStyle={mapaComponentStyles.estoqueArea}>
+            <Entypo name="box" size={24} color="black" />
+          </SecaoMapa>
+        </View>
+        <View style={mapaComponentStyles.rightSectionsContainer}>
+          <SecaoMapa titulo="Recepção" areaStyle={mapaComponentStyles.recepcaoArea}>
+            <MaterialIcons name="person" size={24} color="black" />
+          </SecaoMapa>
+        </View>
+      </View>
+      {motoView && (
+        <ModalMapaComponent
+          motoView={motoView}
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          atualizarComMoto={atualizarCorMoto}
         />
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "stretch",
-          width: "100%",
-          gap: 10,
-        }}
-      >
-        <View style={{ paddingVertical: 4, gap: 2 }}>
-          <Text style={{ fontSize: 14, color: "black" }}>Conserto</Text>
-          <View
-            style={{
-              borderRadius: 8,
-              padding: 5,
-              borderColor: "black",
-              borderWidth: 1,
-              flexWrap: "wrap",
-              flexDirection: "row",
-              gap: 20,
-              justifyContent: "flex-start",
-              height: 100,
-              width: 100,
-              backgroundColor: "#A44949",
-              alignSelf: "center",
-              alignItems: "flex-start",
-            }}
-          >
-            <MaterialIcons name="report-problem" size={16} color="black" />
-          </View>
-        </View>
-        <View style={{ paddingVertical: 4, gap: 2 }}>
-          <Text style={{ fontSize: 14, color: "black" }}>Qualidade</Text>
-          <View
-            style={{
-              borderRadius: 8,
-              padding: 5,
-              borderColor: "black",
-              borderWidth: 1,
-              flexWrap: "wrap",
-              flexDirection: "row",
-              gap: 20,
-              justifyContent: "flex-start",
-              flex: 1,
-              backgroundColor: "#49A44C",
-              alignSelf: "center",
-              alignItems: "flex-start",
-              height: 100,
-              width: 170,
-            }}
-          >
-            <Ionicons name="ribbon-sharp" size={20} color="black" />
-          </View>
-        </View>
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: 10,
-        }}
-      >
-        <View style={{ height: "100%", alignItems: "stretch" }}>
-          <View style={{ paddingVertical: 4, gap: 2 }}>
-            <Text style={{ fontSize: 14, color: "black" }}>Administrativo</Text>
-            <View
-              style={{
-                borderRadius: 8,
-                padding: 5,
-                borderColor: "black",
-                borderWidth: 1,
-                flexWrap: "wrap",
-                flexDirection: "row",
-                gap: 20,
-                justifyContent: "flex-start",
-                width: 165,
-                backgroundColor: "#A4A449",
-                alignItems: "flex-start",
-                height: 100,
-              }}
-            >
-              <MaterialIcons
-                name="admin-panel-settings"
-                size={24}
-                color="black"
-              />
-            </View>
-          </View>
-          <View style={{ paddingVertical: 4, gap: 2 }}>
-            <Text style={{ fontSize: 14, color: "black" }}>Estoque</Text>
-            <View
-              style={{
-                borderRadius: 8,
-                padding: 5,
-                borderColor: "black",
-                borderWidth: 1,
-                flexWrap: "wrap",
-                flexDirection: "row",
-                gap: 20,
-                justifyContent: "flex-start",
-                width: 165,
-                backgroundColor: "#5049A4",
-                alignItems: "flex-start",
-                height: 100,
-              }}
-            >
-              <Entypo name="box" size={24} color="black" />
-            </View>
-          </View>
-        </View>
-        <View style={{ alignItems: "flex-start", height: "100%" }}>
-          <View style={{ paddingVertical: 4, gap: 2 }}>
-            <Text style={{ fontSize: 14, color: "black" }}>Recepção</Text>
-            <View
-              style={{
-                borderRadius: 8,
-                padding: 5,
-                borderColor: "black",
-                borderWidth: 1,
-                flexWrap: "wrap",
-                flexDirection: "row",
-                gap: 20,
-                justifyContent: "flex-start",
-                width: 100,
-                height: 225,
-                backgroundColor: "#A4499E",
-                alignItems: "flex-start",
-              }}
-            >
-              <MaterialIcons name="person" size={24} color="black" />
-            </View>
-          </View>
-        </View>
-      </View>
-      <ModalMapaComponent
-        motoView={motoView}
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        atualizarComMoto={atualizarCorMoto}
-      />
+      )}
     </View>
   );
 }
