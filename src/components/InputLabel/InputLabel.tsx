@@ -6,7 +6,7 @@ import {
   Pressable,
   KeyboardType,
 } from "react-native";
-import { styles } from "../../styles/styles";
+import { globalStyles } from "../../styles/styles";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 
 interface InputLabelProps {
@@ -24,8 +24,8 @@ interface InputLabelProps {
 export default function InputLabel(props: InputLabelProps) {
   return (
     <View>
-      <Text style={[styles.TextInput, {fontSize: 20, paddingVertical: 5}]}>{props.title}</Text>
-      <View style={[styles.Input, { justifyContent: "space-between" }]}>
+      <Text style={[globalStyles.TextInput, {fontSize: 20, paddingVertical: 5}]}>{props.title}</Text>
+      <View style={[globalStyles.Input, { justifyContent: "space-between" }]}>
         <TextInput
           secureTextEntry={props.secure}
           style={{ flex: 1 }}

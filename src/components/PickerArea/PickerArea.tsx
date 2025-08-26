@@ -1,7 +1,7 @@
 import { Picker } from "@react-native-picker/picker";
 import { Text, View } from "react-native";
 import { optionsInterface } from "../../utils/Interfaces";
-import { styles } from "../../styles/styles";
+import { globalStyles } from "../../styles/styles";
 
 
 interface PickerAreaProps{
@@ -13,8 +13,8 @@ interface PickerAreaProps{
 export default function PickerArea(props:PickerAreaProps) {
   return (
     <View>
-        <Text style={styles.TextInput}>{props.title}</Text>
-        <Picker style={styles.TextInput} selectedValue={"Escolha uma opção"} onValueChange={(itemValue,itemIndex)=>props.setValue(String(itemValue))}>
+        <Text style={globalStyles.TextInput}>{props.title}</Text>
+        <Picker style={globalStyles.TextInput} selectedValue={"Escolha uma opção"} onValueChange={(itemValue,itemIndex)=>props.setValue(String(itemValue))}>
             {props.options.map(e=><Picker.Item label={e.value} value={e.value}></Picker.Item>)}
         </Picker>
     </View>

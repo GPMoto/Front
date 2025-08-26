@@ -25,7 +25,6 @@ export default function ModalMapaComponent({
   motoData,
   atualizarComMoto
 }: ModalMapaProps) {
-  // Decide qual fonte de dados usar
   const data = motoView?.motoData || motoData;
 
   const rightName = (motoName: string) => {
