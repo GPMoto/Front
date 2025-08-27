@@ -7,6 +7,7 @@ import ProcurarMoto from "@/screens/ProcurarMoto/ProcurarMoto";
 import AdicionarRastreador from "@/screens/AdicionarRastreador/AdicionarRastreador";
 import Relatorio from "@/screens/Relatorios/Relatorio";
 import { DrawerParamList } from "./NavigationTypes";
+import Settings from "@/screens/Settings";
 
 export default function DrawerNavigator() {
   const { Screen, Navigator } = createDrawerNavigator<DrawerParamList>();
@@ -46,6 +47,9 @@ export default function DrawerNavigator() {
       </Screen>
       <Screen name="Relatórios">
         {(props: ParamListBase) => <Relatorio {...props}></Relatorio>}
+      </Screen>
+       <Screen name="Configurações">
+        {(props: ParamListBase) => <Settings {...props}></Settings>}
       </Screen>
     </Navigator>
   );
