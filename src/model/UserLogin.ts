@@ -12,13 +12,4 @@ const userLoginSchema: Schema<UserLogin> = object({
 
 type UserLoginErrors = Partial<UserLogin>
 
-interface AuthResponse {
-  data?: any;
-  status?: number;
-  success: boolean;
-  message?: string;
-  errors?: UserLoginErrors;  
-}
-
-
-export { UserLogin, userLoginSchema, UserLoginErrors, AuthResponse };
+export { UserLogin, userLoginSchema, UserLoginErrors };
