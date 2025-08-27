@@ -1,11 +1,15 @@
 import { AuthResponse } from "@/model/AuthResponse";
 import { ErrorResponseApi } from "@/model/ErrorResponseApi";
-import { UserLogin, UserLoginErrorResponse, UserLoginResponse } from "@/model/UserLogin";
+import {
+  UserLogin,
+  UserLoginErrorResponse,
+  UserLoginResponse,
+} from "@/model/UserLogin";
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import authMockApi from "./AuthFetcherMock";
 
 class AuthFetcher {
-  private endpoint: string = "/login";
+  private endpoint: string = "/auth/login";
   private baseUrl: string;
   private apiClient: AxiosInstance;
   private mockApi: boolean = true;
@@ -47,10 +51,8 @@ class AuthFetcher {
 
   async login(userLogin: UserLogin): Promise<AuthResponse> {
     try {
-      const response: AxiosResponse<UserLoginResponse> = await this.apiClient.post(
-        this.endpoint,
-        userLogin
-      );
+      const response: AxiosResponse<UserLoginResponse> =
+        await this.apiClient.post(this.endpoint, userLogin);
 
       return {
         data: response.data,
@@ -67,6 +69,21 @@ class AuthFetcher {
         success: false,
         message: this.getErrorMessage(axiosError),
       };
+    }
+  }
+
+  async validateToken(token: string) {
+    const endpoint = "/auth/validate";
+    try {
+      const response =
+        await this.apiClient.get(endpoint, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+       return true;
+    } catch (error) {
+      return false;
     }
   }
 }

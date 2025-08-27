@@ -15,8 +15,9 @@ class AuthService {
   }
 
   async validateToken(token: string): Promise<boolean> {
-    // TODO: fazer um endpoint para validar token
-    return true;
+    const result =  await this.authFetcher.validateToken(token)
+    console.log(result)
+    return result
   }
 
   async login(userLogin: UserLogin): Promise<AuthResponse> {
