@@ -1,7 +1,7 @@
-import { UserLoginErrors } from "./UserLogin";
+import { UserLoginErrorResponse, UserLoginErrors, UserLoginResponse } from "./UserLogin";
 
 interface AuthResponse {
-  data?: any;
+  data?: UserLoginResponse | UserLoginErrorResponse;
   status?: number;
   success: boolean;
   message?: string;

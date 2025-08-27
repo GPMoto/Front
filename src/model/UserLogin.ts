@@ -1,4 +1,5 @@
 import { object, Schema, string } from "yup";
+import { ErrorResponseApi } from "./ErrorResponseApi";
 
 interface UserLogin {
   email: string;
@@ -14,4 +15,10 @@ const userLoginSchema: Schema<UserLogin> = object({
 
 type UserLoginErrors = Partial<UserLogin>;
 
-export { UserLogin, userLoginSchema, UserLoginErrors };
+interface UserLoginResponse {
+  token : string
+}
+
+interface UserLoginErrorResponse extends ErrorResponseApi {}
+
+export { UserLogin, userLoginSchema, UserLoginErrors, UserLoginResponse, UserLoginErrorResponse };

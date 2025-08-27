@@ -20,9 +20,8 @@ export default function FormularioLogin(props: any) {
   const [showPassword, setShowPassword] = useState(false);
   const [emailFocused, setEmailFocused] = useState(false);
   const [senhaFocused, setSenhaFocused] = useState(false);
-  const [error, setError] = useState("");
   //TODO: receber error do controller useAuthControl()
-  const { loading, loginUser, loginErrors } = useAuthControl();
+  const { loading, loginUser, loginErrors, error } = useAuthControl();
 
   const buttonScale = useRef(new Animated.Value(1)).current;
 
@@ -74,10 +73,10 @@ export default function FormularioLogin(props: any) {
             {/* Error Message */}
             {error ? (
               <View style={formularioLoginStyles.errorContainer}>
-                <MaterialIcons 
-                  name="error-outline" 
-                  size={18} 
-                  color="#FF4444" 
+                <MaterialIcons
+                  name="error-outline"
+                  size={18}
+                  color="#FF4444"
                   style={formularioLoginStyles.errorIcon}
                 />
                 <Text style={formularioLoginStyles.errorText}>{error}</Text>
@@ -107,9 +106,11 @@ export default function FormularioLogin(props: any) {
                   blurOnSubmit={false}
                   returnKeyType="next"
                 />
+                {loginErrors.email && (
                   <Text style={formularioLoginStyles.fieldErrorText}>
                     {loginErrors.email}
                   </Text>
+                )}
               </View>
 
               {/* Password Input */}
@@ -137,9 +138,11 @@ export default function FormularioLogin(props: any) {
                       loginUser({ email, password: senha })
                     }
                   />
+                  {loginErrors.password && (
                     <Text style={formularioLoginStyles.fieldErrorText}>
                       {loginErrors.password}
                     </Text>
+                  )}
 
                   <Pressable
                     style={{
