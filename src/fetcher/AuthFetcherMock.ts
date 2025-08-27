@@ -6,21 +6,31 @@ const authMockApi = axios.create({
 });
 
 const mock = new AxiosMockAdapter(authMockApi, { delayResponse: 1000 });
+const TOKEN_MOCK = "fake.jwt.token.aqui";
+const EMAIL_MOCK = "teste@email.com";
+const PASSWORD_MOCK = "123456";
 
-mock.onPost("/login").reply((config) => {
+mock.onPost("/auth/login").reply((config) => {
   const { email, password } = JSON.parse(config.data);
-  const emailValido = "teste@email.com";
-  const senhaValida = "123456";
 
   if (!email || !password) {
     return [400, { message: "Dados inválidos" }];
   }
 
-  if (email === emailValido && password === senhaValida) {
+  if (email === EMAIL_MOCK && password === PASSWORD_MOCK) {
     return [200, { token: "fake.jwt.token.aqui" }];
   }
 
   return [401, { message: "Email ou senha incorretos" }];
 });
+
+mock.onGet("/auth/validate").reply((config) => {
+  const authorization : string = config.headers?.Authorization || '';
+  const token = authorization.split('Bearer ')[1];
+  if (token === TOKEN_MOCK) {
+   return [200] 
+  }
+  return [403]
+})
 
 export default authMockApi;

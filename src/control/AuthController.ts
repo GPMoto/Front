@@ -11,12 +11,10 @@ const useAuthControl = () => {
 
   const loginUser = async (userLogin: UserLogin) => {
     setLoading(true);
-    console.log(userLogin)
     const authService = new AuthService();
     const result = await authService.login(userLogin);
     if (!result.success) {
       const errors = result.errors || {};
-      console.log(errors)
       setLoading(false);
       setLoginErrors(errors)
       setError(result.message)

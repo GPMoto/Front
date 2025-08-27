@@ -32,6 +32,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       const isValidToken = await authService.validateToken(storedToken);
       if (!isValidToken) {
+        logout()
         return;
       }
 
