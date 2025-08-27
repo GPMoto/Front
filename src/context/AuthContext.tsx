@@ -7,6 +7,7 @@ interface AuthContextProps {
   isAuthenticated: boolean;
   login: (authToken: string) => Promise<void>;
   logout: () => void;
+  splashScreen : boolean;
 }
 
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
@@ -15,6 +16,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [token, setToken] = useState<string | null>(null);
+  const [splashScreen, setSplashScreen] = useState<boolean>(true)
 
   useEffect(() => {
     loadStoredToken();
@@ -36,6 +38,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setToken(storedToken);
     } catch (error) {
       console.error("Erro ao carregar token:", error);
+    } finally {
+      setSplashScreen(false)
     }
   };
 
@@ -56,6 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         isAuthenticated: !!token,
         login,
         logout,
+        splashScreen
       }}
     >
       {children}
