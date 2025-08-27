@@ -10,11 +10,15 @@ const useAuthControl = () => {
 
   const loginUser = async (userLogin: UserLogin) => {
     setLoading(true);
+    console.log(userLogin)
     const authService = new AuthService();
     const result = await authService.login(userLogin);
     if (!result.success) {
+      const errors = result.errors!;
+      console.log(errors)
       setLoading(false);
-      return; // Mantém o comportamento original para compatibilidade
+      setLoginErrors(errors)
+      return;
     }
     
     await login(result.data);
@@ -23,7 +27,8 @@ const useAuthControl = () => {
 
   return {
     loginUser,
-    loading
+    loading,
+    loginErrors
   };
 };
 

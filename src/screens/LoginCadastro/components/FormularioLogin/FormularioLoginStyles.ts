@@ -179,16 +179,33 @@ export const formularioLoginStyles = StyleSheet.create({
   },
   
   errorContainer: {
-    backgroundColor: "#FF4444",
+    backgroundColor: "rgba(255, 68, 68, 0.1)",
     borderRadius: 8,
     padding: 12,
     marginBottom: 16,
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: "rgba(255, 68, 68, 0.3)",
+    flexDirection: "row",
   },
   
   errorText: {
-    color: "#FFFFFF",
+    color: "#FF4444",
     fontSize: 14,
     fontWeight: "600",
+    textAlign: "center",
+    flex: 1,
+  },
+
+  fieldErrorText: {
+    color: "#FF6B6B",
+    fontSize: 12,
+    marginTop: 4,
+    marginLeft: 2,
+    fontWeight: "500",
+  },
+
+  errorIcon: {
+    marginRight: 8,
   },
 });
