@@ -22,7 +22,7 @@ export default function FormularioLogin(props: any) {
   const [senhaFocused, setSenhaFocused] = useState(false);
   const [error, setError] = useState("");
   //TODO: receber error do controller useAuthControl()
-  const { loading, loginUser } = useAuthControl();
+  const { loading, loginUser, loginErrors } = useAuthControl();
 
   const buttonScale = useRef(new Animated.Value(1)).current;
 
@@ -74,6 +74,12 @@ export default function FormularioLogin(props: any) {
             {/* Error Message */}
             {error ? (
               <View style={formularioLoginStyles.errorContainer}>
+                <MaterialIcons 
+                  name="error-outline" 
+                  size={18} 
+                  color="#FF4444" 
+                  style={formularioLoginStyles.errorIcon}
+                />
                 <Text style={formularioLoginStyles.errorText}>{error}</Text>
               </View>
             ) : null}
@@ -101,6 +107,9 @@ export default function FormularioLogin(props: any) {
                   blurOnSubmit={false}
                   returnKeyType="next"
                 />
+                  <Text style={formularioLoginStyles.fieldErrorText}>
+                    {loginErrors.email}
+                  </Text>
               </View>
 
               {/* Password Input */}
@@ -128,6 +137,10 @@ export default function FormularioLogin(props: any) {
                       loginUser({ email, password: senha })
                     }
                   />
+                    <Text style={formularioLoginStyles.fieldErrorText}>
+                      {loginErrors.password}
+                    </Text>
+
                   <Pressable
                     style={{
                       position: "absolute",

@@ -1,18 +1,11 @@
 import { AuthFetcher } from "@/fetcher/AuthFetcher";
+import { AuthResponse } from "@/model/AuthResponse";
 import {
-  AuthResponse,
   UserLogin,
   UserLoginErrors,
   userLoginSchema,
 } from "@/model/UserLogin";
 import { ValidationError } from "yup";
-
-interface AuthResult {
-  success: boolean;
-  data?: any;
-  errors?: UserLoginErrors;
-  message?: string;
-}
 
 class AuthService {
   private authFetcher: AuthFetcher;
@@ -30,19 +23,20 @@ class AuthService {
     const isValid = await userLoginSchema.isValid(userLogin);
     if (!isValid) {
       let userLoginErros: UserLoginErrors = {};
-      userLoginSchema
-        .validate(userLogin, {
+      try {
+        await userLoginSchema.validate(userLogin, {
           abortEarly: false,
-        })
-        .then(() => ({ errors: [] }))
-        .catch((err: ValidationError) => {
+        });
+      } catch (err: any) {
+        if (err instanceof ValidationError) {
           err.inner.forEach((error: ValidationError) => {
             userLoginErros = {
               ...userLoginErros,
               [error.path as keyof UserLoginErrors]: error.message,
             };
           });
-        });
+        }
+      }
 
       return {
         success: false,

@@ -1,3 +1,4 @@
+import { AuthResponse } from "@/model/AuthResponse";
 import { GenericResponse } from "@/model/GenericResponse";
 import { UserLogin } from "@/model/UserLogin";
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
@@ -22,7 +23,7 @@ class AuthFetcher {
   private requestInterceptors() {
     this.apiClient.interceptors.response.use(
       (response) => response,
-      (error: AxiosError<GenericResponse<UserLogin, string>>) => {
+      (error: AxiosError<AuthResponse>) => {
         const errorResponse: AuthResponse = {
           data: error.response?.data || null,
           status: error.response?.status || 0,
