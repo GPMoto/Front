@@ -1,19 +1,29 @@
 import { useAuth } from "@/context/AuthContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserLogin } from "@/model/UserLogin";
+import { AuthService } from "@/services/AuthService";
+import { useState } from "react";
 
-class AuthController {
-  static checkSavedLogin = async () => {
-    const { login } = useAuth();
-    try {
-      const savedLogin = await AsyncStorage.getItem("LOGIN");
-      if (savedLogin) {
-        const loginData = JSON.parse(savedLogin);
-        login(loginData.email);
-      }
-    } catch (error) {
-      console.error("Erro ao verificar login salvo:", error);
+const useAuthControl = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const { login } = useAuth();
+
+  const loginUser = async (userLogin: UserLogin) => {
+    setLoading(true);
+    const authService = new AuthService();
+    const result = await authService.login(userLogin);
+    if (!result.success) {
+      setLoading(false);
+      return; // Mantém o comportamento original para compatibilidade
     }
+    
+    await login(result.data);
+    setLoading(false);
   };
-}
 
-export { AuthController };
+  return {
+    loginUser,
+    loading
+  };
+};
+
+export { useAuthControl };
