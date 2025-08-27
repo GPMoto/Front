@@ -12,6 +12,7 @@ export type DrawerParamList = {
   'Procurar Moto': undefined;
   'Adicionar Rastreador': undefined;
   'Relatórios': undefined;
+  'Configurações' : undefined;
 };
 
 export type RootStackNavigationProps = NativeStackNavigationProp<RootStackParamList>;
