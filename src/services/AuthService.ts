@@ -40,8 +40,7 @@ class AuthService {
 
       return {
         success: false,
-        errors: userLoginErros,
-        message: "Dados inválidos",
+        errors: userLoginErros
       };
     }
     return await this.authFetcher.login(userLogin);
