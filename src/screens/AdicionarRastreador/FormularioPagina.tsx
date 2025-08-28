@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import FormularioUwb from "./components/FormularioUwb/FormularioUwb";
-import { styles } from "../../styles/styles";
+import { globalStyles } from "../../styles/styles";
 
 interface FormularioPaginaProps {
   identificador: string;
@@ -17,7 +17,7 @@ function FormularioPagina({
   return (
     <View
       style={[
-        styles.container,
+        globalStyles.container,
         {
           width: "80%",
           alignSelf: "center",

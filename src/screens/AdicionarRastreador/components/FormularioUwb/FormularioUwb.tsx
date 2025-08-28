@@ -3,7 +3,7 @@ import InputLabel from "../../../../components/InputLabel/InputLabel";
 import { useState } from "react";
 import ButtonArea from "../../../../components/Button/ButtonArea";
 import axios from "axios";
-import { styles } from "../../../../styles/styles";
+import { globalStyles } from "../../../../styles/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { uwbInterfaceTeste } from "../../../../utils/interfacesTeste";
 
@@ -92,7 +92,7 @@ export default function FormularioUwb(props: FormularioUwbProps) {
 
   return (
     <View>
-      <Text style={[styles.paragraph, { textAlign: "center" }]}>
+      <Text style={[globalStyles.paragraph, { textAlign: "center" }]}>
         Adicionar Informações da moto {props.identificador}
       </Text>
       <View>

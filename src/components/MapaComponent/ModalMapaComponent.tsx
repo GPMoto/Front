@@ -8,7 +8,7 @@ import {
   View
 } from "react-native";
 import ButtonArea from "../Button/ButtonArea";
-import { MotoViewTeste, motoInterfaceTeste } from "../../utils/interfacesTeste";
+import { MotoViewTeste, motoInterfaceTeste } from "@/utils/interfacesTeste";
 
 interface ModalMapaProps {
   modalVisible: boolean;
@@ -25,23 +25,22 @@ export default function ModalMapaComponent({
   motoData,
   atualizarComMoto
 }: ModalMapaProps) {
-  // Decide qual fonte de dados usar
   const data = motoView?.motoData || motoData;
 
   const rightName = (motoName: string) => {
     switch (motoName) {
       case "Mottu Sport":
-        return require(`../../assets/sport.png`);
+        return require(`~/assets/sport.png`);
       case "Mottu E":
-        return require(`../../assets/e.png`);
+        return require(`~/assets/e.png`);
       case "Mottu Pop":
-        return require(`../../assets/pop.png`);
+        return require(`~/assets/pop.png`);
       default:
-        return require(`../../assets/pop.png`);
+        return require(`~/assets/pop.png`);
     }
   };
 
-  if (!data) return null; // Não renderiza nada se não houver dados
+  if (!data) return null;
 
   return (
     <Modal
