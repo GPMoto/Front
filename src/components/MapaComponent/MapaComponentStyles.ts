@@ -6,8 +6,25 @@ export const mapaComponentStyles = StyleSheet.create({
     borderRadius: 4,
     padding: 10,
     gap: 2,
-    maxWidth: "90%",
-    alignSelf: "center",
+    flex: 1,
+    alignSelf: "stretch",
+  },
+  
+  infiniteArea: {
+    flex: 1,
+    backgroundColor: "#E8E8E8",
+    minHeight: 2000, // Área muito maior
+    minWidth: 2000,  // Área muito maior
+    position: "relative",
+  },
+  
+  gridBackground: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "transparent",
   },
   
   patioContainer: {
