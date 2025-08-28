@@ -1,5 +1,13 @@
 import { object, Schema, string } from "yup";
 import { ErrorResponseApi } from "./ErrorResponseApi";
+import { filialInterface } from "@/utils/Interfaces";
+
+interface UserData {
+  email : string;
+  nome : string;
+  filial : string;
+  grupo : string;
+}
 
 interface UserLogin {
   email: string;
@@ -21,4 +29,4 @@ interface UserLoginResponse {
 
 interface UserLoginErrorResponse extends ErrorResponseApi {}
 
-export { UserLogin, userLoginSchema, UserLoginErrors, UserLoginResponse, UserLoginErrorResponse };
+export { UserLogin, userLoginSchema, UserLoginErrors, UserLoginResponse, UserLoginErrorResponse, UserData };

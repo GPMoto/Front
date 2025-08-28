@@ -8,7 +8,7 @@ import {
   View
 } from "react-native";
 import ButtonArea from "../Button/ButtonArea";
-import { MotoViewTeste, motoInterfaceTeste } from "../../utils/interfacesTeste";
+import { MotoViewTeste, motoInterfaceTeste } from "@/utils/interfacesTeste";
 
 interface ModalMapaProps {
   modalVisible: boolean;
@@ -30,13 +30,13 @@ export default function ModalMapaComponent({
   const rightName = (motoName: string) => {
     switch (motoName) {
       case "Mottu Sport":
-        return require(`../../assets/sport.png`);
+        return require(`~/assets/sport.png`);
       case "Mottu E":
-        return require(`../../assets/e.png`);
+        return require(`~/assets/e.png`);
       case "Mottu Pop":
-        return require(`../../assets/pop.png`);
+        return require(`~/assets/pop.png`);
       default:
-        return require(`../../assets/pop.png`);
+        return require(`~/assets/pop.png`);
     }
   };
 
