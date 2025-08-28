@@ -1,3 +1,4 @@
+import { getTokenFromAuth } from "@/utils/helpers";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 
@@ -25,12 +26,16 @@ mock.onPost("/auth/login").reply((config) => {
 });
 
 mock.onGet("/auth/validate").reply((config) => {
-  const authorization : string = config.headers?.Authorization || '';
-  const token = authorization.split('Bearer ')[1];
-  if (token === TOKEN_MOCK) {
-   return [200] 
+  const requestToken = getTokenFromAuth(config);
+
+  if (requestToken === null) {
+    return [400, { message: "Bearer token é obrigatório" }];
   }
-  return [403]
-})
+
+  if (!(requestToken === TOKEN_MOCK)) {
+    return [403, { message: "Usuário não encontrado!" }];
+  }
+  return [200, { message: "Token válido!" }];
+});
 
 export default authMockApi;
