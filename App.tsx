@@ -1,42 +1,13 @@
-import { NavigationContainer, ParamListBase } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginCadastro from '@/screens/LoginCadastro/LoginCadastro';
-import DrawerNavigator from '@/navigators/DrawerNavigator';
-import { useEffect, useState } from 'react';
-import { loginInterface } from '@/utils/Interfaces';
-import getLogin from '@/utils/GetLogin';
+import { NavigationContainer } from "@react-navigation/native";
+import RootNavigator from "@/navigators/RootNavigator";
+import { AuthProvider } from "@/context/AuthContext";
 
 export default function App() {
-  const {Navigator,Screen} = createNativeStackNavigator();
-  
-  const [user,setUser] = useState<loginInterface | null>();
-
-
-  useEffect(()=>{
-    const get = async()=>{
-      // const userLocal = await getLogin()
-      // console.log(userLocal)
-      // setUser(()=>userLocal)
-    }
-    get()
-  },[])
-
   return (
-
-    <NavigationContainer>
-      <Navigator screenOptions={{
-        headerShown:false,
-      }}>
-        {user === null ? (
-          <Screen name="Login">
-            {(props: ParamListBase) => <LoginCadastro {...props} />}
-          </Screen>
-        ) : (
-          <Screen name="Home" component={DrawerNavigator} />
-        )}
-      </Navigator>
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
+    </AuthProvider>
   );
 }
-
-
