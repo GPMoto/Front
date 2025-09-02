@@ -2,6 +2,19 @@ import { ErrorResponseApi } from "@/model/ErrorResponseApi";
 import { PageableResponse } from "@/model/types/PageableResponse";
 import { AxiosError, AxiosRequestConfig } from "axios";
 
+export const statusBadge = (status: string) => {
+  switch (status) {
+    case "Excelente":
+      return "#41C526";
+    case "Boa":
+      return "lightgreen";
+    case "Regular":
+      return "yellow";
+    default:
+      return "red";
+  }
+};
+
 export const getTokenFromAuth = (config: AxiosRequestConfig) => {
   const auth: string = config.headers?.Authorization ?? "";
   const token = auth.split("Bearer ")[1];
@@ -49,10 +62,9 @@ export function getSpringPage<T>(
     totalElements,
     totalPages,
     size,
-    number: page, 
-    first: page === 1, 
-    last: page === totalPages, 
+    number: page,
+    first: page === 1,
+    last: page === totalPages,
     empty: content.length === 0,
   };
 }
-
