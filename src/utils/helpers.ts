@@ -1,4 +1,5 @@
 import { ErrorResponseApi } from "@/model/ErrorResponseApi";
+import { PageableResponse } from "@/model/types/PageableResponse";
 import { AxiosError, AxiosRequestConfig } from "axios";
 
 export const getTokenFromAuth = (config: AxiosRequestConfig) => {
@@ -29,3 +30,29 @@ export const getErrorMessage = (error: AxiosError): string => {
       return data.message ?? "Erro no login";
   }
 };
+
+export function getSpringPage<T>(
+  data: T[],
+  page: number,
+  size: number
+): PageableResponse<T> {
+  const zeroBasedPage = page - 1;
+  const start = zeroBasedPage * size;
+  const end = start + size;
+  const content = data.slice(start, end);
+
+  const totalElements = data.length;
+  const totalPages = Math.ceil(totalElements / size);
+
+  return {
+    content,
+    totalElements,
+    totalPages,
+    size,
+    number: page, 
+    first: page === 1, 
+    last: page === totalPages, 
+    empty: content.length === 0,
+  };
+}
+

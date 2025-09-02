@@ -4,7 +4,7 @@ import {
   UserLogin,
   UserLoginErrors,
   userLoginSchema,
-} from "@/model/UserLogin";
+} from "@/model/User";
 import { ValidationError } from "yup";
 
 class AuthService {

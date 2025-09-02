@@ -1,6 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
-import { ProfileResponse } from "@/model/ProfileResponse";
-import { UserData } from "@/model/UserLogin";
+import { ProfileResponse } from "@/model/User";
+import { UserData } from "@/model/User";
 import ProfileService from "@/services/ProfileService";
 import { useState } from "react";
 

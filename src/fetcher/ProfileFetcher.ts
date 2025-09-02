@@ -1,10 +1,10 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import profileMockApi from "./ProfileFetcherMock";
-import { UserData } from "@/model/UserLogin";
+import { UserData } from "@/model/User";
 import {
   ProfileResponse,
   UserDataErrorResponse,
-} from "@/model/ProfileResponse";
+} from "@/model/User";
 import { getErrorMessage } from "@/utils/helpers";
 
 class ProfileFetcher {

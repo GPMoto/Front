@@ -1,7 +1,7 @@
 import { useAuth } from "@/context/AuthContext";
 import ProfileFetcher from "@/fetcher/ProfileFetcher";
-import { ProfileResponse } from "@/model/ProfileResponse";
-import { UserData } from "@/model/UserLogin";
+import { ProfileResponse } from "@/model/User";
+import { UserData } from "@/model/User";
 
 class ProfileService {
   private profileFetcher: ProfileFetcher;

@@ -1,5 +1,5 @@
 import { useAuth } from "@/context/AuthContext";
-import { UserLogin, UserLoginErrors, UserLoginResponse } from "@/model/UserLogin";
+import { UserLogin, UserLoginErrors, UserLoginResponse } from "@/model/User";
 import { AuthService } from "@/services/AuthService";
 import { useState } from "react";
 
