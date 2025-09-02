@@ -1,4 +1,4 @@
-import { ProfileData, ProfileResponse } from "@/model/ProfileResponse";
+import { ProfileData } from "@/model/User";
 import { getTokenFromAuth } from "@/utils/helpers";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";

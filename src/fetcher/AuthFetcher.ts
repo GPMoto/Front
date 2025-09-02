@@ -1,10 +1,9 @@
 import { AuthResponse } from "@/model/AuthResponse";
-import { ErrorResponseApi } from "@/model/ErrorResponseApi";
 import {
   UserLogin,
   UserLoginErrorResponse,
   UserLoginResponse,
-} from "@/model/UserLogin";
+} from "@/model/User";
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import authMockApi from "./AuthFetcherMock";
 import { getErrorMessage } from "@/utils/helpers";

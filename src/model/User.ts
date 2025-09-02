@@ -1,12 +1,11 @@
 import { object, Schema, string } from "yup";
 import { ErrorResponseApi } from "./ErrorResponseApi";
-import { filialInterface } from "@/utils/Interfaces";
 
 interface UserData {
-  email : string;
-  nome : string;
-  filial : string;
-  grupo : string;
+  email: string;
+  nome: string;
+  filial: string;
+  grupo: string;
 }
 
 interface UserLogin {
@@ -24,9 +23,30 @@ const userLoginSchema: Schema<UserLogin> = object({
 type UserLoginErrors = Partial<UserLogin>;
 
 interface UserLoginResponse {
-  token : string
+  token: string;
 }
 
 interface UserLoginErrorResponse extends ErrorResponseApi {}
 
-export { UserLogin, userLoginSchema, UserLoginErrors, UserLoginResponse, UserLoginErrorResponse, UserData };
+interface UserDataErrorResponse extends ErrorResponseApi {}
+
+interface ProfileResponse {
+  data: UserData | UserDataErrorResponse;
+  status?: number;
+  success: boolean;
+  message?: string;
+}
+
+type ProfileData = ProfileResponse["data"];
+
+export {
+  UserLogin,
+  userLoginSchema,
+  UserLoginErrors,
+  UserLoginResponse,
+  UserLoginErrorResponse,
+  UserData,
+  UserDataErrorResponse,
+  ProfileResponse,
+  ProfileData,
+};

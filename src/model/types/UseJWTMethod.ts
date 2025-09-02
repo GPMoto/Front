@@ -1,0 +1,1 @@
+export type UseJwtMethod<T> = (token : string, args : any[]) => T 

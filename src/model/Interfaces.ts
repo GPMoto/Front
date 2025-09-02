@@ -4,15 +4,6 @@ export interface optionsInterface{
     value:string
 }
 
-export interface motoInterface{
-    idMoto:number;
-    identificador:string;
-    condicoes:string;
-    condicoesManutencao:string;
-    lastPage:number;
-    idTipoMoto:tipoMotoInterface;
-    idFilial:filialInterface;
-}
 
 
 export interface loginInterface{
@@ -25,13 +16,7 @@ export interface tipoMotoInterface{
     nmTipo:string
 }
 
-export interface filialInterface{
-    idFilial:number;
-    cnpjFilial:string;
-    senhaFilial:string;
-    idEndereco:enderecoInterface;
-    idContato:contatoInterface;
-}
+
 
 export interface contatoInterface{
     idContato:number;
@@ -71,20 +56,4 @@ export interface estadoInterface{
 export interface paisInterface{
     idPais:number;
     nmPais:string;
-}
-
-export interface MotoView {
-    id?: number;
-    uwb: number;
-    color: string;
-    motoData: MotoData;
-    clicked: boolean;
-}
-
-export interface MotoData {
-    id: number;
-    uwb: number;
-    nome: string;
-    status: string;
-    identificador: string;
 }

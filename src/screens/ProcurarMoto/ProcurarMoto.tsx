@@ -1,67 +1,68 @@
-import { Pressable, Text, View } from "react-native";
-import { globalStyles } from "../../styles/styles";
-import InputLabel from "../../components/InputLabel/InputLabel";
-import { useEffect } from "react";
-import ListaMotos from "./components/ListaMotos/ListaMotos";
-import { useProcurarMoto } from "@/control/ProcurarMotoControl";
-import { procurarMotoStyles } from "./ProcurarMotoStyles";
+import { useMoto } from "@/control/MotoControl";
+import { ActivityIndicator, FlatList, Text, View } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
+import Pagination from "@cherry-soft/react-native-basic-pagination";
+import SingleMotoPaged from "@/components/SingleMotoPaged/SingleMotoPaged";
 
 export default function ProcurarMoto() {
-  const {
-    mockFetch,
-    onPressMock,
-    clearSearch,
-    identificador,
-    setIdentificador,
-    isSearched,
-    paginas,
-    motos,
-  } = useProcurarMoto();
+  const { isLoading, error, motos, setPage, page } = useMoto(2);
 
-  useEffect(() => {
-    mockFetch();
-  }, []);
+  if (isLoading) {
+    return <ActivityIndicator size="large" />;
+  }
+
+  if (error) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Erro ao carregar motos: {error.message}</Text>
+      </View>
+    );
+  }
 
   return (
     <View
-      style={[
-        globalStyles.pageColor,
-        globalStyles.container,
-        procurarMotoStyles.mainContainer,
-      ]}
+      style={{
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+      }}
     >
-      <View style={procurarMotoStyles.inputContainer}>
-        <InputLabel
-          onPress={onPressMock}
-          show={true}
-          title="Procurar Moto"
-          value={identificador}
-          setValue={setIdentificador}
-          placeholder="Identificador da moto"
-          isSearched={isSearched}
-          clearSearch={clearSearch}
-        ></InputLabel>
-      </View>
-      <View style={[procurarMotoStyles.contentArea]}>
-        <View style={[procurarMotoStyles.listArea]}>
-          <ListaMotos data={motos}></ListaMotos>
-        </View>
-      </View>
+      <TextInput
+        placeholder="Digite a moto"
+        style={{
+          borderWidth: 1,
+          borderColor: "black",
+          borderRadius: 12,
+          padding: 10,
+        }}
+      />
 
-      <View style={procurarMotoStyles.paginationContainer}>
-        {paginas.map((page) => {
-          return (
-            <Pressable
-              key={page}
-              onPress={() => {
-                mockFetch();
-              }}
-            >
-              <Text style={procurarMotoStyles.pageText}>{page}</Text>
-            </Pressable>
-          );
-        })}
-      </View>
+      <Text>Total de motos: {motos?.totalElements}</Text>
+
+      <FlatList
+        data={motos?.content}
+        keyExtractor={(item, index) =>
+          item.idMoto?.toString() || index.toString()
+        }
+        renderItem={({ item }) => <SingleMotoPaged {...item} />}
+        ListEmptyComponent={
+          <View style={{ padding: 20, alignItems: "center" }}>
+            <Text>Nenhuma moto encontrada</Text>
+          </View>
+        }
+        ListFooterComponent={
+          motos && motos?.totalPages! > 1 ? (
+            <View>
+              <Pagination
+                currentPage={page}
+                onPageChange={setPage}
+                pageSize={motos?.size}
+                totalItems={motos.totalElements}
+                showLastPagesButtons={motos?.totalPages! > 5}
+              />
+            </View>
+          ) : null
+        }
+      />
     </View>
   );
 }

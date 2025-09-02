@@ -1,42 +1,44 @@
-import { MotoViewTeste } from "@/utils/interfacesTeste";
-import { motoViewMockList } from "@/utils/motoMockList";
+import { useAuth } from "@/context/AuthContext";
+import { Moto } from "@/model/Moto";
+import MotoService from "@/services/MotoService";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { ListRenderItemInfo } from "react-native";
 
-const useMoto = () => {
-  const [listaMotos, setListaMotos] =
-    useState<MotoViewTeste[]>(motoViewMockList);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+const useMoto = (size: number = 2) => {
+  const [page, setPage] = useState<number>(1);
+  
+  const queryClient = useQueryClient();
 
-  const [motoView, setMotoView] = useState<MotoViewTeste | null>();
+  const { token } = useAuth();
 
-  const atualizarCorMoto = (motoId: number) => {
-    setListaMotos((listaAntiga) =>
-      listaAntiga.map((moto) =>
-        moto.id === motoId
-          ? {
-              ...moto,
-              clicked: !moto.clicked,
-              color: !moto.clicked ? "#41C526" : "black",
-            }
-          : moto
-      )
-    );
-  };
+  const motoService = new MotoService(token);
 
-  const abrirModal = (item: MotoViewTeste) => {
-    atualizarCorMoto(item.id!);
-    setMotoView(item);
-    setModalVisible(true);
-  };
+  const { data, isLoading, error, isSuccess } = useQuery({
+    queryKey: ["motos", page, size],
+    queryFn: async () => {
+      const result = await motoService.getPagedMotos(page, size);
+      return result;
+    },
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+  });
+
+  const saveMotoMutation = useMutation({
+    mutationFn: async(newMoto: Partial<Moto>) => await motoService.save(newMoto),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["motos"] }),
+  });
+
+  const salvarMoto = (newMoto: Partial<Moto>) =>
+    saveMotoMutation.mutate(newMoto);
 
   return {
-    atualizarCorMoto,
-    listaMotos,
-    modalVisible,
-    motoView,
-    abrirModal,
-    setModalVisible,
+    motos: data,
+    isSuccess,
+    isLoading,
+    error,
+    salvarMoto,
+    page,
+    setPage
   };
 };
 
