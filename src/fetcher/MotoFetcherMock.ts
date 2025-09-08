@@ -1,7 +1,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { Moto, MotoData, MotoResponse } from "@/model/Moto";
 import { PageableResponse } from "@/model/types/PageableResponse";
-import { getSpringPage, getTokenFromAuth } from "@/utils/helpers";
+import { getSpringPage, getTokenFromAuth, notEmptyString } from "@/utils/helpers";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 
@@ -274,11 +274,16 @@ mock.onGet("/moto/paginado/").reply((config) => {
   console.log("Olha o token aeee");
   const page = Number(config.params?.page!);
   const size = Number(config.params?.size!);
+  const search = config.params?.search!
 
   if (page === null)
     return [400, { message: "É obrigatório o número da página." } as MotoData];
-
-  const pageData = getSpringPage(motosList, page, size);
+  
+  const filteredMotos = notEmptyString(search) ? motosList.filter(moto => 
+    moto.identificador.toLowerCase().includes(search.toLowerCase())
+  ) : motosList;
+  
+  const pageData = getSpringPage(filteredMotos, page, size);
 
   return [200, pageData];
 });

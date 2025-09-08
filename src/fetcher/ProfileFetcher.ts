@@ -1,20 +1,17 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import profileMockApi from "./ProfileFetcherMock";
 import { UserData } from "@/model/User";
-import {
-  ProfileResponse,
-  UserDataErrorResponse,
-} from "@/model/User";
+import { ProfileResponse, UserDataErrorResponse } from "@/model/User";
 import { getErrorMessage } from "@/utils/helpers";
 
 class ProfileFetcher {
   private apiClient: AxiosInstance;
   private endpoint: string = "/usuario";
-  private mockApi: boolean = true;
-  private baseUrl: string;
+  private baseUrl: string = process.env.EXPO_PUBLIC_API_URL;
+  private mockApi: boolean = !!!this.baseUrl;
+  private token: string;
 
-  constructor() {
-    this.baseUrl = process.env.EXPO_PUBLIC_API_URL;
+  constructor(token: string) {
     this.apiClient = this.mockApi
       ? profileMockApi
       : axios.create({
@@ -24,18 +21,22 @@ class ProfileFetcher {
             "Content-Type": "application/json",
           },
         });
+    this.token = token;
+    this.interceptors();
   }
 
-  async get(token: string): Promise<ProfileResponse> {
-    console.log("Iniciando req em get do ProfileFetcher!")
+  private interceptors(){
+    this.apiClient.interceptors.request.use((config) => {
+      config.headers.Authorization = `Bearer ${this.token}`;
+      return config;
+    })
+  }
+
+  async get(): Promise<ProfileResponse> {
+    console.log("Iniciando req em get do ProfileFetcher!");
     try {
       const response: AxiosResponse<UserData> = await this.apiClient.get(
         this.endpoint,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
       );
       return {
         data: response.data,
@@ -54,6 +55,8 @@ class ProfileFetcher {
       };
     }
   }
+
+
 }
 
 export default ProfileFetcher;

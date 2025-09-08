@@ -1,5 +1,5 @@
 import { object, Schema, string } from "yup";
-import { ErrorResponseApi } from "./ErrorResponseApi";
+import { ErrorResponseApi } from "./types/ErrorResponseApi";
 
 interface UserData {
   email: string;

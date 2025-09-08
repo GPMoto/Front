@@ -1,5 +1,5 @@
 import { number, object, Schema, string } from "yup";
-import { ErrorResponseApi } from "./ErrorResponseApi";
+import { ErrorResponseApi } from "./types/ErrorResponseApi";
 import { Filial } from "./Filial";
 import { TipoMoto } from "./TipoMoto";
 import { PageableResponse } from "./types/PageableResponse";

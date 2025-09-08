@@ -36,6 +36,30 @@ const procurarMotoStyles = StyleSheet.create({
     width: "90%",
     marginBottom: 8,
   },
+  inputWrapper: {
+    position: 'relative',
+    width: '100%',
+  },
+  textInput: {
+    fontSize: 16,
+    color: "#000",
+    backgroundColor: "white",
+    borderColor: "#41C526",
+    borderWidth: 2,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    paddingRight: 50, // Espaço para o botão
+    height: 48, // Altura fixa para consistência
+    textAlignVertical: 'center', // Centraliza o texto verticalmente
+  },
+  clearButton: {
+    position: 'absolute',
+    right: 15,
+    top: '50%',
+    marginTop: -10, // Metade da altura do ícone para centralizar
+    paddingHorizontal: 5,
+  },
   paginationContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
