@@ -1,4 +1,4 @@
-import { ErrorResponseApi } from "@/model/ErrorResponseApi";
+import { ErrorResponseApi } from "@/model/types/ErrorResponseApi";
 import { PageableResponse } from "@/model/types/PageableResponse";
 import { AxiosError, AxiosRequestConfig } from "axios";
 
@@ -14,6 +14,10 @@ export const statusBadge = (status: string) => {
       return "red";
   }
 };
+
+export const notEmptyString = (text : string | null) => {
+  return !!text && text.trim() !== ''
+}
 
 export const getTokenFromAuth = (config: AxiosRequestConfig) => {
   const auth: string = config.headers?.Authorization ?? "";

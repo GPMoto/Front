@@ -9,13 +9,12 @@ import authMockApi from "./AuthFetcherMock";
 import { getErrorMessage } from "@/utils/helpers";
 
 class AuthFetcher {
-  private endpoint: string = '/auth';
-  private baseUrl: string;
+  private endpoint: string = "/auth";
+  private baseUrl: string = process.env.EXPO_PUBLIC_API_URL;
   private apiClient: AxiosInstance;
-  private mockApi: boolean = true;
+  private mockApi: boolean = !!!this.baseUrl;
 
   constructor() {
-    this.baseUrl = process.env.EXPO_PUBLIC_API_URL;
     this.apiClient = this.mockApi
       ? authMockApi
       : axios.create({
@@ -26,8 +25,6 @@ class AuthFetcher {
           },
         });
   }
-
-  
 
   async login(userLogin: UserLogin): Promise<AuthResponse> {
     this.endpoint = "/auth/login";

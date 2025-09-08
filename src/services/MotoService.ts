@@ -6,12 +6,16 @@ import { ValidationError } from "yup";
 class MotoService {
   private motoFetcher: MotoFetcher;
 
-  constructor(token : string | null) {
+  constructor(token: string | null) {
     this.motoFetcher = new MotoFetcher(token);
   }
 
-  async getPagedMotos(page: number, size: number): Promise<PageableResponse<Moto>> {
-    const data = await this.motoFetcher.getPagedMotos(page, size);
+  async getPagedMotos(
+    search : string | null,
+    page: number,
+    size: number
+  ): Promise<PageableResponse<Moto>> {
+    const data = await this.motoFetcher.getPagedMotos(search, page, size);
     return data;
   }
 
@@ -36,6 +40,10 @@ class MotoService {
         message: "Moto inválida",
       };
     }
+  }
+
+  async searchMotos(query: string) {
+    return await this.motoFetcher.searchMotos(query);
   }
 }
 
