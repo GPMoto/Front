@@ -31,8 +31,7 @@ interface UserLoginErrorResponse extends ErrorResponseApi {}
 interface UserDataErrorResponse extends ErrorResponseApi {}
 
 interface ProfileResponse {
-  data: UserData | UserDataErrorResponse;
-  status?: number;
+  data: UserData;
   success: boolean;
   message?: string;
 }
