@@ -1,40 +1,27 @@
 import { useMoto } from "@/control/MotoControl";
-import { FlatList, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Text, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import Pagination from "@cherry-soft/react-native-basic-pagination";
 import SingleMotoPaged from "@/components/SingleMotoPaged/SingleMotoPaged";
 import { procurarMotoStyles } from "./ProcurarMotoStyles";
 import { globalStyles } from "@/styles/styles";
-import LoadingScreen from "@/components/shared/LoadingScreen";
 import { FontAwesome6 as Icon } from "@expo/vector-icons";
 
 export default function ProcurarMoto() {
-  const {
-    isLoading,
-    error,
-    motos,
-    setPage,
-    page,
-    busca,
-    setBusca,
-    limparBusca,
-  } = useMoto(2);
+  const { pagedMotos, setPage, page, busca, setBusca, limparBusca } =
+    useMoto(2);
 
-  if (isLoading) {
+  if (pagedMotos.isLoading) {
     return (
       <View
         style={[globalStyles.container_center, { justifyContent: "center" }]}
       >
-        <LoadingScreen>
-          <Text style={[globalStyles.TextInput, { marginTop: 16 }]}>
-            Carregando motos...
-          </Text>
-        </LoadingScreen>
+        <ActivityIndicator />
       </View>
     );
   }
 
-  if (error) {
+  if (pagedMotos.isError) {
     return (
       <View
         style={[globalStyles.container_center, { justifyContent: "center" }]}
@@ -45,7 +32,7 @@ export default function ProcurarMoto() {
             { color: "#FF6B6B", textAlign: "center" },
           ]}
         >
-          Erro ao carregar motos: {error.message}
+          Erro ao carregar motos: {pagedMotos.error.message}
         </Text>
       </View>
     );
@@ -88,12 +75,12 @@ export default function ProcurarMoto() {
                 },
               ]}
             >
-              Total de motos: {motos?.totalElements || 0}
+              Total de motos: {pagedMotos.data!.totalElements || 0}
             </Text>
           </View>
 
           <FlatList
-            data={motos?.content}
+            data={pagedMotos.data!.content}
             keyExtractor={(item, index) =>
               item.idMoto?.toString() || index.toString()
             }
@@ -107,14 +94,14 @@ export default function ProcurarMoto() {
               </View>
             }
           />
-          {motos && motos?.totalPages! > 1 ? (
+          {pagedMotos.data && pagedMotos.data.totalPages! > 1 ? (
             <View style={procurarMotoStyles.paginationContainer}>
               <Pagination
                 currentPage={page}
                 onPageChange={setPage}
-                pageSize={motos?.size}
-                totalItems={motos.totalElements}
-                showLastPagesButtons={motos?.totalPages! > 5}
+                pageSize={pagedMotos.data.size}
+                totalItems={pagedMotos.data.totalElements}
+                showLastPagesButtons={pagedMotos.data.totalPages! > 5}
               />
             </View>
           ) : null}

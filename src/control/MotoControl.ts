@@ -2,6 +2,7 @@ import { useAuth } from "@/context/AuthContext";
 import { Moto } from "@/model/Moto";
 import MotoService from "@/services/MotoService";
 import { notEmptyString } from "@/utils/helpers";
+import { useDebounce } from "@/utils/useDebounce";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { ValidationError } from "yup";
@@ -17,32 +18,29 @@ const useMoto = (size: number = 2) => {
 
   const [motoErrors, setMotoErrors] = useState<Partial<Moto>>({});
 
-  
-    const [busca, setBusca] = useState<string | null>(null);
-    const [debouncedBusca, setDebouncedBusca] = useState<string | null>(null);
-  
-    const limparBusca = () => {
-      setBusca(null)
-    }
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        setDebouncedBusca(busca);
-      }, 3000);
-  
-      return () => clearTimeout(timer);
-    }, [busca]);
+  const [busca, setBusca] = useState<string | null>(null);
 
-  const { data, isLoading, error, isSuccess } = useQuery({
+  const limparBusca = () => {
+    setBusca(null);
+  };
+  
+  const debouncedBusca = useDebounce(busca, 1000);
+
+  const pagedMotos = useQuery({
     queryKey: ["motos", page, size, debouncedBusca],
     queryFn: async () => {
-      const result = await motoService.getPagedMotos(debouncedBusca, page, size);
-      return result;
-    },
+      if (debouncedBusca) {
+        setPage(1);
+      }
+      return await motoService.getPagedMotos(
+        debouncedBusca,
+        page,
+        size
+      );
+    }, 
     refetchOnMount: true,
     refetchOnWindowFocus: false,
   });
-
-  
 
   const saveMotoMutation = useMutation({
     mutationFn: async (newMoto: Partial<Moto>) =>
@@ -64,17 +62,14 @@ const useMoto = (size: number = 2) => {
     saveMotoMutation.mutate(newMoto);
 
   return {
-    motos: data,
-    isSuccess,
-    isLoading,
-    error,
+    pagedMotos,
     salvarMoto,
     page,
     setPage,
     motoErrors,
     busca,
     setBusca,
-    limparBusca
+    limparBusca,
   };
 };
 
