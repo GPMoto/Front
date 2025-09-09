@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import profileMockApi from "./ProfileFetcherMock";
-import { UserData } from "@/model/User";
-import { ProfileResponse, UserDataErrorResponse } from "@/model/User";
+import { UserData, UserDataErrorResponse } from "@/model/User";
+import { ProfileResponse } from "@/model/User";
 import { getErrorMessage } from "@/utils/helpers";
 
 class ProfileFetcher {
@@ -32,28 +32,9 @@ class ProfileFetcher {
     })
   }
 
-  async get(): Promise<ProfileResponse> {
-    console.log("Iniciando req em get do ProfileFetcher!");
-    try {
-      const response: AxiosResponse<UserData> = await this.apiClient.get(
-        this.endpoint,
-      );
-      return {
-        data: response.data,
-        status: response.status,
-        success: true,
-        message: "Dados do usuário obtidos com sucesso!",
-      };
-    } catch (error) {
-      const axiosError = error as AxiosError<UserDataErrorResponse>;
-
-      return {
-        data: (axiosError.response?.data as UserDataErrorResponse) || null,
-        status: axiosError.response?.status || 0,
-        success: false,
-        message: getErrorMessage(axiosError),
-      };
-    }
+  async get(): Promise<UserData> {
+    const response : AxiosResponse<UserData> = await this.apiClient.get(this.endpoint);
+    return response.data;
   }
 
 
