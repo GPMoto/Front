@@ -1,17 +1,17 @@
 import { Moto } from "@/model/Moto";
-import { statusBadge } from "@/utils/helpers";
+import { statusBadge, formatIdentificador } from "@/utils/helpers";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function SingleMotoPaged(item: Moto) {
     return (
-        <View style={[styles.container, {borderLeftColor: statusBadge(item.condicoes)}]}>
+        <View style={[styles.container, {borderLeftColor: statusBadge(item.status)}]}>
             <View style={styles.header}>
                 <Text style={styles.idText}>
                     ID: {item.idMoto}
                 </Text>
-                <View style={[styles.statusBadge, {backgroundColor: statusBadge(item.condicoes)}]}>
+                <View style={[styles.statusBadge, {backgroundColor: statusBadge(item.status)}]}>
                     <Text style={styles.statusText}>
-                        {item.condicoes}
+                        {item.status}
                     </Text>
                 </View>
             </View>
@@ -22,7 +22,25 @@ export default function SingleMotoPaged(item: Moto) {
                         Identificador:
                     </Text>
                     <Text style={styles.valueText}>
-                        {item.identificador}
+                        {formatIdentificador(item.identificador.vlrIdentificador)}
+                    </Text>
+                </View>
+
+                 <View style={styles.infoRow}>
+                    <Text style={styles.labelText}>
+                        Placa:
+                    </Text>
+                    <Text style={styles.valueText}>
+                        {item.placa}
+                    </Text>
+                </View>
+
+                 <View style={styles.infoRow}>
+                    <Text style={styles.labelText}>
+                        Tipo da moto:
+                    </Text>
+                    <Text style={styles.valueText}>
+                        {item.idTipoMoto.nmTipo}
                     </Text>
                 </View>
 
@@ -31,7 +49,7 @@ export default function SingleMotoPaged(item: Moto) {
                         Condições:
                     </Text>
                     <Text style={styles.valueText}>
-                        {item.condicoes}
+                        {item.status}
                     </Text>
                 </View>
 

@@ -1,4 +1,4 @@
-import { UserLoginErrorResponse, UserLoginErrors, UserLoginResponse } from "./User";
+import { UserLoginErrorResponse, UserLoginErrors, UserLoginResponse } from "../User";
 
 interface AuthResponse {
   data?: UserLoginResponse | UserLoginErrorResponse;

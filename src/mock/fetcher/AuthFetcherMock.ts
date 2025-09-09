@@ -1,3 +1,5 @@
+import { MOCK_TOKEN, mockUsers } from "@/mock/mock-list";
+import { UserData } from "@/model/User";
 import { getTokenFromAuth } from "@/utils/helpers";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
@@ -7,9 +9,10 @@ const authMockApi = axios.create({
 });
 
 const mock = new AxiosMockAdapter(authMockApi, { delayResponse: 1000 });
-const TOKEN_MOCK = "fake.jwt.token.aqui";
-const EMAIL_MOCK = "teste@email.com";
-const PASSWORD_MOCK = "123456";
+
+const USER_MOCK_DATA: UserData = mockUsers.find((user) => user.idUsuario == 1)!;
+const EMAIL_MOCK = USER_MOCK_DATA.nmEmail;
+const PASSWORD_MOCK = USER_MOCK_DATA.senha;
 
 mock.onPost("/auth/login").reply((config) => {
   const { email, password } = JSON.parse(config.data);
@@ -19,7 +22,7 @@ mock.onPost("/auth/login").reply((config) => {
   }
 
   if (email === EMAIL_MOCK && password === PASSWORD_MOCK) {
-    return [200, { token: "fake.jwt.token.aqui" }];
+    return [200, { token: MOCK_TOKEN }];
   }
 
   return [401, { message: "Email ou senha incorretos" }];
@@ -32,7 +35,7 @@ mock.onGet("/auth/validate").reply((config) => {
     return [400, { message: "Bearer token é obrigatório" }];
   }
 
-  if (!(requestToken === TOKEN_MOCK)) {
+  if (!(requestToken === MOCK_TOKEN)) {
     return [403, { message: "Usuário não encontrado!" }];
   }
   return [200, { message: "Token válido!" }];

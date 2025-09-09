@@ -2,10 +2,10 @@ import { Cidade } from "./Cidade";
 
 interface Endereco {
   idEndereco: number;
-  nomeLogradouro: string;
-  numLogradouro: string;
+  nmLogradouro: string;
+  nrLogradouro: string;
   cep: string;
-  cidade: Cidade;
+  idCidade: Cidade;
 }
 
 export { Endereco };

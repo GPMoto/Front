@@ -2,8 +2,9 @@ import { Pais } from "./Pais";
 
 interface Estado {
   idEstado: number;
-  nomeEstado: string;
+  nmEstado: string;
   idPais: Pais;
 }
+
 
 export { Estado };

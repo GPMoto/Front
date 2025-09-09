@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosInstance } from "axios";
-import motoMockApi from "./MotoFetcherMock";
+import motoMockApi from "../mock/fetcher/MotoFetcherMock";
 import { Moto } from "@/model/Moto";
 import { PageableResponse } from "@/model/types/PageableResponse";
 

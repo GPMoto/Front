@@ -1,8 +1,9 @@
 import { Estado } from "./Estado";
 
 interface Cidade {
-  idEstado: number;
-  estado: Estado;
+  idCidade : number;
+  nmCidade : string;
+  idEstado: Estado;
 }
 
 export { Cidade };

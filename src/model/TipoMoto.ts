@@ -1,6 +1,6 @@
 interface TipoMoto {
-    idTipoMoto : number;
-    nomeTipo : string;
+    id_tipo_moto : number;
+    nmTipo : string;
 }
 
 export {TipoMoto};
