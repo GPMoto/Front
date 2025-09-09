@@ -1,9 +1,7 @@
 import { useAuth } from "@/context/AuthContext";
-import { ProfileResponse } from "@/model/User";
-import { UserData } from "@/model/User";
 import ProfileService from "@/services/ProfileService";
+import { formatCNPJ } from "@/utils/helpers";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 
 const useProfile = () => {
   
@@ -25,7 +23,8 @@ const useProfile = () => {
     isLoading: profile.isLoading,
     error : profile.error,
     isError: profile.isError,
-    refetch: profile.refetch
+    refetch: profile.refetch,
+    formatCNPJ
   };
 };
 

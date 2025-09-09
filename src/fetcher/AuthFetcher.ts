@@ -1,11 +1,11 @@
-import { AuthResponse } from "@/model/AuthResponse";
+import { AuthResponse } from "@/model/types/AuthResponse";
 import {
   UserLogin,
   UserLoginErrorResponse,
   UserLoginResponse,
 } from "@/model/User";
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
-import authMockApi from "./AuthFetcherMock";
+import authMockApi from "../mock/fetcher/AuthFetcherMock";
 import { getErrorMessage } from "@/utils/helpers";
 
 class AuthFetcher {

@@ -1,39 +1,34 @@
 import { number, object, Schema, string } from "yup";
-import { ErrorResponseApi } from "./types/ErrorResponseApi";
-import { Filial } from "./Filial";
 import { TipoMoto } from "./TipoMoto";
 import { PageableResponse } from "./types/PageableResponse";
+import { Identificador } from "./Identificador";
 
 interface Moto {
   idMoto?: number;
-  identificador: string;
-  condicoes: string;
+  identificador: Identificador;
+  status: string;
   condicoesManutencao: string;
-  tipoMoto: TipoMoto | number;
-  filial: Filial | number;
+  idTipoMoto: TipoMoto;
+  placa : string;
 }
 
 interface MotoResponse {
-  data?: Moto[] | MotoError | PageableResponse<Moto>;
+  data?: Moto[] | PageableResponse<Moto>;
   status?: number;
   message: string;
   success: boolean;
   errors?: Partial<Moto>
 }
 
-const motoSchema = object({
+const createMotoSchema = object({
   idMoto: number().nullable().optional().positive(),
-  identificador: string().required(),
-  condicoes: string().required(),
+  identificador: number().required(),
+  status: string().required(),
   condicoesManutencao: string().required(),
-  tipoMoto: number().required(),
-  filial: number().required(),
+  idTipoMoto: number().required(),
 });
-
 
 
 type MotoData = MotoResponse["data"];
 
-interface MotoError extends ErrorResponseApi {}
-
-export { Moto, MotoResponse, MotoData, motoSchema };
+export { Moto, MotoResponse, MotoData, createMotoSchema };

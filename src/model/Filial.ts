@@ -4,10 +4,10 @@ import { Endereco } from "./Endereco";
 interface Filial {
   idFilial: number;
   nome : string;
-  cnpj: string;
-  senha: string;
-  endereco: Endereco;
-  contato: Contato;
+  cnpjFilial: string;
+  senhaFilial: string;
+  idEndereco: Endereco;
+  idContato: Contato;
 }
 
 export { Filial };

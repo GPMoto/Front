@@ -1,5 +1,5 @@
 import { AuthFetcher } from "@/fetcher/AuthFetcher";
-import { AuthResponse } from "@/model/AuthResponse";
+import { AuthResponse } from "@/model/types/AuthResponse";
 import {
   UserLogin,
   UserLoginErrors,

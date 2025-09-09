@@ -4,20 +4,20 @@ import { AxiosError, AxiosRequestConfig } from "axios";
 
 export const statusBadge = (status: string) => {
   switch (status) {
-    case "Excelente":
+    case "Ativo":
       return "#41C526";
-    case "Boa":
+    case "Inativo":
       return "lightgreen";
-    case "Regular":
+    case "Manutenção":
       return "yellow";
     default:
       return "red";
   }
 };
 
-export const notEmptyString = (text : string | null) => {
-  return !!text && text.trim() !== ''
-}
+export const notEmptyString = (text: string | null) => {
+  return !!text && text.trim() !== "";
+};
 
 export const getTokenFromAuth = (config: AxiosRequestConfig) => {
   const auth: string = config.headers?.Authorization ?? "";
@@ -46,6 +46,27 @@ export const getErrorMessage = (error: AxiosError): string => {
     default:
       return data.message ?? "Erro no login";
   }
+};
+
+export const formatCNPJ = (cnpj: string): string => {
+  const digitsOnly = cnpj.replace(/\D/g, "");
+
+  if (digitsOnly.length !== 14) {
+    return cnpj; // Retorna original se não tiver 14 dígitos
+  }
+
+  return digitsOnly.replace(
+    /(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,
+    "$1.$2.$3/$4-$5"
+  );
+};
+
+export const formatIdentificador = (identificador: string): string => {
+  if (identificador.length <= 6) {
+    return identificador;
+  }
+  
+  return identificador.substring(0, 6) + "...";
 };
 
 export function getSpringPage<T>(

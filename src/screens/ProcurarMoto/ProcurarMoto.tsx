@@ -9,7 +9,7 @@ import { FontAwesome6 as Icon } from "@expo/vector-icons";
 
 export default function ProcurarMoto() {
   const { pagedMotos, setPage, page, busca, setBusca, limparBusca } =
-    useMoto(2);
+    useMoto(10);
 
   if (pagedMotos.isLoading) {
     return (
@@ -45,7 +45,7 @@ export default function ProcurarMoto() {
       <View style={procurarMotoStyles.inputContainer}>
         <View style={procurarMotoStyles.inputWrapper}>
           <TextInput
-            placeholder="Digite o identificador da moto..."
+            placeholder="Digite a placa da moto..."
             placeholderTextColor="#999"
             style={[globalStyles.Input, procurarMotoStyles.textInput]}
             onChangeText={setBusca}
@@ -93,8 +93,7 @@ export default function ProcurarMoto() {
                 </Text>
               </View>
             }
-          />
-          {pagedMotos.data && pagedMotos.data.totalPages! > 1 ? (
+            ListFooterComponent={pagedMotos.data && pagedMotos.data.totalPages! > 1 ? (
             <View style={procurarMotoStyles.paginationContainer}>
               <Pagination
                 currentPage={page}
@@ -105,6 +104,8 @@ export default function ProcurarMoto() {
               />
             </View>
           ) : null}
+          />
+          
         </View>
       </View>
     </View>

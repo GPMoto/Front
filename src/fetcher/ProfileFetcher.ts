@@ -1,8 +1,6 @@
-import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
-import profileMockApi from "./ProfileFetcherMock";
-import { UserData, UserDataErrorResponse } from "@/model/User";
-import { ProfileResponse } from "@/model/User";
-import { getErrorMessage } from "@/utils/helpers";
+import axios, { AxiosInstance, AxiosResponse } from "axios";
+import profileMockApi from "../mock/fetcher/ProfileFetcherMock";
+import { UserData } from "@/model/User";
 
 class ProfileFetcher {
   private apiClient: AxiosInstance;
@@ -36,8 +34,6 @@ class ProfileFetcher {
     const response : AxiosResponse<UserData> = await this.apiClient.get(this.endpoint);
     return response.data;
   }
-
-
 }
 
 export default ProfileFetcher;

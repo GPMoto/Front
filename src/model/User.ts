@@ -1,11 +1,15 @@
 import { object, Schema, string } from "yup";
 import { ErrorResponseApi } from "./types/ErrorResponseApi";
+import { Filial } from "./Filial";
+import { Perfil } from "./Perfil";
 
 interface UserData {
-  email: string;
-  nome: string;
-  filial: string;
-  grupo: string;
+  idUsuario : number;
+  nmEmail: string;
+  nmUsuario: string;
+  senha : string;
+  idFilial: Filial;
+  idPerfil: Perfil;
 }
 
 interface UserLogin {
