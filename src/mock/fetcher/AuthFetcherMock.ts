@@ -1,4 +1,9 @@
-import { MOCK_TOKEN, mockUsers } from "@/mock/mock-list";
+import {
+  MOCK_TOKEN,
+  mockFiliais,
+  mockPerfis,
+  mockUsers,
+} from "@/mock/mock-list";
 import { UserData } from "@/model/User";
 import { getTokenFromAuth } from "@/utils/helpers";
 import axios from "axios";
@@ -9,10 +14,6 @@ const authMockApi = axios.create({
 });
 
 const mock = new AxiosMockAdapter(authMockApi, { delayResponse: 1000 });
-
-const USER_MOCK_DATA: UserData = mockUsers.find((user) => user.idUsuario == 1)!;
-const EMAIL_MOCK = USER_MOCK_DATA.nmEmail;
-const PASSWORD_MOCK = USER_MOCK_DATA.senha;
 
 mock.onPost("/auth/login").reply((config) => {
   const { email, password } = JSON.parse(config.data);
@@ -43,6 +44,31 @@ mock.onGet("/auth/validate").reply((config) => {
     return [403, { message: "Usuário não encontrado!" }];
   }
   return [200, { message: "Token válido!" }];
+});
+
+mock.onPost("/auth/register").reply((config) => {
+  const { email, password } = JSON.parse(config.data);
+
+  if (!email || !password) {
+    return [400, { message: "Dados inválidos" }];
+  }
+
+  const userExists = mockUsers.find((user) => user.nmEmail === email);
+
+  if (userExists) {
+    return [400, { message: "Usuário já existe" }];
+  }
+
+  mockUsers.push({
+    idUsuario: mockUsers[mockUsers.length - 1].idUsuario + 1,
+    idFilial: mockFiliais[0],
+    idPerfil: mockPerfis[0],
+    nmEmail: email,
+    nmUsuario: "José",
+    senha: password,
+  });
+
+  return [201, { message: "Usuário criado com sucesso!" }];
 });
 
 export default authMockApi;
