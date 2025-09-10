@@ -8,11 +8,14 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { useState, useRef } from "react";
 import { formularioLoginStyles } from "./FormularioLoginStyles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useAuthControl } from "@/control/AuthController";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackNavigationProps } from "@/navigators/NavigationTypes";
 
 export default function FormularioLogin(props: any) {
   const [email, setEmail] = useState("");
@@ -22,6 +25,12 @@ export default function FormularioLogin(props: any) {
   const [senhaFocused, setSenhaFocused] = useState(false);
   //TODO: receber error do controller useAuthControl()
   const { loading, loginUser, loginErrors, error } = useAuthControl();
+
+  const navigation = useNavigation<RootStackNavigationProps>();
+
+  const goToRegisterPage = () => {
+    navigation.navigate("Cadastro");
+  };
 
   const buttonScale = useRef(new Animated.Value(1)).current;
 
@@ -209,7 +218,9 @@ export default function FormularioLogin(props: any) {
           <View style={formularioLoginStyles.footerContainer}>
             <Text style={formularioLoginStyles.footerText}>
               Não tem uma conta?{" "}
-              <Text style={formularioLoginStyles.footerLink}>Cadastre-se</Text>
+                <Text style={formularioLoginStyles.footerLink} onPress={goToRegisterPage}>
+                  Cadastre-se
+                </Text>
             </Text>
           </View>
         </ScrollView>

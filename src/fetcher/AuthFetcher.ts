@@ -50,6 +50,26 @@ class AuthFetcher {
     }
   }
 
+  async register(userLogin : UserLogin) : Promise<AuthResponse> {
+    this.endpoint = "/auth/register";
+    try {
+      await this.apiClient.post(this.endpoint, userLogin);
+      return {
+        success: true, 
+        message: "Conta criada com sucesso!",
+      }
+    } catch (error) {
+      const axiosError = error as AxiosError<UserLoginErrorResponse>;
+
+      return {
+        data: (axiosError.response?.data as UserLoginErrorResponse) || null,
+        status: axiosError.response?.status || 0,
+        success: false,
+        message: getErrorMessage(axiosError),
+      };
+    }
+  }
+
   async validateToken(token: string) {
     this.endpoint = "/auth/validate";
     try {

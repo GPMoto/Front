@@ -1,10 +1,6 @@
 import { AuthFetcher } from "@/fetcher/AuthFetcher";
 import { AuthResponse } from "@/model/types/AuthResponse";
-import {
-  UserLogin,
-  UserLoginErrors,
-  userLoginSchema,
-} from "@/model/User";
+import { UserLogin, UserLoginErrors, userLoginSchema } from "@/model/User";
 import { ValidationError } from "yup";
 
 class AuthService {
@@ -15,9 +11,9 @@ class AuthService {
   }
 
   async validateToken(token: string): Promise<boolean> {
-    const result =  await this.authFetcher.validateToken(token)
-    console.log(result)
-    return result
+    const result = await this.authFetcher.validateToken(token);
+    console.log(result);
+    return result;
   }
 
   async login(userLogin: UserLogin): Promise<AuthResponse> {
@@ -41,10 +37,32 @@ class AuthService {
 
       return {
         success: false,
-        errors: userLoginErros
+        errors: userLoginErros,
       };
     }
     return await this.authFetcher.login(userLogin);
+  }
+
+  async register(userLogin: UserLogin) {
+    let userLoginErros: UserLoginErrors = {};
+    try {
+      await userLoginSchema.validate(userLogin);
+      return await this.authFetcher.register(userLogin);
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        err.inner.forEach((error: ValidationError) => {
+          userLoginErros = {
+            ...userLoginErros,
+            [error.path as keyof UserLoginErrors]: error.message,
+          };
+        });
+      }
+    }
+
+    return {
+      success: false,
+      errors: userLoginErros,
+    };
   }
 }
 
