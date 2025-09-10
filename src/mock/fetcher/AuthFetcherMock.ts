@@ -21,11 +21,15 @@ mock.onPost("/auth/login").reply((config) => {
     return [400, { message: "Dados inválidos" }];
   }
 
-  if (email === EMAIL_MOCK && password === PASSWORD_MOCK) {
-    return [200, { token: MOCK_TOKEN }];
+  const userData = mockUsers.find(
+    (user) => user.nmEmail === email && user.senha === password
+  );
+
+  if (!userData) {
+    return [401, { message: "Email ou senha incorretos" }];
   }
 
-  return [401, { message: "Email ou senha incorretos" }];
+  return [200, { token: MOCK_TOKEN }];
 });
 
 mock.onGet("/auth/validate").reply((config) => {
