@@ -35,3 +35,5 @@ condicoesManutencao: faker.helpers.arrayElement([
     "Péssima",
 ]),
 ```
+
+**O tipo da moto sempre tem largura e comprimentos fixos, logo, podemos calcular a área ocupada pela quantidade de motos!**
