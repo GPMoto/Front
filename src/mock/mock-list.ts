@@ -137,10 +137,10 @@ export const mockMotos: Moto[] = Array.from({ length: 80 }, (_, i) => ({
 export const mockSecaoFilial: SecaoFilial[] = mockFiliais.flatMap((filial, filialIndex) => {
   return Array.from({ length: 6 }, (_, i) => ({ // Reduzido para 6 por filial
     idSecao: filialIndex * 6 + i + 1,
-    lado1: faker.number.float({ min: 1.0, max: 10.0, fractionDigits: 2 }),
-    lado2: faker.number.float({ min: 1.0, max: 10.0, fractionDigits: 2 }),
-    lado3: faker.number.float({ min: 1.0, max: 10.0, fractionDigits: 2 }),
-    lado4: faker.number.float({ min: 1.0, max: 10.0, fractionDigits: 2 }),
+    lado1: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
+    lado2: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
+    lado3: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
+    lado4: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
     idTipoSecao: mockTipoSecao[i % mockTipoSecao.length],
     idFilial: filial,
   }));
