@@ -2,51 +2,26 @@ import {
   View,
   Text,
   TextInput,
-  Pressable,
   ActivityIndicator,
-  Animated,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  TouchableOpacity,
 } from "react-native";
-import { useState, useRef } from "react";
 import { formularioLoginStyles } from "./FormularioLoginStyles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useAuthControl } from "@/control/AuthController";
-import { useNavigation } from "@react-navigation/native";
-import { RootStackNavigationProps } from "@/navigators/NavigationTypes";
+import ButtonArea from "@/components/Button/ButtonArea";
 
 export default function FormularioLogin(props: any) {
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [emailFocused, setEmailFocused] = useState(false);
-  const [senhaFocused, setSenhaFocused] = useState(false);
-  //TODO: receber error do controller useAuthControl()
-  const { loading, loginUser, loginErrors, error } = useAuthControl();
-
-  const navigation = useNavigation<RootStackNavigationProps>();
-
-  const goToRegisterPage = () => {
-    navigation.navigate("Cadastro");
-  };
-
-  const buttonScale = useRef(new Animated.Value(1)).current;
-
-  const handleButtonPressIn = () => {
-    Animated.spring(buttonScale, {
-      toValue: 0.95,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const handleButtonPressOut = () => {
-    Animated.spring(buttonScale, {
-      toValue: 1,
-      useNativeDriver: true,
-    }).start();
-  };
+  const {
+    loading,
+    loginUser,
+    loginErrors,
+    error,
+    handleForm,
+    formulario,
+    goToRegisterPage,
+  } = useAuthControl();
 
   return (
     <View style={formularioLoginStyles.container}>
@@ -98,16 +73,11 @@ export default function FormularioLogin(props: any) {
               <View style={formularioLoginStyles.inputWrapper}>
                 <Text style={formularioLoginStyles.inputLabel}>Email</Text>
                 <TextInput
-                  style={[
-                    formularioLoginStyles.inputField,
-                    emailFocused && formularioLoginStyles.inputFieldFocused,
-                  ]}
+                  style={formularioLoginStyles.inputField}
                   placeholder="Digite seu email"
                   placeholderTextColor="#8B8B8B"
-                  value={email}
-                  onChangeText={setEmail}
-                  onFocus={() => setEmailFocused(true)}
-                  onBlur={() => setEmailFocused(false)}
+                  value={formulario.email}
+                  onChangeText={(text) => handleForm(text, "email")}
                   keyboardType="email-address"
                   autoCapitalize="none"
                   autoComplete="email"
@@ -125,75 +95,30 @@ export default function FormularioLogin(props: any) {
               {/* Password Input */}
               <View style={formularioLoginStyles.inputWrapper}>
                 <Text style={formularioLoginStyles.inputLabel}>Senha</Text>
-                <View style={{ position: "relative" }}>
-                  <TextInput
-                    style={[
-                      formularioLoginStyles.inputField,
-                      senhaFocused && formularioLoginStyles.inputFieldFocused,
-                      { paddingRight: 50 },
-                    ]}
-                    placeholder="Digite sua senha"
-                    placeholderTextColor="#8B8B8B"
-                    value={senha}
-                    onChangeText={setSenha}
-                    onFocus={() => setSenhaFocused(true)}
-                    onBlur={() => setSenhaFocused(false)}
-                    secureTextEntry={!showPassword}
-                    autoComplete="password"
-                    editable={!loading}
-                    blurOnSubmit={true}
-                    returnKeyType="done"
-                    onSubmitEditing={() =>
-                      loginUser({ email, password: senha })
-                    }
-                  />
-                  {loginErrors.password && (
-                    <Text style={formularioLoginStyles.fieldErrorText}>
-                      {loginErrors.password}
-                    </Text>
-                  )}
-
-                  <Pressable
-                    style={{
-                      position: "absolute",
-                      right: 15,
-                      top: 15,
-                      padding: 5,
-                    }}
-                    onPress={() => setShowPassword(!showPassword)}
-                  >
-                    <MaterialIcons
-                      name={showPassword ? "visibility" : "visibility-off"}
-                      size={24}
-                      color="#8B8B8B"
-                    />
-                  </Pressable>
-                </View>
+                <TextInput
+                  style={formularioLoginStyles.inputField}
+                  placeholder="Digite sua senha"
+                  placeholderTextColor="#8B8B8B"
+                  value={formulario.password}
+                  onChangeText={(text) => handleForm(text, "password")}
+                  secureTextEntry
+                  autoComplete="password"
+                  editable={!loading}
+                  blurOnSubmit={true}
+                  returnKeyType="done"
+                  onSubmitEditing={loginUser}
+                />
+                {loginErrors.password && (
+                  <Text style={formularioLoginStyles.fieldErrorText}>
+                    {loginErrors.password}
+                  </Text>
+                )}
               </View>
             </View>
 
             {/* Login Button */}
             <View style={formularioLoginStyles.buttonContainer}>
-              <Pressable
-                onPress={() => loginUser({ email, password: senha })}
-                onPressIn={handleButtonPressIn}
-                onPressOut={handleButtonPressOut}
-                disabled={loading}
-                style={({ pressed }) => [
-                  formularioLoginStyles.loginButton,
-                  pressed && formularioLoginStyles.loginButtonPressed,
-                ]}
-              >
-                <Animated.View style={{ transform: [{ scale: buttonScale }] }}>
-                  {loading ? (
-                    <ActivityIndicator color="#FFFFFF" size="small" />
-                  ) : (
-                    <Text style={formularioLoginStyles.loginButtonText}>
-                      Entrar
-                    </Text>
-                  )}
-                </Animated.View>
-              </Pressable>
+              <ButtonArea size="small" title="Entrar" action={loginUser} />
             </View>
 
             {/* Forgot Password */}
@@ -218,9 +143,12 @@ export default function FormularioLogin(props: any) {
           <View style={formularioLoginStyles.footerContainer}>
             <Text style={formularioLoginStyles.footerText}>
               Não tem uma conta?{" "}
-                <Text style={formularioLoginStyles.footerLink} onPress={goToRegisterPage}>
-                  Cadastre-se
-                </Text>
+              <Text
+                style={formularioLoginStyles.footerLink}
+                onPress={goToRegisterPage}
+              >
+                Cadastre-se
+              </Text>
             </Text>
           </View>
         </ScrollView>

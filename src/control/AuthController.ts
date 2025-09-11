@@ -10,7 +10,6 @@ const useAuthControl = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [loginErrors, setLoginErrors] = useState<UserLoginErrors>({});
   const [error, setError] = useState<string | null>();
-  const [userLogin, setUserLogin] = useState<UserLogin | null>(null);
   const [formulario, setFormulario] = useState<UserLogin>({
     email: "",
     password: "",
@@ -21,10 +20,10 @@ const useAuthControl = () => {
 
   const navigation = useNavigation<RootStackNavigationProps>();
 
-  const loginUser = async (userLogin: UserLogin) => {
+  const loginUser = async () => {
     setLoading(true);
     const authService = new AuthService();
-    const result = await authService.login(userLogin);
+    const result = await authService.login(formulario);
     if (!result.success) {
       const errors = result.errors || {};
       setLoading(false);
@@ -51,8 +50,15 @@ const useAuthControl = () => {
     }
     setLoading(false);
     Alert.alert("Usuário criado com sucesso!");
-    navigation.navigate("Login");
   };
+
+  const goToLoginPage = () => {
+    navigation.navigate("Login");
+  }
+
+  const goToRegisterPage = () => {
+    navigation.navigate("Cadastro");
+  }
 
   const handleForm = (text: string, field: keyof UserLogin) => {
     setFormulario((formulario) => ({
@@ -70,6 +76,8 @@ const useAuthControl = () => {
     createAccountUser,
     handleForm,
     formulario,
+    goToLoginPage,
+    goToRegisterPage
   };
 };
 
