@@ -5,7 +5,6 @@ import Inicio from "@/screens/Inicio/Inicio";
 import Mapa from "@/screens/Mapa/Mapa";
 import ProcurarMoto from "@/screens/ProcurarMoto/ProcurarMoto";
 import AdicionarRastreador from "@/screens/AdicionarRastreador/AdicionarRastreador";
-import Relatorio from "@/screens/Relatorios/Relatorio";
 import { DrawerParamList } from "./NavigationTypes";
 import Settings from "@/screens/Settings";
 
@@ -45,9 +44,6 @@ export default function DrawerNavigator() {
           <AdicionarRastreador {...props}></AdicionarRastreador>
         )}
       </Screen>
-      {/* <Screen name="Relatórios">
-        {(props: ParamListBase) => <Relatorio {...props}></Relatorio>}
-      </Screen> */}
        <Screen name="Configurações">
         {(props: ParamListBase) => <Settings {...props}></Settings>}
       </Screen>
