@@ -131,6 +131,25 @@ export const cadastroStyles = StyleSheet.create({
     fontWeight: "500",
   },
 
+  pickerWrapper: {
+    marginBottom: 20,
+  },
+
+  pickerContainer: {
+    backgroundColor: "#2A2A2A",
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: "#3A3A3A",
+    minHeight: 50,
+    justifyContent: "center",
+  },
+
+  picker: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    height: 50,
+  },
+
   footerContainer: {
     alignItems: "center",
     marginTop: 24,

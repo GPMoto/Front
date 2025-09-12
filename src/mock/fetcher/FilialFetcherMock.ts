@@ -41,4 +41,7 @@ mock.onGet(/\/filial\/\d+\/secao/).reply((config) => {
   return [200, secoesFilial];
 });
 
+
+mock.onGet("/filial").reply((config) => [200, mockFiliais]);
+
 export default filialMockApi;

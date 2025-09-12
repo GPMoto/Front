@@ -1,6 +1,6 @@
 import { AuthFetcher } from "@/fetcher/AuthFetcher";
 import { AuthResponse } from "@/model/types/AuthResponse";
-import { UserLogin, UserLoginErrors, userLoginSchema } from "@/model/User";
+import { CreateUser, createUserSchema, UserLogin, UserLoginErrors, userLoginSchema } from "@/model/User";
 import { ValidationError } from "yup";
 
 class AuthService {
@@ -43,11 +43,11 @@ class AuthService {
     return await this.authFetcher.login(userLogin);
   }
 
-  async register(userLogin: UserLogin) {
+  async register(createUser: CreateUser) {
     let userLoginErros: UserLoginErrors = {};
     try {
-      await userLoginSchema.validate(userLogin);
-      return await this.authFetcher.register(userLogin);
+      await createUserSchema.validate(createUser);
+      return await this.authFetcher.register(createUser);
     } catch (err) {
       if (err instanceof ValidationError) {
         err.inner.forEach((error: ValidationError) => {

@@ -23,10 +23,12 @@ const useFilial = () => {
     enabled: !!profile,
   });
 
+  
+
   return {
-    loading: profileLoading || filial.isLoading,
+    loading: profileLoading || filial.isLoading ,
     error: profileError || filial.error,
-    secoes: filial.data,
+    secoes: filial.data
   };
 };
 

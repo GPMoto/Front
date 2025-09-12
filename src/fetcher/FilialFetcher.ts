@@ -1,6 +1,8 @@
 import { SecaoFilial } from "@/model/SecaoFilial";
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import filialMockApi from "../mock/fetcher/FilialFetcherMock";
+import { Filial } from "@/model/Filial";
+import { setupAxiosDebug } from "@/utils/axiosDebug";
 
 class FilialFetcher {
   private apiClient: AxiosInstance;
@@ -17,21 +19,44 @@ class FilialFetcher {
         });
     this.token = token;
     this.interceptors();
+    
+    // ✅ Debug isolado
+    setupAxiosDebug(this.apiClient, 'FilialFetcher');
   }
 
   private interceptors() {
+    // Request interceptor
     this.apiClient.interceptors.request.use((config) => {
-      if (this.token) {
+      if (this.token && !config.headers["X-Skip-Auth"]) {
         config.headers.Authorization = `Bearer ${this.token}`;
       }
+      if (!config.headers.Authorization) {
+        console.log("X-Skip funcionando!")
+      }
+      delete config.headers["X-Skip-Auth"];
       return config;
     });
   }
 
   async getSecoes(idFilial: number): Promise<SecaoFilial[]> {
     const response: AxiosResponse<SecaoFilial[]> = await this.apiClient.get(
-      `${this.baseUrl}/filial/${idFilial}/secao`
+      `/filial/${idFilial}/secao`
     );
+    return response.data;
+  }
+
+  async getAllFiliais(): Promise<Filial[]> {
+    console.log("Fetcher tentando puxar filiais");
+    const response: AxiosResponse<Filial[]> = await this.apiClient.get(
+      `/filial`,
+      {
+        headers: {
+          "X-Skip-Auth": "true",
+        },
+      }
+    );
+    console.log("Dados:");
+    console.log(response.data);
     return response.data;
   }
 }
