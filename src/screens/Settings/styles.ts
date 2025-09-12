@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#333",
     marginBottom: 8,
+    textAlign: "center"
   },
   userEmail: {
     fontSize: 16,

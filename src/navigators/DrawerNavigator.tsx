@@ -45,9 +45,9 @@ export default function DrawerNavigator() {
           <AdicionarRastreador {...props}></AdicionarRastreador>
         )}
       </Screen>
-      <Screen name="Relatórios">
+      {/* <Screen name="Relatórios">
         {(props: ParamListBase) => <Relatorio {...props}></Relatorio>}
-      </Screen>
+      </Screen> */}
        <Screen name="Configurações">
         {(props: ParamListBase) => <Settings {...props}></Settings>}
       </Screen>

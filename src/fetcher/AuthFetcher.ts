@@ -1,5 +1,6 @@
 import { AuthResponse } from "@/model/types/AuthResponse";
 import {
+  CreateUser,
   UserLogin,
   UserLoginErrorResponse,
   UserLoginResponse,
@@ -7,6 +8,7 @@ import {
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import authMockApi from "../mock/fetcher/AuthFetcherMock";
 import { getErrorMessage } from "@/utils/helpers";
+import { setupAxiosDebug } from "@/utils/axiosDebug";
 
 class AuthFetcher {
   private endpoint: string = "/auth";
@@ -24,6 +26,9 @@ class AuthFetcher {
             "Content-Type": "application/json",
           },
         });
+    
+    // ✅ Debug isolado
+    setupAxiosDebug(this.apiClient, 'AuthFetcher');
   }
 
   async login(userLogin: UserLogin): Promise<AuthResponse> {
@@ -50,10 +55,10 @@ class AuthFetcher {
     }
   }
 
-  async register(userLogin : UserLogin) : Promise<AuthResponse> {
+  async register(createUser : CreateUser) : Promise<AuthResponse> {
     this.endpoint = "/auth/register";
     try {
-      await this.apiClient.post(this.endpoint, userLogin);
+      await this.apiClient.post(this.endpoint, createUser);
       return {
         success: true, 
         message: "Conta criada com sucesso!",

@@ -6,6 +6,7 @@ import {
 } from "@/mock/mock-list";
 import { UserData } from "@/model/User";
 import { getTokenFromAuth } from "@/utils/helpers";
+import MockSessionManager from "../MockSessionManager";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 
@@ -14,6 +15,7 @@ const authMockApi = axios.create({
 });
 
 const mock = new AxiosMockAdapter(authMockApi, { delayResponse: 1000 });
+const sessionManager = MockSessionManager.getInstance();
 
 mock.onPost("/auth/login").reply((config) => {
   const { email, password } = JSON.parse(config.data);
@@ -30,6 +32,9 @@ mock.onPost("/auth/login").reply((config) => {
     return [401, { message: "Email ou senha incorretos" }];
   }
 
+  // ✅ Salvar sessão no mock
+  sessionManager.setSession(MOCK_TOKEN, userData);
+
   return [200, { token: MOCK_TOKEN }];
 });
 
@@ -40,16 +45,21 @@ mock.onGet("/auth/validate").reply((config) => {
     return [400, { message: "Bearer token é obrigatório" }];
   }
 
-  if (!(requestToken === MOCK_TOKEN)) {
-    return [403, { message: "Usuário não encontrado!" }];
+  if (!sessionManager.isValidToken(requestToken)) {
+    return [403, { message: "Token inválido!" }];
   }
+  
   return [200, { message: "Token válido!" }];
 });
 
 mock.onPost("/auth/register").reply((config) => {
-  const { email, password } = JSON.parse(config.data);
+  const data = JSON.parse(config.data);
 
-  if (!email || !password) {
+  const { email, password, nome } = data;
+  const filial = Number(data.filial);
+  const perfil = Number(data.perfil);
+  // { nome, email, password, filial, perfil }
+  if (!email || !password || !nome || !filial || !perfil) {
     return [400, { message: "Dados inválidos" }];
   }
 
@@ -59,12 +69,23 @@ mock.onPost("/auth/register").reply((config) => {
     return [400, { message: "Usuário já existe" }];
   }
 
+  const filialUser = mockFiliais.find((f) => f.idFilial == filial);
+  if (!filialUser) {
+    return [400, { message: "Filial inválida!" }];
+  }
+
+  const perfilUser = mockPerfis.find((p) => p.idPerfil === perfil);
+
+  if (!perfilUser) {
+    return [400, { message: "Perfil inválido!" }];
+  }
+
   mockUsers.push({
     idUsuario: mockUsers[mockUsers.length - 1].idUsuario + 1,
-    idFilial: mockFiliais[0],
-    idPerfil: mockPerfis[0],
+    idFilial: filialUser,
+    idPerfil: perfilUser,
     nmEmail: email,
-    nmUsuario: "José",
+    nmUsuario: nome,
     senha: password,
   });
 

@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosInstance } from "axios";
 import motoMockApi from "../mock/fetcher/MotoFetcherMock";
 import { Moto } from "@/model/Moto";
 import { PageableResponse } from "@/model/types/PageableResponse";
+import { setupAxiosDebug } from "@/utils/axiosDebug";
 
 class MotoFetcher {
   private apiClient: AxiosInstance;
@@ -16,6 +17,9 @@ class MotoFetcher {
           timeout: 10000,
         });
     this.interceptors(token);
+    
+    // ✅ Debug isolado
+    setupAxiosDebug(this.apiClient, 'MotoFetcher');
   }
 
   private interceptors(token: string | null) {

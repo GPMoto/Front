@@ -36,4 +36,10 @@ condicoesManutencao: faker.helpers.arrayElement([
 ]),
 ```
 
-**O tipo da moto sempre tem largura e comprimentos fixos, logo, podemos calcular a área ocupada pela quantidade de motos!**
+## TODO IMPORTANTES!
+
+- O tipo da moto sempre tem largura e comprimentos fixos, logo, podemos calcular a área ocupada pela quantidade de motos!
+
+- Combinamos de pegar apenas algo para ler a placa da moto e crud para alterar o local da moto, logo tem que ter uma seção para alterar as informações da moto!!!!
+
+- Fazer com que o 401 dê um alert "Faça login novamente. Sessão expirou!" e jogar ele para a tela de login.... É a forma certa de usar a validação de token -> o useEffect faz MUITAS requisições.

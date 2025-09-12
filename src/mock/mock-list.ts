@@ -32,6 +32,7 @@ export const mockPerfis: Perfil[] = [
   { idPerfil: 3, nmPerfil: "Operador" },
   { idPerfil: 4, nmPerfil: "Visualizador" },
   { idPerfil: 5, nmPerfil: "Técnico" },
+  { idPerfil: 6, nmPerfil: "Convidado"}
 ];
 
 export const mockTipoSecao: TipoSecao[] = [
