@@ -8,7 +8,7 @@ export const setupAxiosDebug = (
   // Request interceptor
   apiClient.interceptors.request.use(
     (config) => {
-      console.log(`🚀 ${serviceName} Request:`, {
+      console.log(`🌐 ${serviceName} Request:`, {
         method: config.method?.toUpperCase(),
         url: config.url,
         baseURL: config.baseURL,
