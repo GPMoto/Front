@@ -1,15 +1,20 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { ParamListBase } from "@react-navigation/native";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
 import React from "react";
 import Inicio from "@/screens/Inicio/Inicio";
 import Mapa from "@/screens/Mapa/Mapa";
 import ProcurarMoto from "@/screens/ProcurarMoto/ProcurarMoto";
 import AdicionarRastreador from "@/screens/AdicionarRastreador/AdicionarRastreador";
-import { DrawerParamList } from "./NavigationTypes";
+import SingleMoto from "@/screens/Moto/SingleMoto";
+import { AppDrawerNavigationProps, DrawerParamList } from "./NavigationTypes";
 import Settings from "@/screens/Settings";
+import { MaterialIcons as Icon } from "@expo/vector-icons";
+import { Platform } from "react-native";
 
 export default function DrawerNavigator() {
   const { Screen, Navigator } = createDrawerNavigator<DrawerParamList>();
+
+  const navigation = useNavigation<AppDrawerNavigationProps>();
 
   return (
     <Navigator
@@ -44,8 +49,27 @@ export default function DrawerNavigator() {
           <AdicionarRastreador {...props}></AdicionarRastreador>
         )}
       </Screen>
-       <Screen name="Configurações">
+      <Screen name="Configurações">
         {(props: ParamListBase) => <Settings {...props}></Settings>}
+      </Screen>
+      <Screen
+        name="Moto"
+        options={{
+          drawerItemStyle: { display: "none" },
+          headerLeft: (props) => (
+            <Icon
+              size={24}
+              style={{
+                marginHorizontal: 16,
+              }}
+              name={Platform.OS === "android" ? "arrow-back" : "arrow-back-ios"}
+              color="#41C526"
+              onPress={() => navigation.navigate("Procurar Moto")}
+            />
+          ),
+        }}
+      >
+        {(props: ParamListBase) => <SingleMoto {...props}></SingleMoto>}
       </Screen>
     </Navigator>
   );

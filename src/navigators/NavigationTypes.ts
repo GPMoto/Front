@@ -1,3 +1,4 @@
+import { Moto } from "@/model/Moto";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
@@ -12,7 +13,9 @@ export type DrawerParamList = {
   "Procurar Moto": undefined;
   "Adicionar Rastreador": undefined;
   "Configurações": undefined;
+  Moto: { moto: Moto, editing? : boolean };
 };
+
 
 export type RootStackNavigationProps =
   NativeStackNavigationProp<RootStackParamList>;

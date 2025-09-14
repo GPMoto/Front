@@ -8,8 +8,15 @@ import { globalStyles } from "@/styles/styles";
 import { FontAwesome6 as Icon } from "@expo/vector-icons";
 
 export default function ProcurarMoto() {
-  const { pagedMotos, setPage, page, busca, setBusca, limparBusca } =
-    useMoto(10);
+  const {
+    pagedMotos,
+    setPage,
+    page,
+    busca,
+    setBusca,
+    limparBusca,
+    goToSingleMoto,
+  } = useMoto({ size: 10 });
 
   if (pagedMotos.isLoading) {
     return (
@@ -84,7 +91,9 @@ export default function ProcurarMoto() {
             keyExtractor={(item, index) =>
               item.idMoto?.toString() || index.toString()
             }
-            renderItem={({ item }) => <SingleMotoPaged {...item} />}
+            renderItem={({ item }) => (
+              <SingleMotoPaged verMais={goToSingleMoto} {...item} />
+            )}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={
               <View style={procurarMotoStyles.emptyStateContainer}>
@@ -93,19 +102,20 @@ export default function ProcurarMoto() {
                 </Text>
               </View>
             }
-            ListFooterComponent={pagedMotos.data && pagedMotos.data.totalPages! > 1 ? (
-            <View style={procurarMotoStyles.paginationContainer}>
-              <Pagination
-                currentPage={page}
-                onPageChange={setPage}
-                pageSize={pagedMotos.data.size}
-                totalItems={pagedMotos.data.totalElements}
-                showLastPagesButtons={pagedMotos.data.totalPages! > 5}
-              />
-            </View>
-          ) : null}
+            ListFooterComponent={
+              pagedMotos.data && pagedMotos.data.totalPages! > 1 ? (
+                <View style={procurarMotoStyles.paginationContainer}>
+                  <Pagination
+                    currentPage={page}
+                    onPageChange={setPage}
+                    pageSize={pagedMotos.data.size}
+                    totalItems={pagedMotos.data.totalElements}
+                    showLastPagesButtons={pagedMotos.data.totalPages! > 5}
+                  />
+                </View>
+              ) : null
+            }
           />
-          
         </View>
       </View>
     </View>

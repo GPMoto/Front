@@ -1,13 +1,20 @@
 import { useAuth } from "@/context/AuthContext";
 import { Moto } from "@/model/Moto";
+import { AppDrawerNavigationProps } from "@/navigators/NavigationTypes";
 import MotoService from "@/services/MotoService";
-import { notEmptyString } from "@/utils/helpers";
 import { useDebounce } from "@/utils/useDebounce";
+import { useNavigation } from "@react-navigation/native";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ValidationError } from "yup";
 
-const useMoto = (size: number = 2) => {
+interface UseMotoProps {
+  size?: number;
+}
+
+const useMoto = ({ size = 2 }: UseMotoProps) => {
+  const [editingMoto, setEditingMoto] = useState<Moto | null>(null);
+
   const [page, setPage] = useState<number>(1);
 
   const queryClient = useQueryClient();
@@ -23,7 +30,7 @@ const useMoto = (size: number = 2) => {
   const limparBusca = () => {
     setBusca(null);
   };
-  
+
   const debouncedBusca = useDebounce(busca, 1000);
 
   const pagedMotos = useQuery({
@@ -32,12 +39,8 @@ const useMoto = (size: number = 2) => {
       if (debouncedBusca) {
         setPage(1);
       }
-      return await motoService.getPagedMotos(
-        debouncedBusca,
-        page,
-        size
-      );
-    }, 
+      return await motoService.getPagedMotos(debouncedBusca, page, size);
+    },
     refetchOnMount: true,
     refetchOnWindowFocus: false,
   });
@@ -61,6 +64,31 @@ const useMoto = (size: number = 2) => {
   const salvarMoto = (newMoto: Partial<Moto>) =>
     saveMotoMutation.mutate(newMoto);
 
+  const stackNavigation = useNavigation<AppDrawerNavigationProps>();
+
+  const goToSingleMoto = (moto: Moto) => {
+    stackNavigation.navigate("Moto", { moto });
+  };
+
+  const handleEditingMode = (moto: Moto) => {
+    if (editingMoto !== null) {
+      // Se já está editando uma moto, cancela a edição
+      setEditingMoto(null);
+      stackNavigation.navigate("Moto", { moto });
+      return;
+    }
+
+    // Se não está editando, entra no modo de edição
+    setEditingMoto(moto);
+    stackNavigation.navigate("Moto", { moto, editing: true });
+  };
+
+  const handleEditingMoto = (text: string, field: keyof Moto) => {
+    if (field === "placa") {
+      setEditingMoto((moto) => (moto ? { ...moto, [field]: text } : null));
+    }
+  };
+
   return {
     pagedMotos,
     salvarMoto,
@@ -70,6 +98,10 @@ const useMoto = (size: number = 2) => {
     busca,
     setBusca,
     limparBusca,
+    goToSingleMoto,
+    handleEditingMoto,
+    editingMoto,
+    handleEditingMode,
   };
 };
 
