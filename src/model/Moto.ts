@@ -2,6 +2,7 @@ import { number, object, Schema, string } from "yup";
 import { TipoMoto } from "./TipoMoto";
 import { PageableResponse } from "./types/PageableResponse";
 import { Identificador } from "./Identificador";
+import { SecaoFilial } from "./SecaoFilial";
 
 interface Moto {
   idMoto?: number;
@@ -10,6 +11,7 @@ interface Moto {
   condicoesManutencao: string;
   idTipoMoto: TipoMoto;
   placa : string;
+  idSecaoFilial : SecaoFilial;
 }
 
 interface MotoResponse {
@@ -26,6 +28,7 @@ const createMotoSchema = object({
   status: string().required(),
   condicoesManutencao: string().required(),
   idTipoMoto: number().required(),
+  idSecaoFilial : object().required(),
 });
 
 

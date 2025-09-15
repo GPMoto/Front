@@ -8,6 +8,7 @@ class MotoFetcher {
   private apiClient: AxiosInstance;
   private baseUrl: string = process.env.EXPO_PUBLIC_API_URL;
   private mockApi: boolean = !!!this.baseUrl;
+  private token: string | null;
 
   constructor(token: string | null) {
     this.apiClient = this.mockApi
@@ -16,29 +17,26 @@ class MotoFetcher {
           baseURL: this.baseUrl,
           timeout: 10000,
         });
-    this.interceptors(token);
-    
-    // ✅ Debug isolado
-    setupAxiosDebug(this.apiClient, 'MotoFetcher');
+
+    this.token = token;
+    this.interceptors();
+
+    setupAxiosDebug(this.apiClient, "MotoFetcher");
   }
 
-  private interceptors(token: string | null) {
-    this.apiClient.interceptors.request.use(
-      (config) => {
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
-
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
+  private interceptors() {
+    this.apiClient.interceptors.request.use((config) => {
+      if (this.token && !config.headers["X-Skip-Auth"]) {
+        config.headers.Authorization = `Bearer ${this.token}`;
       }
-    );
+
+      delete config.headers["X-Skip-Auth"];
+      return config;
+    });
   }
 
   async getPagedMotos(
-    search : string | null,
+    search: string | null,
     page: number = 0,
     size: number = 10
   ): Promise<PageableResponse<Moto>> {

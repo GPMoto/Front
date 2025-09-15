@@ -1,6 +1,14 @@
 import { useAuth } from "@/context/AuthContext";
-import { UserLogin, UserLoginErrors, UserLoginResponse } from "@/model/User";
-import { RootStackNavigationProps, RootStackParamList } from "@/navigators/NavigationTypes";
+import {
+  CreateUser,
+  UserLogin,
+  UserLoginErrors,
+  UserLoginResponse,
+} from "@/model/User";
+import {
+  RootStackNavigationProps,
+  RootStackParamList,
+} from "@/navigators/NavigationTypes";
 import { AuthService } from "@/services/AuthService";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
@@ -10,9 +18,12 @@ const useAuthControl = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [loginErrors, setLoginErrors] = useState<UserLoginErrors>({});
   const [error, setError] = useState<string | null>();
-  const [formulario, setFormulario] = useState<UserLogin>({
+  const [formulario, setFormulario] = useState<CreateUser>({
     email: "",
     password: "",
+    filial: 0,
+    nome: "",
+    perfil: 0,
   });
   const { login } = useAuth();
 
@@ -54,11 +65,11 @@ const useAuthControl = () => {
 
   const goToLoginPage = () => {
     navigation.navigate("Login");
-  }
+  };
 
   const goToRegisterPage = () => {
     navigation.navigate("Cadastro");
-  }
+  };
 
   const handleForm = (text: string, field: keyof UserLogin) => {
     setFormulario((formulario) => ({
@@ -67,7 +78,6 @@ const useAuthControl = () => {
     }));
   };
 
-  
   return {
     loginUser,
     loading,
@@ -77,7 +87,7 @@ const useAuthControl = () => {
     handleForm,
     formulario,
     goToLoginPage,
-    goToRegisterPage
+    goToRegisterPage,
   };
 };
 

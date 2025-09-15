@@ -17,10 +17,9 @@ import { SecaoFilial } from "@/model/SecaoFilial";
 faker.seed(100);
 faker_mx.seed(101);
 
-
 export const MOCK_TOKEN = "fake.jwt.token";
 
-// 1. DADOS BASE (sem dependências)
+// 1. DADOS BASE (sem dependências) - DEFINIR PRIMEIRO
 export const mockPaises: Pais[] = [
   { idPais: 1, nmPais: "Brasil" },
   { idPais: 2, nmPais: "Mexico" },
@@ -32,26 +31,33 @@ export const mockPerfis: Perfil[] = [
   { idPerfil: 3, nmPerfil: "Operador" },
   { idPerfil: 4, nmPerfil: "Visualizador" },
   { idPerfil: 5, nmPerfil: "Técnico" },
-  { idPerfil: 6, nmPerfil: "Convidado"}
+  { idPerfil: 6, nmPerfil: "Convidado" },
 ];
 
 export const mockTipoSecao: TipoSecao[] = [
-  {idTipoSecao: 1, nmSecao: "Estoque"},
-  {idTipoSecao: 2, nmSecao: "Manutenção"},
-  {idTipoSecao: 3, nmSecao: "Vendas"},
-  {idTipoSecao: 4, nmSecao: "Atendimento"},
-  {idTipoSecao: 5, nmSecao: "Pátio"},
-  {idTipoSecao: 6, nmSecao: "Almoxarifado"},
+  { idTipoSecao: 1, nmSecao: "Estoque" },
+  { idTipoSecao: 2, nmSecao: "Manutenção" },
+  { idTipoSecao: 3, nmSecao: "Vendas" },
+  { idTipoSecao: 4, nmSecao: "Administrativo" },
+  { idTipoSecao: 5, nmSecao: "Recepção" },
 ];
 
-// 2. PRIMEIRA CAMADA (dependem apenas dos dados base)
-const estadosBrasil = faker.helpers.uniqueArray(faker.location.state, 10);
-const estadosMexico = faker_mx.helpers.uniqueArray(faker_mx.location.state, 10);
+// 2. TIPOS DE MOTO COM SEEDS FIXAS PARA CONSISTÊNCIA
+export const mockTipoMotos: TipoMoto[] = [
+  { id_tipo_moto: 1, nmTipo: "Sport", comprimento: 2.1, largura: 0.8 },
+  { id_tipo_moto: 2, nmTipo: "Cruiser", comprimento: 2.4, largura: 0.9 },
+  { id_tipo_moto: 3, nmTipo: "Touring", comprimento: 2.3, largura: 0.85 },
+  { id_tipo_moto: 4, nmTipo: "Standard", comprimento: 2.15, largura: 0.75 },
+  { id_tipo_moto: 5, nmTipo: "Adventure", comprimento: 2.25, largura: 0.85 },
+  { id_tipo_moto: 6, nmTipo: "Naked", comprimento: 2.05, largura: 0.78 },
+  { id_tipo_moto: 7, nmTipo: "Scooter", comprimento: 1.85, largura: 0.7 },
+];
 
+// 3. SEGUNDA CAMADA (dependem da primeira camada)
 export const mockEstados: Estado[] = Array.from({ length: 20 }, (_, i) => ({
   idEstado: i + 1,
-  idPais: i + 1 <= 10 ? mockPaises[0] : mockPaises[1],
-  nmEstado: i + 1 <= 10 ? estadosBrasil[i] : estadosMexico[i - 10],
+  nmEstado: i + 1 <= 10 ? faker.location.state() : faker_mx.location.state(),
+  idPais: mockPaises[i % mockPaises.length], // Usar modulo para evitar index out of bounds
 }));
 
 export const mockTelefones: Telefone[] = Array.from({ length: 50 }, (_, i) => ({
@@ -61,10 +67,10 @@ export const mockTelefones: Telefone[] = Array.from({ length: 50 }, (_, i) => ({
   numero: faker.string.numeric(9),
 }));
 
-// 3. SEGUNDA CAMADA (dependem da primeira camada)
+// Garantir que arrays existam antes de usar no arrayElement
 export const mockCidades: Cidade[] = Array.from({ length: 40 }, (_, i) => ({
   idCidade: i + 1,
-  idEstado: mockEstados[Math.floor(i / 2)], // Distribuição mais controlada
+  idEstado: mockEstados[Math.floor(i / 2) % mockEstados.length], // Usar modulo para evitar index out of bounds
   nmCidade: i + 1 <= 20 ? faker.location.city() : faker_mx.location.city(),
 }));
 
@@ -72,7 +78,7 @@ export const mockContatos: Contato[] = Array.from({ length: 30 }, (_, i) => ({
   idContato: i + 1,
   nmDono: faker.person.fullName(),
   status: faker.helpers.arrayElement([0, 1]),
-  idTelefone: mockTelefones[i % mockTelefones.length], // Distribuição controlada
+  idTelefone: mockTelefones[i % mockTelefones.length],
 }));
 
 export const mockEnderecos: Endereco[] = Array.from({ length: 35 }, (_, i) => ({
@@ -80,7 +86,7 @@ export const mockEnderecos: Endereco[] = Array.from({ length: 35 }, (_, i) => ({
   nmLogradouro: faker.location.streetAddress(),
   nrLogradouro: faker.location.buildingNumber(),
   cep: faker.string.numeric(8),
-  idCidade: mockCidades[i % mockCidades.length], // Distribuição controlada
+  idCidade: mockCidades[i % mockCidades.length],
 }));
 
 // 4. TERCEIRA CAMADA
@@ -93,62 +99,59 @@ export const mockFiliais: Filial[] = Array.from({ length: 15 }, (_, i) => ({
   idContato: mockContatos[i % mockContatos.length],
 }));
 
-// 5. TIPOS DE MOTO COM SEEDS FIXAS PARA CONSISTÊNCIA
-export const mockTipoMotos: TipoMoto[] = [
-  { id_tipo_moto: 1, nmTipo: "Sport", comprimento: 2.10, largura: 0.80 },
-  { id_tipo_moto: 2, nmTipo: "Cruiser", comprimento: 2.40, largura: 0.90 },
-  { id_tipo_moto: 3, nmTipo: "Touring", comprimento: 2.30, largura: 0.85 },
-  { id_tipo_moto: 4, nmTipo: "Standard", comprimento: 2.15, largura: 0.75 },
-  { id_tipo_moto: 5, nmTipo: "Adventure", comprimento: 2.25, largura: 0.85 },
-  { id_tipo_moto: 6, nmTipo: "Naked", comprimento: 2.05, largura: 0.78 },
-  { id_tipo_moto: 7, nmTipo: "Scooter", comprimento: 1.85, largura: 0.70 },
-];
-
-// 6. IDENTIFICADORES E MOTOS
+// 5. IDENTIFICADORES E MOTOS
 export const mockIdentificadores: Identificador[] = Array.from(
   { length: 100 },
   (_, i) => ({
-    idIdentificador: faker.string.alphanumeric(8).toUpperCase(),
-    idFilial: mockFiliais[i % mockFiliais.length],
+    idIdentificador: i + 1,
     vlrIdentificador: faker.vehicle.vin(),
+    idFilial: mockFiliais[i % mockFiliais.length],
   })
 );
 
 export const mockMotos: Moto[] = Array.from({ length: 80 }, (_, i) => ({
   idMoto: i + 1,
-  identificador: mockIdentificadores[i],
+  identificador: mockIdentificadores[i % mockIdentificadores.length],
   status: faker.helpers.arrayElement([
     "Ativo",
-    "Inativo", 
+    "Inativo",
     "Manutenção",
     "Vendido",
   ]),
   condicoesManutencao: faker.helpers.arrayElement([
     "Excelente",
     "Boa",
-    "Regular", 
+    "Regular",
     "Ruim",
     "Péssima",
   ]),
   idTipoMoto: mockTipoMotos[i % mockTipoMotos.length],
   placa: faker.vehicle.vrm(),
+  idSecaoFilial: null, // Será definido depois que mockSecaoFilial existir
 }));
 
-// 7. DADOS MAIS COMPLEXOS
-export const mockSecaoFilial: SecaoFilial[] = mockFiliais.flatMap((filial, filialIndex) => {
-  return Array.from({ length: 6 }, (_, i) => ({ // Reduzido para 6 por filial
-    idSecao: filialIndex * 6 + i + 1,
-    lado1: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
-    lado2: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
-    lado3: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
-    lado4: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
-    idTipoSecao: mockTipoSecao[i % mockTipoSecao.length],
-    idFilial: filial,
-  }));
+// 6. DADOS MAIS COMPLEXOS (dependem de todas as camadas anteriores)
+export const mockSecaoFilial: SecaoFilial[] = mockFiliais.flatMap(
+  (filial, filialIndex) => {
+    return Array.from({ length: 6 }, (_, i) => ({
+      idSecao: filialIndex * 6 + i + 1,
+      lado1: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
+      lado2: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
+      lado3: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
+      lado4: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
+      idTipoSecao: mockTipoSecao[i % mockTipoSecao.length],
+      idFilial: filial,
+    }));
+  }
+);
+
+// Agora atualizar as motos com as seções
+mockMotos.forEach((moto, i) => {
+  moto.idSecaoFilial = mockSecaoFilial[i % mockSecaoFilial.length];
 });
 
 export const mockUsers: UserData[] = Array.from({ length: 20 }, (_, i) => {
-  if (i === 0) { // Usuário admin sempre o primeiro
+  if (i === 0) {
     return {
       idUsuario: 1,
       nmEmail: "admin@example.com",
@@ -164,6 +167,6 @@ export const mockUsers: UserData[] = Array.from({ length: 20 }, (_, i) => {
     nmUsuario: faker.person.fullName(),
     senha: faker.internet.password(),
     idFilial: mockFiliais[i % mockFiliais.length],
-    idPerfil: mockPerfis[(i % (mockPerfis.length - 1)) + 1], // Evita admin para outros usuários
+    idPerfil: mockPerfis[(i % (mockPerfis.length - 1)) + 1],
   };
 });
