@@ -19,6 +19,10 @@ export const notEmptyString = (text: string | null) => {
   return !!text && text.trim() !== "";
 };
 
+export const capitalize = (text: string) => {
+  return text.substring(0, 1).toUpperCase() + text.substring(1);
+};
+
 export const getTokenFromAuth = (config: AxiosRequestConfig) => {
   const auth: string = config.headers?.Authorization ?? "";
   const token = auth.split("Bearer ")[1];
@@ -65,7 +69,7 @@ export const formatIdentificador = (identificador: string): string => {
   if (identificador.length <= 6) {
     return identificador;
   }
-  
+
   return identificador.substring(0, 6) + "...";
 };
 

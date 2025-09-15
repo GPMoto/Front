@@ -1,9 +1,9 @@
 import { Filial } from "./Filial";
 
 interface Identificador {
-  idIdentificador: string;
-  idFilial: Filial;
+  idIdentificador: number;
   vlrIdentificador: string;
+  idFilial : Filial;
 }
 
 export { Identificador };

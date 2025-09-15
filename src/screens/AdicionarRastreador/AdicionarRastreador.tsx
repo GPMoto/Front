@@ -6,7 +6,7 @@ import * as FileSystem from "expo-file-system";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import FormularioPagina from "./FormularioPagina";
+// import FormularioPagina from "./FormularioPagina";
 import { useNavigation } from "@react-navigation/native";
 
 interface dataInterface {

@@ -5,6 +5,10 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
 import { useMoto } from "@/control/MotoControl";
 import ButtonArea from "@/components/Button/ButtonArea";
+import { Picker } from "@react-native-picker/picker";
+import { useTipoMoto } from "@/control/TipoMotoController";
+import { capitalize } from "@/utils/helpers";
+import { useIdentificador } from "@/control/IdentificadorController";
 
 const SingleMoto = () => {
   const route = useRoute<RouteProp<DrawerParamList, "Moto">>();
@@ -19,6 +23,8 @@ const SingleMoto = () => {
 
   const { editing, moto: routeMoto } = route.params;
   const { editingMoto, handleEditingMoto, handleEditingMode } = useMoto({});
+  const { tipoMotos } = useTipoMoto();
+  const { identificadoresFilial } = useIdentificador();
 
   const moto = editingMoto ?? routeMoto;
 
@@ -47,39 +53,143 @@ const SingleMoto = () => {
               ) : (
                 <TextInput
                   value={moto.placa}
-                  onChangeText={(text) => handleEditingMoto(text, "placa")}
-                  style={[styles.infoValue, { backgroundColor: "gray" }]}
+                  onChangeText={(text) => handleEditingMoto("placa", text)}
+                  style={[styles.infoValue, styles.editableInput]}
                 />
               )}
             </View>
 
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Status</Text>
-              <Text style={styles.infoValue}>{moto.status}</Text>
+              {!editing ? (
+                <Text style={styles.infoValue}>{moto.status}</Text>
+              ) : (
+                <View style={[styles.pickerContainer, styles.editableInput]}>
+                  <Picker
+                    selectedValue={moto.status}
+                    onValueChange={(text) => handleEditingMoto("status", text)}
+                    style={styles.picker}
+                    dropdownIconColor="#8B8B8B"
+                  >
+                    <Picker.Item
+                      label="Disponível"
+                      value="Disponível"
+                      color="#000000"
+                    />
+                    <Picker.Item
+                      label="Manutenção"
+                      value="Manutenção"
+                      color="#000000"
+                    />
+                    <Picker.Item
+                      label="Vendida"
+                      value="Vendida"
+                      color="#000000"
+                    />
+                  </Picker>
+                </View>
+              )}
             </View>
 
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Condições de Manutenção</Text>
-              <Text style={styles.infoValue}>{moto.condicoesManutencao}</Text>
+              {!editing ? (
+                <Text style={styles.infoValue}>{moto.condicoesManutencao}</Text>
+              ) : (
+                <View style={[styles.pickerContainer, styles.editableInput]}>
+                  <Picker
+                    selectedValue={moto.condicoesManutencao}
+                    onValueChange={(text) =>
+                      handleEditingMoto("condicoesManutencao", text)
+                    }
+                    style={styles.picker}
+                    dropdownIconColor="#8B8B8B"
+                  >
+                    <Picker.Item
+                      label="Excelente"
+                      value="Excelente"
+                      color="#000000"
+                    />
+                    <Picker.Item label="Boa" value="Boa" color="#000000" />
+                    <Picker.Item
+                      label="Regular"
+                      value="Regular"
+                      color="#000000"
+                    />
+                    <Picker.Item label="Ruim" value="Ruim" color="#000000" />
+                    <Picker.Item
+                      label="Péssima"
+                      value="Péssima"
+                      color="#000000"
+                    />
+                  </Picker>
+                </View>
+              )}
             </View>
 
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Tipo da Moto</Text>
-              <Text style={styles.infoValue}>
-                {moto.idTipoMoto?.nmTipo || "Não informado"}
-              </Text>
+              {!editing ? (
+                <Text style={styles.infoValue}>{moto.idTipoMoto.nmTipo}</Text>
+              ) : (
+                <View style={[styles.pickerContainer, styles.editableInput]}>
+                  <Picker
+                    selectedValue={moto.idTipoMoto}
+                    onValueChange={(value) =>
+                      handleEditingMoto("idTipoMoto", value)
+                    }
+                    style={styles.picker}
+                    dropdownIconColor="#8B8B8B"
+                  >
+                    {tipoMotos.data?.map((tipoMoto) => (
+                      <Picker.Item
+                        label={capitalize(tipoMoto.nmTipo)}
+                        value={tipoMoto}
+                        key={tipoMoto.id_tipo_moto}
+                      />
+                    ))}
+                  </Picker>
+                </View>
+              )}
             </View>
 
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Identificador</Text>
-              <Text style={styles.infoValue}>
-                {moto.identificador?.vlrIdentificador || "Não informado"}
-              </Text>
+              {!editing ? (
+                <Text style={styles.infoValue}>
+                  {moto.identificador.vlrIdentificador}
+                </Text>
+              ) : (
+                <View style={[styles.pickerContainer, styles.editableInput]}>
+                  <Picker
+                    selectedValue={moto.identificador}
+                    onValueChange={(value) =>
+                      handleEditingMoto("idTipoMoto", value)
+                    }
+                    style={styles.picker}
+                    dropdownIconColor="#8B8B8B"
+                  >
+                    {identificadoresFilial.data?.content?.map(
+                      (identificador) => (
+                        <Picker.Item
+                          label={capitalize(identificador.vlrIdentificador)}
+                          value={identificador}
+                          key={identificador.idIdentificador}
+                        />
+                      )
+                    )}
+                  </Picker>
+                </View>
+              )}
             </View>
           </View>
         </View>
       </ScrollView>
-      <ButtonArea title={!editing ? "Editar" : "Salvar"} size="medium" action={() => handleEditingMode(moto)} />
+      <ButtonArea
+        title={!editing ? "Editar" : "Salvar"}
+        size="medium"
+        action={() => handleEditingMode(moto)}
+      />
     </View>
   );
 };
@@ -157,6 +267,24 @@ const styles = StyleSheet.create({
     color: "#FF6B6B",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  pickerContainer: {
+    backgroundColor: "#2A2A2A",
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: "#3A3A3A",
+    minHeight: 50,
+    justifyContent: "center",
+  },
+  picker: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    height: 50,
+  },
+  editableInput: {
+    backgroundColor: "#404040",
+    borderColor: "#41C526",
+    borderWidth: 2,
   },
 });
 

@@ -1,16 +1,15 @@
 import { Picker } from "@react-native-picker/picker";
 import { Text, View } from "react-native";
-import { optionsInterface } from "../../utils/Interfaces";
 import { globalStyles } from "../../styles/styles";
 
 
-interface PickerAreaProps{
+interface PickerAreaProps<T>{
     title:string;
-    options:optionsInterface[];
+    options:T[];
     setValue:(value:string)=>void
 }
 
-export default function PickerArea(props:PickerAreaProps) {
+export default function PickerArea(props: PickerAreaProps<any>) {
   return (
     <View>
         <Text style={globalStyles.TextInput}>{props.title}</Text>

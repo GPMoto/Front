@@ -27,6 +27,7 @@ const useMoto = ({ size = 2 }: UseMotoProps) => {
 
   const [busca, setBusca] = useState<string | null>(null);
 
+
   const limparBusca = () => {
     setBusca(null);
   };
@@ -83,10 +84,11 @@ const useMoto = ({ size = 2 }: UseMotoProps) => {
     stackNavigation.navigate("Moto", { moto, editing: true });
   };
 
-  const handleEditingMoto = (text: string, field: keyof Moto) => {
-    if (field === "placa") {
-      setEditingMoto((moto) => (moto ? { ...moto, [field]: text } : null));
-    }
+  const handleEditingMoto = (field: keyof Moto, value?: string | object) => {
+    setEditingMoto((moto) => {
+      if (!moto) return null;
+      return { ...moto, [field]: value as any };
+    });
   };
 
   return {
