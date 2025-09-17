@@ -11,7 +11,7 @@ class MotoService {
   }
 
   async getPagedMotos(
-    search : string | null,
+    search: string | null,
     page: number,
     size: number
   ): Promise<PageableResponse<Moto>> {
@@ -40,6 +40,14 @@ class MotoService {
         message: "Moto inválida",
       };
     }
+  }
+
+  async update(updateMoto: Moto): Promise<Moto> {
+    return await this.motoFetcher.update(updateMoto);
+  }
+
+  async getMotoById(idMoto: number): Promise<Moto> {
+    return await this.motoFetcher.getMotoById(idMoto);
   }
 
   async searchMotos(query: string) {

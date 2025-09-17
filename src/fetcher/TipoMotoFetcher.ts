@@ -1,5 +1,6 @@
 import tipoMotoApiMock from "@/mock/fetcher/TipoMotoFetcherMock";
 import { TipoMoto } from "@/model/TipoMoto";
+import { attachUnauthorizedInterceptor } from "@/services/NetworkInterceptor";
 import { setupAxiosDebug } from "@/utils/axiosDebug";
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 
@@ -15,9 +16,11 @@ export default class TipoMotoFetcher {
           baseURL: this.baseUrl,
         });
     this.token = token;
-    setupAxiosDebug(this.apiClient, "TipoMotoFetcher");
 
     this.interceptors();
+
+    setupAxiosDebug(this.apiClient, "TipoMotoFetcher");
+    attachUnauthorizedInterceptor(this.apiClient);
   }
 
   private interceptors() {
@@ -31,9 +34,10 @@ export default class TipoMotoFetcher {
     });
   }
 
-  async findAll() : Promise<TipoMoto[]> {
-    const response : AxiosResponse<TipoMoto[]> = await this.apiClient.get("/tipo-moto");
+  async findAll(): Promise<TipoMoto[]> {
+    const response: AxiosResponse<TipoMoto[]> = await this.apiClient.get(
+      "/tipo-moto"
+    );
     return response.data;
   }
-
 }
