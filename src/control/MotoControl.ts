@@ -1,6 +1,10 @@
 import { useAuth } from "@/context/AuthContext";
 import { Moto } from "@/model/Moto";
-import { AppDrawerNavigationProps } from "@/navigators/NavigationTypes";
+import { PageableResponse } from "@/model/types/PageableResponse";
+import {
+  AppDrawerNavigationProps,
+  DrawerParamList,
+} from "@/navigators/NavigationTypes";
 import MotoService from "@/services/MotoService";
 import { useDebounce } from "@/utils/useDebounce";
 import { useNavigation } from "@react-navigation/native";
@@ -10,10 +14,12 @@ import { ValidationError } from "yup";
 
 interface UseMotoProps {
   size?: number;
+  motoId?: number; // Novo parâmetro opcional
 }
 
-const useMoto = ({ size = 2 }: UseMotoProps) => {
+const useMoto = ({ size = 2, motoId }: UseMotoProps) => {
   const [editingMoto, setEditingMoto] = useState<Moto | null>(null);
+  const [routeMoto, setRouteMoto] = useState<Moto | null>(null);
 
   const [page, setPage] = useState<number>(1);
 
@@ -27,9 +33,24 @@ const useMoto = ({ size = 2 }: UseMotoProps) => {
 
   const [busca, setBusca] = useState<string | null>(null);
 
-
   const limparBusca = () => {
     setBusca(null);
+  };
+
+  const hasChanges = () => {
+    console.log("routeMoto", routeMoto);
+    console.log("editingMoto", editingMoto);
+    if (!routeMoto || !editingMoto) return false;
+
+    return (
+      editingMoto.placa !== routeMoto.placa ||
+      editingMoto.status !== routeMoto.status ||
+      editingMoto.condicoesManutencao !== routeMoto.condicoesManutencao ||
+      editingMoto.idTipoMoto.id_tipo_moto !==
+        routeMoto.idTipoMoto.id_tipo_moto ||
+      editingMoto.identificador.idIdentificador !==
+        routeMoto.identificador.idIdentificador
+    );
   };
 
   const debouncedBusca = useDebounce(busca, 1000);
@@ -42,6 +63,18 @@ const useMoto = ({ size = 2 }: UseMotoProps) => {
       }
       return await motoService.getPagedMotos(debouncedBusca, page, size);
     },
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+  });
+
+  // Nova query para buscar moto específica
+  const singleMoto = useQuery({
+    queryKey: ["moto", motoId],
+    queryFn: async () => {
+      if (!motoId) return null;
+      return await motoService.getMotoById(motoId);
+    },
+    enabled: !!motoId, // Só executa se motoId existir
     refetchOnMount: true,
     refetchOnWindowFocus: false,
   });
@@ -62,29 +95,86 @@ const useMoto = ({ size = 2 }: UseMotoProps) => {
     },
   });
 
+  const drawerNavigator = useNavigation<AppDrawerNavigationProps>();
+
+  const updateMotoMutation = useMutation({
+    mutationFn: async (updateMoto: Moto) => {
+      const result = hasChanges();
+      console.log("Tem mudanças? ", result);
+      if (!result) {
+        return undefined;
+      }
+      return await motoService.update(updateMoto);
+    },
+    onSuccess: (updatedMoto: Moto | undefined) => {
+      if (updatedMoto) {
+        // Invalida todas as queries relacionadas a motos
+        queryClient.invalidateQueries({ queryKey: ["motos"] });
+        queryClient.refetchQueries({ queryKey: ["motos"] });
+        // Atualiza a moto sendo editada
+        setRouteMoto(updatedMoto);
+        setEditingMoto(null);
+        drawerNavigator.navigate("Procurar Moto");
+      }
+    },
+    onError: (error) => {
+      if (error instanceof ValidationError) {
+        error.inner.forEach((err: ValidationError) => {
+          setMotoErrors((motoErrors) => ({
+            ...motoErrors,
+            [err.path as keyof typeof motoErrors]: err.message,
+          }));
+        });
+      }
+    },
+  });
+
+  const atualizarMoto = () => {
+    console.log("Tentando atualizar moto:", editingMoto);
+    if (!editingMoto) {
+      console.log("editingMoto está vazio!");
+      return;
+    }
+    updateMotoMutation.mutate(editingMoto);
+  };
+
   const salvarMoto = (newMoto: Partial<Moto>) =>
     saveMotoMutation.mutate(newMoto);
 
-  const stackNavigation = useNavigation<AppDrawerNavigationProps>();
-
   const goToSingleMoto = (moto: Moto) => {
-    stackNavigation.navigate("Moto", { moto });
+    drawerNavigator.navigate("Moto", { moto });
   };
 
-  const handleEditingMode = (moto: Moto) => {
-    if (editingMoto !== null) {
-      // Se já está editando uma moto, cancela a edição
-      setEditingMoto(null);
-      stackNavigation.navigate("Moto", { moto });
-      return;
-    }
-
-    // Se não está editando, entra no modo de edição
+  const enterEditMode = (moto: Moto) => {
     setEditingMoto(moto);
-    stackNavigation.navigate("Moto", { moto, editing: true });
+    drawerNavigator.navigate("Moto", { moto, editing: true });
   };
 
-  const handleEditingMoto = (field: keyof Moto, value?: string | object) => {
+  const saveChanges = () => {
+    if (editingMoto && hasChanges()) {
+      atualizarMoto();
+    } else {
+      console.log("Nenhuma mudança detectada ou editingMoto está vazio");
+    }
+  };
+
+  const cancelEdit = () => {
+    setEditingMoto(null);
+  };
+
+  const handleEditingMode = (isEditing: boolean, moto?: Moto) => {
+    if (isEditing) {
+      // Modo edição - salvar
+      saveChanges();
+    } else {
+      // Entrar no modo edição
+      if (moto) {
+        enterEditMode(moto);
+      }
+    }
+  };
+
+  const handleEditingForm = (field: keyof Moto, value?: string | object) => {
     setEditingMoto((moto) => {
       if (!moto) return null;
       return { ...moto, [field]: value as any };
@@ -93,6 +183,7 @@ const useMoto = ({ size = 2 }: UseMotoProps) => {
 
   return {
     pagedMotos,
+    singleMoto, // Nova query retornada
     salvarMoto,
     page,
     setPage,
@@ -101,9 +192,16 @@ const useMoto = ({ size = 2 }: UseMotoProps) => {
     setBusca,
     limparBusca,
     goToSingleMoto,
-    handleEditingMoto,
+    handleEditingForm,
     editingMoto,
     handleEditingMode,
+    atualizarMoto,
+    setRouteMoto,
+    routeMoto,
+    enterEditMode,
+    saveChanges,
+    cancelEdit,
+    hasChanges,
   };
 };
 

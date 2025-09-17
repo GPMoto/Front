@@ -109,6 +109,20 @@ export const mockIdentificadores: Identificador[] = Array.from(
   })
 );
 
+export const mockSecaoFilial: SecaoFilial[] = mockFiliais.flatMap(
+  (filial, filialIndex) => {
+    return Array.from({ length: 6 }, (_, i) => ({
+      idSecao: filialIndex * 6 + i + 1,
+      lado1: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
+      lado2: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
+      lado3: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
+      lado4: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
+      idTipoSecao: mockTipoSecao[i % mockTipoSecao.length],
+      idFilial: filial,
+    }));
+  }
+);
+
 export const mockMotos: Moto[] = Array.from({ length: 80 }, (_, i) => ({
   idMoto: i + 1,
   identificador: mockIdentificadores[i % mockIdentificadores.length],
@@ -127,28 +141,9 @@ export const mockMotos: Moto[] = Array.from({ length: 80 }, (_, i) => ({
   ]),
   idTipoMoto: mockTipoMotos[i % mockTipoMotos.length],
   placa: faker.vehicle.vrm(),
-  idSecaoFilial: null, // Será definido depois que mockSecaoFilial existir
+  idSecaoFilial: faker.helpers.arrayElement(mockSecaoFilial),
 }));
 
-// 6. DADOS MAIS COMPLEXOS (dependem de todas as camadas anteriores)
-export const mockSecaoFilial: SecaoFilial[] = mockFiliais.flatMap(
-  (filial, filialIndex) => {
-    return Array.from({ length: 6 }, (_, i) => ({
-      idSecao: filialIndex * 6 + i + 1,
-      lado1: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
-      lado2: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
-      lado3: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
-      lado4: faker.number.float({ min: 6.0, max: 25.0, fractionDigits: 2 }),
-      idTipoSecao: mockTipoSecao[i % mockTipoSecao.length],
-      idFilial: filial,
-    }));
-  }
-);
-
-// Agora atualizar as motos com as seções
-mockMotos.forEach((moto, i) => {
-  moto.idSecaoFilial = mockSecaoFilial[i % mockSecaoFilial.length];
-});
 
 export const mockUsers: UserData[] = Array.from({ length: 20 }, (_, i) => {
   if (i === 0) {

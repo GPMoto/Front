@@ -1,149 +1,142 @@
-import { Text, ToastAndroid, View } from "react-native";
-import CameraSecao from "./components/CameraSecao/CameraSecao";
+import React from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
 import { globalStyles } from "../../styles/styles";
-import { useEffect, useState } from "react";
-import * as FileSystem from "expo-file-system";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import useAdicionarRastreador from "@/control/AdicionarRastreadorController";
+import { FontAwesome as Icon } from "@expo/vector-icons";
+import { Identificador } from "@/model/Identificador";
 
-// import FormularioPagina from "./FormularioPagina";
-import { useNavigation } from "@react-navigation/native";
+export default function AdicionarRastreador() {
+  const { identificadoresFilial, openCamera } = useAdicionarRastreador();
 
-interface dataInterface {
-  identificador: string;
+  const loading = identificadoresFilial.isLoading;
+  const error = identificadoresFilial.isError;
+  const identificadores = identificadoresFilial.data?.content ?? [];
+
+  return (
+    <View style={[globalStyles.container, globalStyles.pageColor]}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Adicionar Rastreador</Text>
+        <Text style={styles.subtitle}>
+          Tire uma foto da placa ou selecione um identificador abaixo.
+        </Text>
+      </View>
+
+      {loading ? (
+        <View style={styles.emptyContainer}>
+          <Text style={globalStyles.whiteText}>
+            Carregando identificadores...
+          </Text>
+        </View>
+      ) : error ? (
+        <View style={styles.emptyContainer}>
+          <Text style={globalStyles.whiteText}>Erro carregando dados</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={identificadores}
+          keyExtractor={(item: Identificador) => `${item.idIdentificador}`}
+          contentContainerStyle={styles.list}
+          renderItem={({ item }) => (
+            <View style={styles.card}>
+              <View style={styles.cardLeft}>
+                <Icon name="id-badge" size={20} color="#41C526" />
+              </View>
+              <View style={styles.cardBody}>
+                <Text style={styles.identificadorText}>
+                  {item.vlrIdentificador}
+                </Text>
+                <Text style={styles.identificadorSub}>
+                  {item.idFilial?.nome || ""}
+                </Text>
+              </View>
+            </View>
+          )}
+        />
+      )}
+
+      <TouchableOpacity style={styles.fab} onPress={openCamera}>
+        <Icon name="camera" size={24} color="#0C0C0C" />
+      </TouchableOpacity>
+    </View>
+  );
 }
 
-async function converterParaBase64(uri: string) {
-  try {
-    const base64 = await FileSystem.readAsStringAsync(uri, {
-      encoding: "base64",
-    });
-    return base64;
-  } catch (err) {
-    console.error("Erro ao converter imagem para Base64:", err);
-    return null;
-  }
-}
-
-// export default function AdicionarRastreador() {
-//   const [uri, setUri] = useState<string | null>(null);
-//   const [loading, setLoading] = useState(true);
-//   const [identificador, setIdentificador] = useState("");
-
-//   const carregarPlaca = () => {};
-
-//   const navigation = useNavigation();
-
-//   const sendApi = async () => {
-//     if (uri) {
-//       const img = await converterParaBase64(uri);
-//       const objImg = { img: img };
-//       const res = await axios.post(
-//         "sendImgapi/identificador",
-//         JSON.stringify(objImg)
-//       );
-//       if ((res.status = 200)) {
-//         ToastAndroid.show("Moto identificada", ToastAndroid.LONG);
-//         setLoading(false);
-//         const data = res.data as dataInterface;
-//         setIdentificador(data.identificador);
-//       }
-//     } else {
-//       ToastAndroid.show(
-//         "Não foi possível identificar a moto, tire outra foto!",
-//         ToastAndroid.LONG
-//       );
-//     }
-//   };
-
-//   const sendApiMock = async () => {
-//     if (uri) {
-//       const img = await converterParaBase64(uri);
-//       const objImg = { img: img };
-//       if (true) {
-//         // ToastAndroid.show("Moto identificada", ToastAndroid.LONG);
-//         setLoading(false);
-//         const strListaMotos = await AsyncStorage.getItem("listaMotos");
-//         const data: motoInterfaceTeste[] = await JSON.parse(
-//           strListaMotos ? strListaMotos : "[]"
-//         );
-//         const rastreador = data.find((moto) =>
-//           moto.identificador.toUpperCase().includes("ABC-9090")
-//         );
-//         setIdentificador("ABC-9090");
-//         ToastAndroid.show(`Moto: ${identificador} `, ToastAndroid.LONG);
-//         console.log(identificador);
-//       }
-//     } else {
-//       ToastAndroid.show(
-//         "Não foi possível identificar a moto, tire outra foto!",
-//         ToastAndroid.LONG
-//       );
-//     }
-//   };
-
-//   const loadMotos = async () => {
-//     await AsyncStorage.setItem(
-//       "listaMotos",
-//       JSON.stringify(motoInterfaceTesteList)
-//     );
-//   };
-
-//   useEffect(() => {
-//     loadMotos();
-//   }, [uri]);
-//   return (
-//     <View
-//       style={[
-//         globalStyles.container,
-//         globalStyles.pageColor,
-//         { justifyContent: "space-between", paddingBottom: 64 },
-//       ]}
-//     >
-//       <View
-//         style={[
-//           globalStyles.container,
-//           {
-//             display: identificador ? "none" : "flex",
-//           },
-//         ]}
-//       >
-//         <CameraSecao
-//           uri={uri}
-//           setUri={setUri}
-//           mandarParaForm={sendApiMock}
-//         ></CameraSecao>
-//         <Text
-//           style={[
-//             globalStyles.whiteText,
-//             {
-//               fontSize: 16,
-//               textAlign: "center",
-//               paddingTop: 16,
-//               width: "80%",
-//               alignSelf: "center",
-//             },
-//           ]}
-//         >
-//           Para adicionar rastreador é preciso tirar uma foto da placa.
-//         </Text>
-//       </View>
-
-//       {identificador && !loading ? (
-//         <View style={globalStyles.container}>
-//         <FormularioPagina
-//           identificador={identificador}
-//           setIdentificador={setIdentificador}
-//           setLoading={setLoading}
-//         />
-//         </View>
-//       ) : (
-//         <View></View>
-//       )}
-//     </View>
-//   );
-// }
-
-export default function AdicionarRastreador(){
-  return null;
-}
+const styles = StyleSheet.create({
+  header: {
+    paddingVertical: 16,
+    paddingHorizontal: 8,
+    marginBottom: 8,
+  },
+  title: {
+    color: "#FFFFFF",
+    fontSize: 22,
+    fontWeight: "bold",
+  },
+  subtitle: {
+    color: "#BFC9B8",
+    marginTop: 6,
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  list: {
+    paddingBottom: 120,
+  },
+  card: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#1F1F1F",
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "rgba(65,197,38,0.08)",
+  },
+  cardLeft: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "rgba(65,197,38,0.12)",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 12,
+  },
+  cardBody: {
+    flex: 1,
+  },
+  identificadorText: {
+    color: "#FFFFFF",
+    fontWeight: "600",
+    fontSize: 16,
+  },
+  identificadorSub: {
+    color: "#BFC9B8",
+    fontSize: 12,
+    marginTop: 4,
+  },
+  fab: {
+    position: "absolute",
+    right: 20,
+    bottom: 28,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: "#41C526",
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 6,
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 6,
+  },
+});

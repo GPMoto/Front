@@ -3,6 +3,7 @@ import profileMockApi from "../mock/fetcher/ProfileFetcherMock";
 import { UserData } from "@/model/User";
 import { Perfil } from "@/model/Perfil";
 import { setupAxiosDebug } from "@/utils/axiosDebug";
+import { attachUnauthorizedInterceptor } from "@/services/NetworkInterceptor";
 
 class ProfileFetcher {
   private apiClient: AxiosInstance;
@@ -23,9 +24,10 @@ class ProfileFetcher {
         });
     this.token = token;
     this.interceptors();
-    
+
     // ✅ Debug isolado
-    setupAxiosDebug(this.apiClient, 'ProfileFetcher');
+    setupAxiosDebug(this.apiClient, "ProfileFetcher");
+    attachUnauthorizedInterceptor(this.apiClient);
   }
 
   private interceptors() {

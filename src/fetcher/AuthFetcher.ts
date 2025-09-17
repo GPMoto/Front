@@ -9,6 +9,7 @@ import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import authMockApi from "../mock/fetcher/AuthFetcherMock";
 import { getErrorMessage } from "@/utils/helpers";
 import { setupAxiosDebug } from "@/utils/axiosDebug";
+import { attachUnauthorizedInterceptor } from "@/services/NetworkInterceptor";
 
 class AuthFetcher {
   private endpoint: string = "/auth";
@@ -27,8 +28,8 @@ class AuthFetcher {
           },
         });
     
-    // ✅ Debug isolado
     setupAxiosDebug(this.apiClient, 'AuthFetcher');
+    attachUnauthorizedInterceptor(this.apiClient);
   }
 
   async login(userLogin: UserLogin): Promise<AuthResponse> {

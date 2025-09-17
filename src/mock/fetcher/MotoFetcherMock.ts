@@ -39,4 +39,65 @@ mock.onGet("/moto/paginado/").reply((config) => {
   return [200, pageData];
 });
 
+mock.onPut(new RegExp("^/moto/\\d+$")).reply((config) => {
+  const token = getTokenFromAuth(config);
+
+  if (!(token === MOCK_TOKEN)) return [403, "Token é obrigatório!"];
+
+  const url = config.url || "";
+  const matches = url.match(/\/moto\/(\d+)$/);
+  const motoId = matches ? Number(matches[1]) : null;
+
+  if (!motoId) {
+    return [400, { message: "ID da moto é obrigatório" }];
+  }
+
+  const updatedMoto = JSON.parse(config.data);
+  
+  // Encontrar a moto no mock
+  const motoIndex = mockMotos.findIndex(moto => moto.idMoto === motoId);
+  
+  if (motoIndex === -1) {
+    return [404, { message: "Moto não encontrada" }];
+  }
+
+  // Atualizar a moto no array mock
+  const originalMoto = mockMotos[motoIndex];
+  const motoAtualizada = {
+    ...originalMoto,
+    ...updatedMoto,
+    idMoto: motoId // Garantir que o ID não seja alterado
+  };
+  
+  mockMotos[motoIndex] = motoAtualizada;
+
+  console.log("Moto atualizada:", motoAtualizada);
+
+  return [200, motoAtualizada];
+});
+
+mock.onGet(new RegExp("^/moto/\\d+$")).reply((config) => {
+  const token = getTokenFromAuth(config);
+
+  if (!(token === MOCK_TOKEN)) return [403, "Token é obrigatório!"];
+
+  const url = config.url || "";
+  const matches = url.match(/\/moto\/(\d+)$/);
+  const motoId = matches ? Number(matches[1]) : null;
+
+  if (!motoId) {
+    return [400, { message: "ID da moto é obrigatório" }];
+  }
+
+  const moto = mockMotos.find(moto => moto.idMoto === motoId);
+  
+  if (!moto) {
+    return [404, { message: "Moto não encontrada" }];
+  }
+
+  console.log("Moto encontrada:", moto);
+
+  return [200, moto];
+});
+
 export default motoMockApi;

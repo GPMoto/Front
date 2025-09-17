@@ -1,6 +1,12 @@
 import { DrawerParamList } from "@/navigators/NavigationTypes";
 import { RouteProp, useRoute } from "@react-navigation/native";
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
 import { useMoto } from "@/control/MotoControl";
@@ -9,6 +15,7 @@ import { Picker } from "@react-native-picker/picker";
 import { useTipoMoto } from "@/control/TipoMotoController";
 import { capitalize } from "@/utils/helpers";
 import { useIdentificador } from "@/control/IdentificadorController";
+import { useEffect } from "react";
 
 const SingleMoto = () => {
   const route = useRoute<RouteProp<DrawerParamList, "Moto">>();
@@ -22,11 +29,59 @@ const SingleMoto = () => {
   }
 
   const { editing, moto: routeMoto } = route.params;
-  const { editingMoto, handleEditingMoto, handleEditingMode } = useMoto({});
+  const { 
+    editingMoto, 
+    handleEditingForm, 
+    saveChanges, 
+    enterEditMode, 
+    setRouteMoto,
+    singleMoto // Nova query
+  } = useMoto({ motoId: routeMoto.idMoto });
   const { tipoMotos } = useTipoMoto();
-  const { identificadoresFilial } = useIdentificador();
 
-  const moto = editingMoto ?? routeMoto;
+  // ✅ useEffect corrigido - só executa quando singleMoto.data mudar
+  useEffect(() => {
+    if (singleMoto.data) {
+      setRouteMoto(singleMoto.data);
+    }
+  }, [singleMoto.data]); // Apenas singleMoto.data como dependência
+
+  // ✅ useEffect separado para modo de edição - só executa quando necessário
+  useEffect(() => {
+    if (editing && !editingMoto) {
+      const motoToEdit = singleMoto.data || routeMoto;
+      enterEditMode(motoToEdit);
+    }
+  }, [editing]); // Apenas editing como dependência
+
+  // Use os dados da query se disponíveis, senão use routeMoto
+  const currentMoto = singleMoto.data || routeMoto;
+  const moto = editingMoto ?? currentMoto;
+  
+  const { identificadoresFilial } = useIdentificador({
+    idFilial: moto.idSecaoFilial.idFilial.idFilial,
+  });
+
+  // Loading state para a query da moto - APÓS todos os hooks
+  if (singleMoto.isLoading) {
+    return (
+      <View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
+        <ActivityIndicator size="large" color="#41C526" />
+        <Text style={styles.subtitle}>Carregando moto...</Text>
+      </View>
+    );
+  }
+
+  // Error state para a query da moto - APÓS todos os hooks
+  if (singleMoto.isError) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>
+          Erro ao carregar moto: {singleMoto.error?.message}
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -53,7 +108,7 @@ const SingleMoto = () => {
               ) : (
                 <TextInput
                   value={moto.placa}
-                  onChangeText={(text) => handleEditingMoto("placa", text)}
+                  onChangeText={(text) => handleEditingForm("placa", text)}
                   style={[styles.infoValue, styles.editableInput]}
                 />
               )}
@@ -67,7 +122,7 @@ const SingleMoto = () => {
                 <View style={[styles.pickerContainer, styles.editableInput]}>
                   <Picker
                     selectedValue={moto.status}
-                    onValueChange={(text) => handleEditingMoto("status", text)}
+                    onValueChange={(text) => handleEditingForm("status", text)}
                     style={styles.picker}
                     dropdownIconColor="#8B8B8B"
                   >
@@ -100,7 +155,7 @@ const SingleMoto = () => {
                   <Picker
                     selectedValue={moto.condicoesManutencao}
                     onValueChange={(text) =>
-                      handleEditingMoto("condicoesManutencao", text)
+                      handleEditingForm("condicoesManutencao", text)
                     }
                     style={styles.picker}
                     dropdownIconColor="#8B8B8B"
@@ -136,7 +191,7 @@ const SingleMoto = () => {
                   <Picker
                     selectedValue={moto.idTipoMoto}
                     onValueChange={(value) =>
-                      handleEditingMoto("idTipoMoto", value)
+                      handleEditingForm("idTipoMoto", value)
                     }
                     style={styles.picker}
                     dropdownIconColor="#8B8B8B"
@@ -164,7 +219,7 @@ const SingleMoto = () => {
                   <Picker
                     selectedValue={moto.identificador}
                     onValueChange={(value) =>
-                      handleEditingMoto("idTipoMoto", value)
+                      handleEditingForm("idTipoMoto", value)
                     }
                     style={styles.picker}
                     dropdownIconColor="#8B8B8B"
@@ -188,7 +243,13 @@ const SingleMoto = () => {
       <ButtonArea
         title={!editing ? "Editar" : "Salvar"}
         size="medium"
-        action={() => handleEditingMode(moto)}
+        action={() => {
+          if (editing) {
+            saveChanges();
+          } else {
+            enterEditMode(routeMoto);
+          }
+        }}
       />
     </View>
   );

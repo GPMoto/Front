@@ -3,6 +3,7 @@ import axios, { AxiosInstance, AxiosResponse } from "axios";
 import filialMockApi from "../mock/fetcher/FilialFetcherMock";
 import { Filial } from "@/model/Filial";
 import { setupAxiosDebug } from "@/utils/axiosDebug";
+import { attachUnauthorizedInterceptor } from "@/services/NetworkInterceptor";
 
 class FilialFetcher {
   private apiClient: AxiosInstance;
@@ -19,9 +20,9 @@ class FilialFetcher {
         });
     this.token = token;
     this.interceptors();
-    
-    // ✅ Debug isolado
-    setupAxiosDebug(this.apiClient, 'FilialFetcher');
+
+    setupAxiosDebug(this.apiClient, "FilialFetcher");
+    attachUnauthorizedInterceptor(this.apiClient);
   }
 
   private interceptors() {
@@ -31,7 +32,7 @@ class FilialFetcher {
         config.headers.Authorization = `Bearer ${this.token}`;
       }
       if (!config.headers.Authorization) {
-        console.log("X-Skip funcionando!")
+        console.log("X-Skip funcionando!");
       }
       delete config.headers["X-Skip-Auth"];
       return config;

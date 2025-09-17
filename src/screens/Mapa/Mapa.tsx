@@ -4,10 +4,12 @@ import useFilial from "@/control/FilialController";
 import LoadingScreen from "@/components/shared/LoadingScreen";
 import { FontAwesome as Icon } from "@expo/vector-icons";
 
-const { width } = Dimensions.get('window');
+const { width: windowWidth } = Dimensions.get('window');
+const ITEM_WIDTH = Math.round(windowWidth);
 
 export default function Mapa() {
   const { secoes, error, loading } = useFilial();
+  const { height } = Dimensions.get("window");
 
   if (error) {
     return (
@@ -41,8 +43,14 @@ export default function Mapa() {
 
       <FlatList
         data={secoes!}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        decelerationRate={'fast'}
+        snapToInterval={ITEM_WIDTH} // full width items
+        snapToAlignment={'center'}
+        contentContainerStyle={styles.listContainer}
         renderItem={({ item }) => (
-          <View style={styles.sectionCard}>
+          <View style={[styles.sectionCard, {height: Math.max(300, height * 0.6), width: ITEM_WIDTH}]}>
             <View style={styles.cardHeader}>
               <View style={styles.sectionIconContainer}>
                 <Icon name="cube" size={20} color="#FFF" />
@@ -73,12 +81,12 @@ export default function Mapa() {
                   <Text style={styles.measurementValue}>{item.lado4}m</Text>
                 </View>
               </View>
+              <Text style={styles.measurementsTitle}>Dimensões (metros)</Text>
             </View>
           </View>
         )}
         keyExtractor={(item, index) => `${item.idSecao}-${index}`}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContainer}
       />
     </View>
   );
@@ -87,57 +95,57 @@ export default function Mapa() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
+    backgroundColor: '#1F1F1F',
   },
   header: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#2C2C2C',
     paddingHorizontal: 20,
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#E9ECEF',
+    borderBottomColor: 'rgba(65,197,38,0.08)',
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 4,
   },
   headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#2C3E50',
+    color: '#FFFFFF',
     marginTop: 8,
   },
   headerSubtitle: {
     fontSize: 14,
-    color: '#6C757D',
+    color: '#BFC9B8',
     marginTop: 4,
   },
   listContainer: {
-    padding: 16,
+    paddingVertical: 16,
   },
   sectionCard: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#2B2B2B',
     borderRadius: 12,
     marginBottom: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    elevation: 5,
     overflow: 'hidden',
   },
   cardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#007AFF',
+    backgroundColor: '#1B1B1B',
   },
   sectionIconContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: 'rgba(65,197,38,0.15)',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -148,11 +156,11 @@ const styles = StyleSheet.create({
   sectionName: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#FFF',
+    color: '#E8F6E6',
   },
   sectionId: {
     fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: 'rgba(255, 255, 255, 0.7)',
     marginTop: 2,
   },
   measurementsContainer: {
@@ -161,7 +169,7 @@ const styles = StyleSheet.create({
   measurementsTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#2C3E50',
+    color: '#E6F7E8',
     marginBottom: 12,
   },
   measurementsGrid: {
@@ -170,8 +178,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   measurementItem: {
-    width: (width - 64) / 2,
-    backgroundColor: '#F8F9FA',
+    // use windowWidth constant to avoid undefined `width` in this scope
+    width: (windowWidth - 64) / 2,
+    backgroundColor: '#232323',
     borderRadius: 8,
     padding: 12,
     marginBottom: 8,
@@ -179,38 +188,38 @@ const styles = StyleSheet.create({
   },
   measurementLabel: {
     fontSize: 12,
-    color: '#6C757D',
+    color: '#A3B39A',
     fontWeight: '500',
     marginBottom: 4,
   },
   measurementValue: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#007AFF',
+    color: '#41C526',
   },
   errorContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F8F9FA',
+    backgroundColor: '#1F1F1F',
     padding: 32,
   },
   errorTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#2C3E50',
+    color: '#FFFFFF',
     marginTop: 16,
     marginBottom: 8,
   },
   errorMessage: {
     fontSize: 16,
-    color: '#6C757D',
+    color: '#BFC9B8',
     textAlign: 'center',
     lineHeight: 24,
   },
   loadingText: {
     fontSize: 16,
-    color: '#6C757D',
+    color: '#BFC9B8',
     marginTop: 16,
   },
 });

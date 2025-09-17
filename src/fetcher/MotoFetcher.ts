@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import motoMockApi from "../mock/fetcher/MotoFetcherMock";
 import { Moto } from "@/model/Moto";
 import { PageableResponse } from "@/model/types/PageableResponse";
@@ -70,6 +70,16 @@ class MotoFetcher {
         success: false,
       };
     }
+  }
+
+  async update(updateMoto : Moto) : Promise<Moto> {
+    const response : AxiosResponse<Moto> = await this.apiClient.put(`/moto/${updateMoto.idMoto}`, updateMoto);
+    return response.data;
+  }
+
+  async getMotoById(idMoto: number): Promise<Moto> {
+    const response: AxiosResponse<Moto> = await this.apiClient.get(`/moto/${idMoto}`);
+    return response.data;
   }
 
   async searchMotos(query: string) {
