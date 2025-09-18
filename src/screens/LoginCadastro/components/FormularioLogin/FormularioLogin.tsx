@@ -122,14 +122,14 @@ export default function FormularioLogin(props: any) {
             </View>
 
             {/* Forgot Password */}
-            <View style={formularioLoginStyles.forgotPasswordContainer}>
+            { /* <View style={formularioLoginStyles.forgotPasswordContainer}>
               <Text style={formularioLoginStyles.forgotPasswordText}>
                 Esqueceu sua senha?{" "}
                 <Text style={formularioLoginStyles.forgotPasswordLink}>
                   Clique aqui
                 </Text>
               </Text>
-            </View>
+            </View> */}
 
             {/* Loading Overlay */}
             {loading && (
