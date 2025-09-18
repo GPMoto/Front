@@ -3,6 +3,7 @@ import { globalStyles } from "../../styles/styles";
 import useFilial from "@/control/FilialController";
 import LoadingScreen from "@/components/shared/LoadingScreen";
 import { FontAwesome as Icon } from "@expo/vector-icons";
+import ButtonArea from "@/components/Button/ButtonArea";
 
 const { width: windowWidth } = Dimensions.get('window');
 const ITEM_WIDTH = Math.round(windowWidth);
@@ -81,7 +82,9 @@ export default function Mapa() {
                   <Text style={styles.measurementValue}>{item.lado4}m</Text>
                 </View>
               </View>
-              <Text style={styles.measurementsTitle}>Dimensões (metros)</Text>
+              <ButtonArea size="medium" title="Ver as motos" additionalStyles={{
+                marginTop: 12,
+              }} action={} />
             </View>
           </View>
         )}

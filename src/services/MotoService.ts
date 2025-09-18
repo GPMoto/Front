@@ -53,6 +53,10 @@ class MotoService {
   async searchMotos(query: string) {
     return await this.motoFetcher.searchMotos(query);
   }
+
+  async getPagedMotosBySecaoFilial (idSecaoFilial : number) {
+    return await this.motoFetcher.getPagedMotosBySecaoFilial(idSecaoFilial);
+  }
 }
 
 export default MotoService;
