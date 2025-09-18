@@ -15,9 +15,10 @@ import { ValidationError } from "yup";
 interface UseMotoProps {
   size?: number;
   motoId?: number; // Novo parâmetro opcional
+  idSecaoFilial? : number;
 }
 
-const useMoto = ({ size = 2, motoId }: UseMotoProps) => {
+const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
   const [editingMoto, setEditingMoto] = useState<Moto | null>(null);
   const [routeMoto, setRouteMoto] = useState<Moto | null>(null);
 
@@ -53,8 +54,18 @@ const useMoto = ({ size = 2, motoId }: UseMotoProps) => {
     );
   };
 
+  
   const debouncedBusca = useDebounce(busca, 1000);
-
+  
+  const pagedMotosMotos = useQuery({
+    queryKey: ["motos", page, size, debouncedBusca, idSecaoFilial],
+    queryFn: async () => {
+       if (debouncedBusca) {
+        setPage(1);
+      }
+      return await motoService.
+    }
+  })
   const pagedMotos = useQuery({
     queryKey: ["motos", page, size, debouncedBusca],
     queryFn: async () => {

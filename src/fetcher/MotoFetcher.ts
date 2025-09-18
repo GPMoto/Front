@@ -72,18 +72,32 @@ class MotoFetcher {
     }
   }
 
-  async update(updateMoto : Moto) : Promise<Moto> {
-    const response : AxiosResponse<Moto> = await this.apiClient.put(`/moto/${updateMoto.idMoto}`, updateMoto);
+  async update(updateMoto: Moto): Promise<Moto> {
+    const response: AxiosResponse<Moto> = await this.apiClient.put(
+      `/moto/${updateMoto.idMoto}`,
+      updateMoto
+    );
     return response.data;
   }
 
   async getMotoById(idMoto: number): Promise<Moto> {
-    const response: AxiosResponse<Moto> = await this.apiClient.get(`/moto/${idMoto}`);
+    const response: AxiosResponse<Moto> = await this.apiClient.get(
+      `/moto/${idMoto}`
+    );
     return response.data;
   }
 
   async searchMotos(query: string) {
     return query;
+  }
+
+  async getPagedMotosBySecaoFilial(
+    search: string | null,
+    page: number = 0,
+    size: number = 10,
+    idSecaoFilial: number
+  ) {
+    return ;
   }
 }
 
