@@ -4,7 +4,6 @@ export const setupAxiosDebug = (
   apiClient: AxiosInstance,
   serviceName: string = ""
 ) => {
-  if (!__DEV__) return null;
   // Request interceptor
   apiClient.interceptors.request.use(
     (config) => {

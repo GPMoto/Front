@@ -17,6 +17,7 @@ class AuthService {
   }
 
   async login(userLogin: UserLogin): Promise<AuthResponse> {
+    console.log("auth controller")
     const isValid = await userLoginSchema.isValid(userLogin);
     if (!isValid) {
       let userLoginErros: UserLoginErrors = {};

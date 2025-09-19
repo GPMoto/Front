@@ -44,7 +44,7 @@ const useAuthControl = () => {
     }
 
     const loginResponse = result.data as UserLoginResponse;
-    await login(loginResponse.token);
+    await login(loginResponse);
     setLoading(false);
   };
 

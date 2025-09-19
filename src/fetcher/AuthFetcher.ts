@@ -18,9 +18,10 @@ class AuthFetcher {
   private mockApi: boolean = !!!this.baseUrl;
 
   constructor() {
-    this.apiClient = this.mockApi
-      ? authMockApi
-      : axios.create({
+    console.log(this.baseUrl)
+    this.apiClient = this.mockApi 
+    ? authMockApi
+    : axios.create({
           baseURL: this.baseUrl,
           timeout: 10000,
           headers: {
@@ -33,10 +34,10 @@ class AuthFetcher {
   }
 
   async login(userLogin: UserLogin): Promise<AuthResponse> {
-    this.endpoint = "/auth/login";
+    this.endpoint = "/autenticacao/login";
     try {
       const response: AxiosResponse<UserLoginResponse> =
-        await this.apiClient.post(this.endpoint, userLogin);
+        await this.apiClient.post(`${this.endpoint}?username=${userLogin.email}&password=${userLogin.password}` );
 
       return {
         data: response.data,
