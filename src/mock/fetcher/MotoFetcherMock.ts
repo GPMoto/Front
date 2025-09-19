@@ -100,4 +100,45 @@ mock.onGet(new RegExp("^/moto/\\d+$")).reply((config) => {
   return [200, moto];
 });
 
+mock.onGet(new RegExp("^/moto/secao-filial/\\d+$")).reply((config) => {
+  const token = getTokenFromAuth(config);
+
+  if (!(token === MOCK_TOKEN)) return [403, "Token é obrigatório!"];
+
+  const url = config.url || "";
+  const matches = url.match(/\/moto\/secao-filial\/(\d+)$/);
+  const idSecaoFilial = matches ? Number(matches[1]) : null;
+  console.log("no mock o id da seção é", idSecaoFilial);
+  if (!idSecaoFilial) {
+    return [400, { message: "ID da seção filial é obrigatório" }];
+  }
+
+  const page = Number(config.params?.page || 0);
+  const size = Number(config.params?.size || 10);
+  const search = config.params?.search;
+
+  console.log(`Buscando motos da seção filial ${idSecaoFilial}, página ${page}, tamanho ${size}`);
+
+  // Filtrar motos pela seção filial
+  let filteredMotos = mockMotos.filter(moto => 
+    moto.idSecaoFilial && moto.idSecaoFilial.idSecao === idSecaoFilial
+  );
+
+  let filterMotosTeste = mockMotos.filter(moto => moto.idSecaoFilial.idSecao === 2);
+  console.log("motos da secao filial 1 são: ", filterMotosTeste);
+
+  // Aplicar filtro de busca se fornecido
+  if (notEmptyString(search)) {
+    filteredMotos = filteredMotos.filter((moto) =>
+      moto.placa.toLowerCase().includes(search.toLowerCase())
+    );
+  }
+
+  const pageData = getSpringPage(filteredMotos, page, size);
+
+  console.log(`Encontradas ${filteredMotos.length} motos para seção ${idSecaoFilial}`);
+
+  return [200, pageData];
+});
+
 export default motoMockApi;

@@ -16,6 +16,7 @@ import { useTipoMoto } from "@/control/TipoMotoController";
 import { capitalize } from "@/utils/helpers";
 import { useIdentificador } from "@/control/IdentificadorController";
 import { useEffect } from "react";
+import useFilial from "@/control/FilialController";
 
 const SingleMoto = () => {
   const route = useRoute<RouteProp<DrawerParamList, "Moto">>();
@@ -61,6 +62,8 @@ const SingleMoto = () => {
   const { identificadoresFilial } = useIdentificador({
     idFilial: moto.idSecaoFilial.idFilial.idFilial,
   });
+
+  const { secoes, error: secoesError, loading: secoesLoading } = useFilial()
 
   // Loading state para a query da moto - APÓS todos os hooks
   if (singleMoto.isLoading) {
@@ -237,6 +240,37 @@ const SingleMoto = () => {
                 </View>
               )}
             </View>
+
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Seção da moto</Text>
+              {!editing ? (
+                <Text style={styles.infoValue}>
+                  {moto.idSecaoFilial.idTipoSecao.nmSecao}
+                </Text>
+              ) : (
+                <View style={[styles.pickerContainer, styles.editableInput]}>
+                  <Picker
+                    selectedValue={moto.idSecaoFilial}
+                    onValueChange={(value) =>
+                      handleEditingForm("idSecaoFilial", value)
+                    }
+                    style={styles.picker}
+                    dropdownIconColor="#8B8B8B"
+                  >
+                    {secoes && secoes.map(
+                      (secao) => (
+                        <Picker.Item
+                          label={capitalize(secao.idTipoSecao.nmSecao)}
+                          value={secao}
+                          key={secao.idSecao}
+                        />
+                      )
+                    )}
+                  </Picker>
+                </View>
+              )}
+            </View>
+
           </View>
         </View>
       </ScrollView>
