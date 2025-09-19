@@ -71,10 +71,10 @@ export default function FormularioLogin(props: any) {
             <View style={formularioLoginStyles.inputContainer}>
               {/* Email Input */}
               <View style={formularioLoginStyles.inputWrapper}>
-                <Text style={formularioLoginStyles.inputLabel}>Email</Text>
+                <Text style={formularioLoginStyles.inputLabel}>Nome</Text>
                 <TextInput
                   style={formularioLoginStyles.inputField}
-                  placeholder="Digite seu email"
+                  placeholder="Digite seu nome"
                   placeholderTextColor="#8B8B8B"
                   value={formulario.email}
                   onChangeText={(text) => handleForm(text, "email")}
