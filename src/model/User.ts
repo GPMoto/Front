@@ -25,10 +25,10 @@ interface CreateUser {
   perfil: number;
 }
 
-const userLoginSchema: Schema<UserLogin> = object({
+const userLoginSchema = object({
   email: string()
-    .required("Insira seu email")
-    .email("É obrigatório um email válido"),
+    .required("Insira o seu nome")
+    .min(2, "Mínimo de 2 caracteres"),
   password: string().required("Insira sua senha"),
 });
 
@@ -56,9 +56,7 @@ const createUserSchema: Schema<CreateUser> = object({
 
 type UserLoginErrors = Partial<UserLogin>;
 
-interface UserLoginResponse {
-  token: string;
-}
+type UserLoginResponse = string;
 
 interface UserLoginErrorResponse extends ErrorResponseApi {}
 
