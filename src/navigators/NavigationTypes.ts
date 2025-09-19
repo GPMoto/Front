@@ -1,5 +1,5 @@
 import { Moto } from "@/model/Moto";
-import QrCodeResponse from "@/model/types/QrCodeResponse";
+import { QrCodeResponse } from "@/model/types/QrCodeResponse";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
@@ -11,12 +11,12 @@ export type RootStackParamList = {
 export type DrawerParamList = {
   Inicio: undefined;
   Mapa: undefined;
-  "Procurar Moto": undefined;
+  "Procurar Moto": { idSecaoFilial: number } | undefined;
   "Adicionar Rastreador": undefined;
   Configurações: undefined;
   Moto: { moto: Moto; editing?: boolean };
-  QRCode: { qrCode: QrCodeResponse, placa : string};
-  Scanner : undefined;
+  QRCode: { qrCode: QrCodeResponse; placa: string };
+  Scanner: undefined;
 };
 
 export type RootStackNavigationProps =

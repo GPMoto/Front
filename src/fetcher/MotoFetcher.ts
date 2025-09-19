@@ -21,7 +21,7 @@ class MotoFetcher {
     this.token = token;
     this.interceptors();
 
-    setupAxiosDebug(this.apiClient, "MotoFetcher");
+    // setupAxiosDebug(this.apiClient, "MotoFetcher");
   }
 
   private interceptors() {
@@ -93,11 +93,24 @@ class MotoFetcher {
 
   async getPagedMotosBySecaoFilial(
     search: string | null,
+    idSecaoFilial: number,
     page: number = 0,
     size: number = 10,
-    idSecaoFilial: number
-  ) {
-    return ;
+  ) : Promise<PageableResponse<Moto>> {
+    console.log("antes dos url params")
+
+    console.log("antes do append de search")
+
+    console.log("antes de pedir pro mock")
+    const response : AxiosResponse<PageableResponse<Moto>> = await this.apiClient.get(`/moto/secao-filial/${idSecaoFilial}`, {
+        params: {
+          search,
+          page,
+          size,
+        },
+      });
+    console.log("response data: ", response.data)
+    return response.data;
   }
 }
 

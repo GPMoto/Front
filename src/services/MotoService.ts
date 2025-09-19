@@ -54,8 +54,16 @@ class MotoService {
     return await this.motoFetcher.searchMotos(query);
   }
 
-  async getPagedMotosBySecaoFilial (idSecaoFilial : number) {
-    return await this.motoFetcher.getPagedMotosBySecaoFilial(idSecaoFilial);
+  async getPagedMotosBySecaoFilial(
+    idSecaoFilial: number,
+    search: string | null = null,
+    page: number = 1,
+    size: number = 10
+  ): Promise<PageableResponse<Moto>> {
+    console.log("estou no service para resgatar motos lindas da filial")
+    const data = await this.motoFetcher.getPagedMotosBySecaoFilial(search, idSecaoFilial, page, size);
+    console.log("cavalo", data);
+    return data;
   }
 }
 

@@ -1,13 +1,28 @@
 import { useMoto } from "@/control/MotoControl";
-import { ActivityIndicator, FlatList, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Text,
+  View,
+  ScrollView,
+  RefreshControl,
+} from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import Pagination from "@cherry-soft/react-native-basic-pagination";
 import SingleMotoPaged from "@/components/SingleMotoPaged/SingleMotoPaged";
 import { procurarMotoStyles } from "./ProcurarMotoStyles";
 import { globalStyles } from "@/styles/styles";
 import { FontAwesome6 as Icon } from "@expo/vector-icons";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import {
+  AppDrawerNavigationProps,
+  DrawerParamList,
+} from "@/navigators/NavigationTypes";
 
 export default function ProcurarMoto() {
+  const route = useRoute<RouteProp<DrawerParamList, "Procurar Moto">>();
+  const params = route.params;
+
   const {
     pagedMotos,
     setPage,
@@ -16,7 +31,8 @@ export default function ProcurarMoto() {
     setBusca,
     limparBusca,
     goToSingleMoto,
-  } = useMoto({ size: 10 });
+    reloadPage,
+  } = useMoto({ size: 10, idSecaoFilial: params?.idSecaoFilial });
 
   if (pagedMotos.isLoading) {
     return (
@@ -72,20 +88,6 @@ export default function ProcurarMoto() {
 
       <View style={procurarMotoStyles.contentArea}>
         <View style={procurarMotoStyles.listArea}>
-          <View style={procurarMotoStyles.totalMotosContainer}>
-            <Text
-              style={[
-                procurarMotoStyles.pageText,
-                {
-                  fontWeight: "bold",
-                  fontSize: 18,
-                },
-              ]}
-            >
-              Total de motos: {pagedMotos.data!.totalElements || 0}
-            </Text>
-          </View>
-
           <FlatList
             data={pagedMotos.data!.content}
             keyExtractor={(item, index) =>
@@ -95,6 +97,32 @@ export default function ProcurarMoto() {
               <SingleMotoPaged verMais={goToSingleMoto} {...item} />
             )}
             showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={pagedMotos.isRefetching}
+                onRefresh={() => {
+                  reloadPage();
+                  pagedMotos.refetch();
+                }}
+                tintColor="#41C526"
+                colors={["#41C526"]}
+              />
+            }
+            ListHeaderComponent={
+              <View style={procurarMotoStyles.totalMotosContainer}>
+                <Text
+                  style={[
+                    procurarMotoStyles.pageText,
+                    {
+                      fontWeight: "bold",
+                      fontSize: 18,
+                    },
+                  ]}
+                >
+                  Total de motos: {pagedMotos.data!.totalElements || 0}
+                </Text>
+              </View>
+            }
             ListEmptyComponent={
               <View style={procurarMotoStyles.emptyStateContainer}>
                 <Text style={[globalStyles.TextInput, { textAlign: "center" }]}>

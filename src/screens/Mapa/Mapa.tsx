@@ -4,6 +4,8 @@ import useFilial from "@/control/FilialController";
 import LoadingScreen from "@/components/shared/LoadingScreen";
 import { FontAwesome as Icon } from "@expo/vector-icons";
 import ButtonArea from "@/components/Button/ButtonArea";
+import { useNavigation } from "@react-navigation/native";
+import { AppDrawerNavigationProps } from "@/navigators/NavigationTypes";
 
 const { width: windowWidth } = Dimensions.get('window');
 const ITEM_WIDTH = Math.round(windowWidth);
@@ -11,6 +13,11 @@ const ITEM_WIDTH = Math.round(windowWidth);
 export default function Mapa() {
   const { secoes, error, loading } = useFilial();
   const { height } = Dimensions.get("window");
+  const navigation = useNavigation<AppDrawerNavigationProps>();
+
+  const handleVerMotos = (idSecaoFilial: number) => {
+    navigation.navigate("Procurar Moto", { idSecaoFilial });
+  };
 
   if (error) {
     return (
@@ -84,7 +91,7 @@ export default function Mapa() {
               </View>
               <ButtonArea size="medium" title="Ver as motos" additionalStyles={{
                 marginTop: 12,
-              }} action={} />
+              }} action={() => handleVerMotos(item.idSecao)} />
             </View>
           </View>
         )}

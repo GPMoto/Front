@@ -57,14 +57,19 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
   
   const debouncedBusca = useDebounce(busca, 1000);
   
-  const pagedMotosMotos = useQuery({
+  const getPagedMotosBySecaoFilial = useQuery({
     queryKey: ["motos", page, size, debouncedBusca, idSecaoFilial],
     queryFn: async () => {
-       if (debouncedBusca) {
+      if (debouncedBusca) {
         setPage(1);
       }
-      return await motoService.
-    }
+      console.log("Cheguei aqui!")
+      const response = await motoService.getPagedMotosBySecaoFilial(idSecaoFilial!, debouncedBusca, page, size)
+      console.log("Olha esse dado: ", response);
+      return response;
+
+    },
+    enabled: idSecaoFilial != undefined,
   })
   const pagedMotos = useQuery({
     queryKey: ["motos", page, size, debouncedBusca],
@@ -72,6 +77,7 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
       if (debouncedBusca) {
         setPage(1);
       }
+      
       return await motoService.getPagedMotos(debouncedBusca, page, size);
     },
     refetchOnMount: true,
@@ -161,6 +167,10 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
     drawerNavigator.navigate("Moto", { moto, editing: true });
   };
 
+  const reloadPage = () => {
+    drawerNavigator.replaceParams(undefined);
+  }
+
   const saveChanges = () => {
     if (editingMoto && hasChanges()) {
       atualizarMoto();
@@ -193,7 +203,7 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
   };
 
   return {
-    pagedMotos,
+    pagedMotos: idSecaoFilial ? getPagedMotosBySecaoFilial : pagedMotos,
     singleMoto, // Nova query retornada
     salvarMoto,
     page,
@@ -213,6 +223,7 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
     saveChanges,
     cancelEdit,
     hasChanges,
+    reloadPage
   };
 };
 
