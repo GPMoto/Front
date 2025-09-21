@@ -27,14 +27,24 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.gpmottu.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1131927f-7c09-40b6-8336-322c5b7d1751"
+      }
     }
   }
 }

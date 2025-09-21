@@ -7,7 +7,7 @@ import { attachUnauthorizedInterceptor } from "@/services/NetworkInterceptor";
 
 class ProfileFetcher {
   private apiClient: AxiosInstance;
-  private endpoint: string = "/usuario";
+  private endpoint: string = "usuario";
   private baseUrl: string = process.env.EXPO_PUBLIC_API_URL;
   private mockApi: boolean = !!!this.baseUrl;
   private token: string | null;
@@ -25,23 +25,29 @@ class ProfileFetcher {
     this.token = token;
     this.interceptors();
 
-    // ✅ Debug isolado
     setupAxiosDebug(this.apiClient, "ProfileFetcher");
     attachUnauthorizedInterceptor(this.apiClient);
   }
 
   private interceptors() {
-    this.apiClient.interceptors.request.use((config) => {
-      if (this.token && !config.headers["X-Skip-Auth"]) {
-        config.headers.Authorization = `Bearer ${this.token}`;
-      }
-
-      delete config.headers["X-Skip-Auth"];
-      return config;
-    });
-  }
+  this.apiClient.interceptors.request.use((config) => {
+    console.log('Token disponível:', this.token); // Debug
+    console.log('Headers antes:', config.headers); // Debug
+    
+    if (this.token && !config.headers["X-Skip-Auth"]) {
+      config.headers.Authorization = `Bearer ${this.token}`;
+      console.log('Authorization header adicionado'); // Debug
+    }
+    
+    delete config.headers["X-Skip-Auth"];
+    console.log('Headers finais:', config.headers); // Debug
+    return config;
+  });
+}
 
   async get(): Promise<UserData> {
+    this.endpoint = "usuario/me"
+     console.log('Token atual:', this.token); // Debug
     const response: AxiosResponse<UserData> = await this.apiClient.get(
       this.endpoint
     );
