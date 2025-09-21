@@ -12,7 +12,7 @@ import { setupAxiosDebug } from "@/utils/axiosDebug";
 import { attachUnauthorizedInterceptor } from "@/services/NetworkInterceptor";
 
 class AuthFetcher {
-  private endpoint: string = "/auth";
+  private endpoint: string = "autenticacao/login";
   private baseUrl: string = process.env.EXPO_PUBLIC_API_URL;
   private apiClient: AxiosInstance;
   private mockApi: boolean = !!!this.baseUrl;

@@ -1,4 +1,3 @@
-import { AuthService } from "@/services/AuthService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useState, useContext, useEffect } from "react";
 
@@ -23,20 +22,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const loadStoredToken = async () => {
-    const authService = new AuthService();
     try {
       const storedToken = await AsyncStorage.getItem("TOKEN");
-      if (!storedToken) {
-        return;
+      if (storedToken) {
+        setToken(storedToken);
       }
-
-      const isValidToken = await authService.validateToken(storedToken);
-      if (!isValidToken) {
-        logout()
-        return;
-      }
-
-      setToken(storedToken);
     } catch (error) {
       console.error("Erro ao carregar token:", error);
     } finally {
