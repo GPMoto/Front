@@ -11,11 +11,12 @@ class MotoService {
   }
 
   async getPagedMotos(
+    idFilial : number,
     search: string | null,
     page: number,
     size: number
   ): Promise<PageableResponse<Moto>> {
-    const data = await this.motoFetcher.getPagedMotos(search, page, size);
+    const data = await this.motoFetcher.getPagedMotos(idFilial, search, page, size);
     return data;
   }
 
