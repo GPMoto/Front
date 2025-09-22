@@ -6,11 +6,10 @@ import { SecaoFilial } from "./SecaoFilial";
 
 interface Moto {
   idMoto?: number;
-  identificador: Identificador;
+  identificador: string;
   status: string;
   condicoesManutencao: string;
   idTipoMoto: TipoMoto;
-  placa : string;
   idSecaoFilial : SecaoFilial;
 }
 

@@ -95,8 +95,8 @@ class MotoFetcher {
   }
 
   async getPagedMotosBySecaoFilial(
-    search: string | null,
     idSecaoFilial: number,
+    search: string | null,
     page: number = 0,
     size: number = 10,
   ) : Promise<PageableResponse<Moto>> {

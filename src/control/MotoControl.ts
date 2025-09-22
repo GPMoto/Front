@@ -45,13 +45,12 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
     if (!routeMoto || !editingMoto) return false;
 
     return (
-      editingMoto.placa !== routeMoto.placa ||
       editingMoto.status !== routeMoto.status ||
       editingMoto.condicoesManutencao !== routeMoto.condicoesManutencao ||
       editingMoto.idTipoMoto.id_tipo_moto !==
         routeMoto.idTipoMoto.id_tipo_moto ||
-      editingMoto.identificador.idIdentificador !==
-        routeMoto.identificador.idIdentificador
+      editingMoto.identificador !==
+        routeMoto.identificador
     );
   };
 

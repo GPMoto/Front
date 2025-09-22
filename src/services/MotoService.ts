@@ -62,7 +62,7 @@ class MotoService {
     size: number = 10
   ): Promise<PageableResponse<Moto>> {
     console.log("estou no service para resgatar motos lindas da filial")
-    const data = await this.motoFetcher.getPagedMotosBySecaoFilial(search, idSecaoFilial, page, size);
+    const data = await this.motoFetcher.getPagedMotosBySecaoFilial(idSecaoFilial, search, page, size);
     console.log("cavalo", data);
     return data;
   }

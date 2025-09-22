@@ -104,18 +104,6 @@ const SingleMoto = () => {
 
           {/* Informações */}
           <View style={styles.infoContainer}>
-            <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>Placa</Text>
-              {!editing ? (
-                <Text style={styles.infoValue}>{moto.placa}</Text>
-              ) : (
-                <TextInput
-                  value={moto.placa}
-                  onChangeText={(text) => handleEditingForm("placa", text)}
-                  style={[styles.infoValue, styles.editableInput]}
-                />
-              )}
-            </View>
 
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Status</Text>
@@ -215,7 +203,7 @@ const SingleMoto = () => {
               <Text style={styles.infoLabel}>Identificador</Text>
               {!editing ? (
                 <Text style={styles.infoValue}>
-                  {moto.identificador.vlrIdentificador}
+                  {moto.identificador}
                 </Text>
               ) : (
                 <View style={[styles.pickerContainer, styles.editableInput]}>
