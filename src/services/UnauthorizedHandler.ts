@@ -1,11 +1,11 @@
-export type UnauthorizedHandler = () => void;
+let unauthorizedHandler: (() => void) | null = null;
 
-let handler: UnauthorizedHandler | null = null;
-
-export function registerUnauthorizedHandler(fn: UnauthorizedHandler) {
-  handler = fn;
+export function registerUnauthorizedHandler(handler: () => void) {
+  unauthorizedHandler = handler;
 }
 
 export function triggerUnauthorized() {
-  handler?.();
+  if (unauthorizedHandler) {
+    unauthorizedHandler();
+  }
 }

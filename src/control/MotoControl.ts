@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { ValidationError } from "yup";
+import { useProfile } from "./ProfileController";
 
 interface UseMotoProps {
   size?: number;
@@ -71,6 +72,11 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
     },
     enabled: idSecaoFilial != undefined,
   })
+
+  const { profile } = useProfile()
+
+  const idFilial = profile && profile.idFilial.idFilial;
+
   const pagedMotos = useQuery({
     queryKey: ["motos", page, size, debouncedBusca],
     queryFn: async () => {
@@ -78,7 +84,7 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
         setPage(1);
       }
       
-      return await motoService.getPagedMotos(debouncedBusca, page, size);
+      return await motoService.getPagedMotos(idFilial ?? 1, debouncedBusca, page, size);
     },
     refetchOnMount: true,
     refetchOnWindowFocus: false,

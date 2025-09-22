@@ -9,23 +9,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
 
 const SplashApp = () => {
-  const { splashScreen } = useAuth();
+  const { splashScreen, logout } = useAuth();
   useEffect(() => {
-    registerUnauthorizedHandler(async () => {
-      try {
-        const sessionManager = MockSessionManager.getInstance();
-        sessionManager.clearSession();
-      } catch (e) {
-        // ignore
-      }
-      try {
-        await AsyncStorage.removeItem("TOKEN");
-      } catch (e) {
-        // ignore
-      }
+   registerUnauthorizedHandler(async () => {
+      console.log("Unauthorized handler triggered - logging out");
+      await logout();
       resetToLogin();
     });
-  }, []);
+  }, [logout]);
   if (splashScreen) {
     return (
       <LoadingScreen>

@@ -3,6 +3,7 @@ import motoMockApi from "../mock/fetcher/MotoFetcherMock";
 import { Moto } from "@/model/Moto";
 import { PageableResponse } from "@/model/types/PageableResponse";
 import { setupAxiosDebug } from "@/utils/axiosDebug";
+import { attachUnauthorizedInterceptor } from "@/services/NetworkInterceptor";
 
 class MotoFetcher {
   private apiClient: AxiosInstance;
@@ -21,7 +22,8 @@ class MotoFetcher {
     this.token = token;
     this.interceptors();
 
-    // setupAxiosDebug(this.apiClient, "MotoFetcher");
+    setupAxiosDebug(this.apiClient, "MotoFetcher");
+    attachUnauthorizedInterceptor(this.apiClient);
   }
 
   private interceptors() {
@@ -36,12 +38,13 @@ class MotoFetcher {
   }
 
   async getPagedMotos(
+    idFilial : number,
     search: string | null,
     page: number = 0,
     size: number = 10
   ): Promise<PageableResponse<Moto>> {
     const response = await this.apiClient.get<PageableResponse<Moto>>(
-      "/moto/paginado/",
+      `moto/filial/${idFilial}/paginados/`,
       {
         params: {
           search,
