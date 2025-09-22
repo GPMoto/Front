@@ -30,7 +30,7 @@ mock.onGet("/moto/paginado/").reply((config) => {
 
   const filteredMotos = notEmptyString(search)
     ? mockMotos.filter((moto) =>
-        moto.placa.toLowerCase().includes(search.toLowerCase())
+        moto.identificador.toLowerCase().includes(search.toLowerCase())
       )
     : mockMotos;
 
@@ -130,7 +130,7 @@ mock.onGet(new RegExp("^/moto/secao-filial/\\d+$")).reply((config) => {
   // Aplicar filtro de busca se fornecido
   if (notEmptyString(search)) {
     filteredMotos = filteredMotos.filter((moto) =>
-      moto.placa.toLowerCase().includes(search.toLowerCase())
+      moto.identificador.toLowerCase().includes(search.toLowerCase())
     );
   }
 

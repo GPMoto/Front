@@ -31,13 +31,8 @@ export default function SingleMotoPaged({
         <View style={styles.infoRow}>
           <Text style={styles.labelText}>Identificador:</Text>
           <Text style={styles.valueText}>
-            {formatIdentificador(item.identificador.vlrIdentificador)}
+            {formatIdentificador(item.identificador)}
           </Text>
-        </View>
-
-        <View style={styles.infoRow}>
-          <Text style={styles.labelText}>Placa:</Text>
-          <Text style={styles.valueText}>{item.placa}</Text>
         </View>
 
         <View style={styles.infoRow}>

@@ -125,7 +125,7 @@ export const mockSecaoFilial: SecaoFilial[] = mockFiliais.flatMap(
 
 export const mockMotos: Moto[] = Array.from({ length: 80 }, (_, i) => ({
   idMoto: i + 1,
-  identificador: mockIdentificadores[i % mockIdentificadores.length],
+  identificador: faker.vehicle.vrm(),
   status: faker.helpers.arrayElement([
     "Ativo",
     "Inativo",
@@ -140,7 +140,6 @@ export const mockMotos: Moto[] = Array.from({ length: 80 }, (_, i) => ({
     "Péssima",
   ]),
   idTipoMoto: mockTipoMotos[i % mockTipoMotos.length],
-  placa: faker.vehicle.vrm(),
   idSecaoFilial: faker.helpers.arrayElement(mockSecaoFilial),
 }));
 
