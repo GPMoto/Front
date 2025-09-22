@@ -20,10 +20,10 @@ const useAuthControl = () => {
   const [error, setError] = useState<string | null>();
   const [formulario, setFormulario] = useState<CreateUser>({
     email: "",
-    password: "",
-    filial: 0,
+    senha: "",
+    idFilial: 0,
     nome: "",
-    perfil: 0,
+    idPerfil: 0,
   });
   const { login } = useAuth();
 

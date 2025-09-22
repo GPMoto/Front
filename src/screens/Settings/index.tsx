@@ -58,7 +58,7 @@ const Settings = (props: SettingsProps) => {
           <View style={styles.userInfoGrid}>
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Filial</Text>
-              <Text style={styles.infoValue}>{profile.idFilial.nome}</Text>
+              <Text style={styles.infoValue}>{profile.idFilial.idContato.nmDono}</Text>
             </View>
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Grupo</Text>

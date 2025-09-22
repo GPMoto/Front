@@ -15,7 +15,7 @@ const useAllFiliais = () => {
     queryKey: ["perfis"],
     queryFn: async () => {
       return (await new ProfileService(null).getPerfis()).find(
-        (perfil) => perfil.nmPerfil === "Convidado"
+        (perfil) => perfil.nmPerfil.toUpperCase() === "CONVIDADO"
       );
     },
     refetchOnMount: true,
@@ -25,14 +25,14 @@ const useAllFiliais = () => {
   const [form, setForm] = useState<CreateUser>({
     nome: "",
     email: "",
-    filial: 0,
-    perfil: 0,
-    password: "",
+    idFilial: 0,
+    idPerfil: 0,
+    senha: "",
   });
 
   useEffect(() => {
     if (perfilLoaded && perfilConvidado) {
-      setForm((form) => ({ ...form, perfil: perfilConvidado.idPerfil }));
+      setForm((form) => ({ ...form, idPerfil: perfilConvidado.idPerfil }));
     }
   }, [perfilLoaded, perfilConvidado]);
 
@@ -49,7 +49,7 @@ const useAllFiliais = () => {
   });
 
   const handleForm = (text: string, field: keyof CreateUser) => {
-    if (field === "filial" || field === "perfil") {
+    if (field === "idFilial" || field === "idPerfil") {
       const number = Number(text);
       setForm((form) => ({ ...form, [field]: number }));
     }
@@ -67,9 +67,9 @@ const useAllFiliais = () => {
         setForm({
           nome: "",
           email: "",
-          filial: 0,
-          perfil: perfilConvidado?.idPerfil ?? 0,
-          password: "",
+          idFilial: 0,
+          idPerfil: perfilConvidado?.idPerfil ?? 0,
+          senha: "",
         });
         setFormErrors({});
         Alert.alert("Usuário criado com sucesso!");

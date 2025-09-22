@@ -14,22 +14,28 @@ interface UserData {
 
 interface UserLogin {
   email: string;
-  password: string;
+  senha: string;
 }
+
+  // String nome,
+  //       String email,
+  //       String senha,
+  //       Long idFilial,
+  //       Long idPerfil
 
 interface CreateUser {
   nome: string;
   email: string;
-  password: string;
-  filial: number;
-  perfil: number;
+  senha: string;
+  idFilial: number;
+  idPerfil: number;
 }
 
 const userLoginSchema = object({
   email: string()
     .required("Insira o seu nome")
     .min(2, "Mínimo de 2 caracteres"),
-  password: string().required("Insira sua senha"),
+  senha: string().required("Insira sua senha"),
 });
 
 const createUserSchema: Schema<CreateUser> = object({
@@ -40,15 +46,15 @@ const createUserSchema: Schema<CreateUser> = object({
   email: string()
     .required("O email é obrigatório")
     .email("Digite um email válido"),
-  password: string()
+  senha: string()
     .required("A senha é obrigatória")
     .min(6, "A senha deve ter pelo menos 6 caracteres")
     .max(20, "A senha deve ter no máximo 20 caracteres"),
-  filial: number()
+  idFilial: number()
     .required("Selecione uma filial")
     .positive("Selecione uma filial válida")
     .integer("Selecione uma filial válida"),
-  perfil: number()
+  idPerfil: number()
     .required("Selecione um perfil")
     .positive("Selecione um perfil válido")
     .integer("Selecione um perfil válido"),

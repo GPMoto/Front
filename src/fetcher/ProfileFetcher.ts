@@ -55,7 +55,7 @@ class ProfileFetcher {
   }
 
   async getPerfis(): Promise<Perfil[]> {
-    this.endpoint = "/perfil";
+    this.endpoint = "perfil";
     const response: AxiosResponse<Perfil[]> = await this.apiClient.get(
       this.endpoint,
       {

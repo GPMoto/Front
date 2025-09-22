@@ -135,7 +135,7 @@ const Cadastro = () => {
                     onValueChange={(filial) => {
                       setSelectedFilial(filial);
                       if (filial) {
-                        handleForm(filial.idFilial.toString(), "filial");
+                        handleForm(filial.idFilial.toString(), "idFilial");
                       }
                     }}
                     style={cadastroStyles.picker}
@@ -151,7 +151,7 @@ const Cadastro = () => {
                         <Picker.Item
                           value={filial}
                           key={filial.idFilial}
-                          label={filial.nome}
+                          label={filial.idContato.nmDono}
                           color="#000000"
                         />
                       ))}
@@ -166,14 +166,14 @@ const Cadastro = () => {
                   style={cadastroStyles.inputField}
                   placeholder="Digite sua senha"
                   placeholderTextColor="#8B8B8B"
-                  value={form.password}
-                  onChangeText={(text) => handleForm(text, "password")}
+                  value={form.senha}
+                  onChangeText={(text) => handleForm(text, "senha")}
                   secureTextEntry
                   autoComplete="password"
                 />
-                {formErrors.password && (
+                {formErrors.senha && (
                   <Text style={cadastroStyles.fieldErrorText}>
-                    {formErrors.password}
+                    {formErrors.senha}
                   </Text>
                 )}
               </View>
