@@ -99,8 +99,8 @@ export default function FormularioLogin(props: any) {
                   style={formularioLoginStyles.inputField}
                   placeholder="Digite sua senha"
                   placeholderTextColor="#8B8B8B"
-                  value={formulario.password}
-                  onChangeText={(text) => handleForm(text, "password")}
+                  value={formulario.senha}
+                  onChangeText={(text) => handleForm(text, "senha")}
                   secureTextEntry
                   autoComplete="password"
                   editable={!loading}
@@ -108,9 +108,9 @@ export default function FormularioLogin(props: any) {
                   returnKeyType="done"
                   onSubmitEditing={loginUser}
                 />
-                {loginErrors.password && (
+                {loginErrors.senha && (
                   <Text style={formularioLoginStyles.fieldErrorText}>
-                    {loginErrors.password}
+                    {loginErrors.senha}
                   </Text>
                 )}
               </View>

@@ -53,7 +53,7 @@ export default function AdicionarRastreador() {
                   {item.vlrIdentificador}
                 </Text>
                 <Text style={styles.identificadorSub}>
-                  {item.idFilial?.nome || ""}
+                  {item.idFilial?.idContato.nmDono || ""}
                 </Text>
               </View>
             </View>

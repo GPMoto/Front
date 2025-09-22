@@ -37,7 +37,7 @@ class AuthFetcher {
     this.endpoint = "/autenticacao/login";
     try {
       const response: AxiosResponse<UserLoginResponse> =
-        await this.apiClient.post(`${this.endpoint}?username=${userLogin.email}&password=${userLogin.password}` );
+        await this.apiClient.post(`${this.endpoint}?username=${userLogin.email}&password=${userLogin.senha}` );
 
       return {
         data: response.data,
@@ -58,7 +58,7 @@ class AuthFetcher {
   }
 
   async register(createUser : CreateUser) : Promise<AuthResponse> {
-    this.endpoint = "/auth/register";
+    this.endpoint = "usuario";
     try {
       await this.apiClient.post(this.endpoint, createUser);
       return {

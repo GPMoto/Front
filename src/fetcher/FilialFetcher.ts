@@ -41,7 +41,7 @@ class FilialFetcher {
 
   async getSecoes(idFilial: number): Promise<SecaoFilial[]> {
     const response: AxiosResponse<SecaoFilial[]> = await this.apiClient.get(
-      `/filial/${idFilial}/secao`
+      `filial/${idFilial}/secao`
     );
     return response.data;
   }
@@ -49,7 +49,7 @@ class FilialFetcher {
   async getAllFiliais(): Promise<Filial[]> {
     console.log("Fetcher tentando puxar filiais");
     const response: AxiosResponse<Filial[]> = await this.apiClient.get(
-      `/filial`,
+      `filial`,
       {
         headers: {
           "X-Skip-Auth": "true",
