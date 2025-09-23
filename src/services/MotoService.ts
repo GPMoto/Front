@@ -1,4 +1,5 @@
 import MotoFetcher from "@/fetcher/MotoFetcher";
+import MotoDTO from "@/model/dto/MotoDTO";
 import { Moto, MotoResponse, createMotoSchema } from "@/model/Moto";
 import { PageableResponse } from "@/model/types/PageableResponse";
 import { ValidationError } from "yup";
@@ -11,12 +12,17 @@ class MotoService {
   }
 
   async getPagedMotos(
-    idFilial : number,
+    idFilial: number,
     search: string | null,
     page: number,
     size: number
   ): Promise<PageableResponse<Moto>> {
-    const data = await this.motoFetcher.getPagedMotos(idFilial, search, page, size);
+    const data = await this.motoFetcher.getPagedMotos(
+      idFilial,
+      search,
+      page,
+      size
+    );
     return data;
   }
 
@@ -44,7 +50,11 @@ class MotoService {
   }
 
   async update(updateMoto: Moto): Promise<Moto> {
-    return await this.motoFetcher.update(updateMoto);
+    return await this.motoFetcher.update(updateMoto.idMoto!, {
+      ...updateMoto,
+      idSecaoFilial: updateMoto.idSecaoFilial.idSecao,
+      idTipoMoto: updateMoto.idTipoMoto.id_tipo_moto,
+    });
   }
 
   async getMotoById(idMoto: number): Promise<Moto> {
@@ -61,9 +71,12 @@ class MotoService {
     page: number = 1,
     size: number = 10
   ): Promise<PageableResponse<Moto>> {
-    console.log("estou no service para resgatar motos lindas da filial")
-    const data = await this.motoFetcher.getPagedMotosBySecaoFilial(idSecaoFilial, search, page, size);
-    console.log("cavalo", data);
+    const data = await this.motoFetcher.getPagedMotosBySecaoFilial(
+      idSecaoFilial,
+      search,
+      page,
+      size
+    );
     return data;
   }
 }

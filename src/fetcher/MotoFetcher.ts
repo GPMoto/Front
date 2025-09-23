@@ -4,6 +4,7 @@ import { Moto } from "@/model/Moto";
 import { PageableResponse } from "@/model/types/PageableResponse";
 import { setupAxiosDebug } from "@/utils/axiosDebug";
 import { attachUnauthorizedInterceptor } from "@/services/NetworkInterceptor";
+import MotoDTO from "@/model/dto/MotoDTO";
 
 class MotoFetcher {
   private apiClient: AxiosInstance;
@@ -38,7 +39,7 @@ class MotoFetcher {
   }
 
   async getPagedMotos(
-    idFilial : number,
+    idFilial: number,
     search: string | null,
     page: number = 0,
     size: number = 10
@@ -75,9 +76,9 @@ class MotoFetcher {
     }
   }
 
-  async update(updateMoto: Moto): Promise<Moto> {
+  async update(idMoto : number, updateMoto: MotoDTO): Promise<Moto> {
     const response: AxiosResponse<Moto> = await this.apiClient.put(
-      `/moto/${updateMoto.idMoto}`,
+      `/moto/${idMoto}`,
       updateMoto
     );
     return response.data;
@@ -85,7 +86,12 @@ class MotoFetcher {
 
   async getMotoById(idMoto: number): Promise<Moto> {
     const response: AxiosResponse<Moto> = await this.apiClient.get(
-      `/moto/${idMoto}`
+      `/moto/${idMoto}/full`,
+      {
+        params: {
+          full: true,
+        },
+      }
     );
     return response.data;
   }
@@ -98,21 +104,16 @@ class MotoFetcher {
     idSecaoFilial: number,
     search: string | null,
     page: number = 0,
-    size: number = 10,
-  ) : Promise<PageableResponse<Moto>> {
-    console.log("antes dos url params")
-
-    console.log("antes do append de search")
-
-    console.log("antes de pedir pro mock")
-    const response : AxiosResponse<PageableResponse<Moto>> = await this.apiClient.get(`/moto/secao-filial/${idSecaoFilial}`, {
+    size: number = 10
+  ): Promise<PageableResponse<Moto>> {
+    const response: AxiosResponse<PageableResponse<Moto>> =
+      await this.apiClient.get(`/moto/secao-filial/${idSecaoFilial}`, {
         params: {
           search,
           page,
           size,
         },
       });
-    console.log("response data: ", response.data)
     return response.data;
   }
 }

@@ -18,7 +18,6 @@ class AuthFetcher {
   private mockApi: boolean = !!!this.baseUrl;
 
   constructor() {
-    console.log(this.baseUrl)
     this.apiClient = this.mockApi 
     ? authMockApi
     : axios.create({

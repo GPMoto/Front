@@ -15,29 +15,22 @@ class MockSessionManager {
     return MockSessionManager.instance;
   }
 
-  // Salvar sessão quando fizer login
   setSession(token: string, user: UserData): void {
     this.currentToken = token;
     this.currentUser = user;
     this.sessions.set(token, user);
-    console.log(`📝 Mock Session: Token ${token} associado ao usuário ${user.nmUsuario}`);
   }
 
-  // Buscar usuário pelo token
   getUserByToken(token: string): UserData | null {
     const user = this.sessions.get(token);
-    console.log(`🔍 Mock Session: Buscando usuário para token ${token}`, user ? `✅ Encontrado: ${user.nmUsuario}` : '❌ Não encontrado');
     return user || null;
   }
 
-  // Verificar se token é válido
   isValidToken(token: string): boolean {
     const isValid = this.sessions.has(token);
-    console.log(`🔐 Mock Session: Token ${token} é ${isValid ? 'válido' : 'inválido'}`);
     return isValid;
   }
 
-  // Limpar sessão (logout)
   clearSession(token?: string): void {
     if (token) {
       this.sessions.delete(token);
@@ -50,10 +43,8 @@ class MockSessionManager {
       this.currentToken = null;
       this.currentUser = null;
     }
-    console.log(`🗑️ Mock Session: Sessão limpa`);
   }
 
-  // Getter para sessão atual
   getCurrentUser(): UserData | null {
     return this.currentUser;
   }

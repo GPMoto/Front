@@ -113,10 +113,6 @@ export default function ProcurarMoto() {
                 <Text
                   style={[
                     procurarMotoStyles.pageText,
-                    {
-                      fontWeight: "bold",
-                      fontSize: 18,
-                    },
                   ]}
                 >
                   Total de motos: {pagedMotos.data!.totalElements || 0}

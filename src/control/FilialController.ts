@@ -17,7 +17,6 @@ const useFilial = () => {
   const filial = useQuery({
     queryKey: ["filial"],
     queryFn: async () => {
-      console.log(profile!.idFilial.idFilial);
       return await filialService.getSecoes(profile!.idFilial.idFilial);
     },
     enabled: !!profile,

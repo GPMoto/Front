@@ -10,8 +10,6 @@ export default function QRCodePlaca() {
   const route = useRoute<RouteProp<DrawerParamList, "QRCode">>();
   const { qrCode: item, placa } = route.params;
 
-  console.log("QRCODE: ", item.qrCode)
-
   const handlePrint = () => {
     Alert.alert("Imprimir", "Funcionalidade de impressão (visual)");
   };

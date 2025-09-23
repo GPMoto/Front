@@ -1,6 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
 import { ParamListBase } from "@react-navigation/native";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View } from "react-native";
 import { FontAwesome as Icon } from "@expo/vector-icons";
 import { useProfile } from "@/control/ProfileController";
 import { StyleSheet } from "react-native";
@@ -28,13 +28,7 @@ const Settings = (props: SettingsProps) => {
     return (
       <View>
         <Text>Erro ao carregar perfil: {error?.message}</Text>
-        <TouchableOpacity
-          onPress={() => {
-            <ButtonArea title="Recarregar" action={refetch} size="medium" />;
-          }}
-        >
-          <Text>Tentar novamente</Text>
-        </TouchableOpacity>
+        <ButtonArea title="Tentar novamente" action={refetch} size="medium" />
       </View>
     );
   }
@@ -90,9 +84,15 @@ const Settings = (props: SettingsProps) => {
         )}
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={logout}>
-        <Text style={styles.logoutButtonText}>Deslogar</Text>
-      </TouchableOpacity>
+      <ButtonArea
+        title="Deslogar"
+        action={logout}
+        size="medium"
+        additionalStyles={{
+          backgroundColor: "#DC143C",
+          shadowColor: "#DC143C",
+        }}
+      />
     </View>
   );
 };
@@ -222,21 +222,6 @@ const styles = StyleSheet.create({
   infoValue: {
     color: "#FFFFFF",
     fontSize: 14,
-    fontWeight: "600",
-  },
-  button: {
-    backgroundColor: "#DC143C",
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 30,
-    alignSelf: 'center',
-    minWidth: 160,
-  },
-  logoutButtonText: {
-    color: "#FFFFFF",
-    fontSize: 16,
     fontWeight: "600",
   },
 });

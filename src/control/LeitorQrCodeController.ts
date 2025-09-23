@@ -32,10 +32,6 @@ export const useLeitorQrCode = () => {
 
       setScanned(true);
       setData(data);
-      console.log("data do qrcode: ", data);
-
-      // Feedback haptico opcional
-      // Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     },
     [scanned]
   );

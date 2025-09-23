@@ -74,7 +74,7 @@ const procurarMotoStyles = StyleSheet.create({
     marginTop: 16,
   },
   pageText: {
-    color: "white",
+    color: "black",
     fontSize: 18,
     fontWeight: "600",
   },

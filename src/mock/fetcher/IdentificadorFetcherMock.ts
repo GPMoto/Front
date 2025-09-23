@@ -24,9 +24,6 @@ mock.onGet(new RegExp("^/identificador/filial/\\d+$")).reply((config) => {
   const page = params.page ? Number(params.page) : 1;
   const size = params.size ? Number(params.size) : 10;
 
-  console.log("filialId: ", filialId);
-  console.log("page:", page);
-  console.log("size:", size);
 
   if (sessionManager.getCurrentToken() !== requestToken) {
     return [401, { message: "Você não está autorizado!" }];
@@ -38,7 +35,6 @@ mock.onGet(new RegExp("^/identificador/filial/\\d+$")).reply((config) => {
       )
     : mockIdentificadores;
 
-  console.log("identificadores: ", identificadores);
 
   const result = getSpringPage<Identificador>(identificadores, page, size);
 
@@ -52,12 +48,7 @@ mock.onPost("/identificador/foto").reply((config) => {
     return [401, { message: "Você não está autorizado!" }];
   }
 
-  // Simula delay de processamento da foto
-  setTimeout(() => {
-    console.log("Mock: Processando upload de foto...");
-  }, 500);
 
-  // Mock de identificadores possíveis baseado na "foto"
   const mockResults = [
     { identificador: "ABC-1234", confianca: 0.95 },
     { identificador: "XYZ-5678", confianca: 0.87 },

@@ -12,47 +12,29 @@ export default function SingleMotoPaged({
   ...item
 }: SingleMotoPagedProps) {
   return (
-    <View
-      style={[styles.container, { borderLeftColor: statusBadge(item.status) }]}
-    >
+    <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.idText}>ID: {item.idMoto}</Text>
-        <View
-          style={[
-            styles.statusBadge,
-            { backgroundColor: statusBadge(item.status) },
-          ]}
-        >
-          <Text style={styles.statusText}>{item.status}</Text>
+        <Text style={styles.tipoText}>{item.idTipoMoto.nmTipo}</Text>
+        <Text style={styles.separatorText}> - </Text>
+        <Text style={styles.identificadorText}>#{formatIdentificador(item.identificador)}</Text>
+      </View>
+
+      <View style={styles.secondaryInfo}>
+        <View style={styles.infoChip}>
+          <Text style={styles.chipLabel}>Status</Text>
+          <Text style={styles.chipValue}>{item.status}</Text>
+        </View>
+        
+        <View style={styles.infoChip}>
+          <Text style={styles.chipLabel}>Manutenção</Text>
+          <Text style={styles.chipValue}>{item.condicoesManutencao}</Text>
         </View>
       </View>
 
-      <View style={styles.infoContainer}>
-        <View style={styles.infoRow}>
-          <Text style={styles.labelText}>Identificador:</Text>
-          <Text style={styles.valueText}>
-            {formatIdentificador(item.identificador)}
-          </Text>
-        </View>
-
-        <View style={styles.infoRow}>
-          <Text style={styles.labelText}>Tipo da moto:</Text>
-          <Text style={styles.valueText}>{item.idTipoMoto.nmTipo}</Text>
-        </View>
-
-        <View style={styles.infoRow}>
-          <Text style={styles.labelText}>Condições:</Text>
-          <Text style={styles.valueText}>{item.status}</Text>
-        </View>
-
-        <View style={styles.infoRow}>
-          <Text style={styles.labelText}>Manutenção:</Text>
-          <Text style={styles.valueText}>{item.condicoesManutencao}</Text>
-        </View>
-
+      <View style={styles.actionContainer}>
         <ButtonArea
           size="small"
-          title="Ver mais"
+          title="Ver detalhes"
           action={() => verMais(item)}
         />
       </View>
@@ -63,58 +45,70 @@ export default function SingleMotoPaged({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#1E1E1E",
-    padding: 16,
+    padding: 18,
     marginVertical: 8,
-    borderRadius: 12,
-    borderLeftWidth: 4,
-    borderLeftColor: "#41C526",
+    borderRadius: 16,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 4,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 8,
   },
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
-    marginBottom: 8,
+    marginBottom: 16,
+    flexWrap: "wrap",
   },
-  idText: {
-    color: "#41C526",
+  tipoText: {
+    color: "#4ae25cff",
+    fontSize: 18,
+    fontWeight: "600",
+    letterSpacing: 0.3,
+  },
+  separatorText: {
+    color: "#888",
+    fontSize: 18,
+    fontWeight: "400",
+  },
+  identificadorText: {
+    color: "#c59326ff",
     fontSize: 18,
     fontWeight: "bold",
+    letterSpacing: 1,
+    fontFamily: "monospace",
   },
-  statusBadge: {
-    backgroundColor: "#41C526",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
-  },
-  statusText: {
-    color: "black",
-    fontSize: 12,
-    fontWeight: "bold",
-  },
-  infoContainer: {
-    gap: 6,
-  },
-  infoRow: {
+  secondaryInfo: {
     flexDirection: "row",
+    marginBottom: 16,
+    justifyContent: "space-between",
+    gap: 8,
+  },
+  infoChip: {
+    flex: 1,
+    backgroundColor: "#333",
+    padding: 12,
+    borderRadius: 8,
     alignItems: "center",
   },
-  labelText: {
-    color: "#888",
-    fontSize: 14,
+  chipLabel: {
+    color: "#999",
+    fontSize: 10,
     fontWeight: "500",
-    minWidth: 90,
+    textTransform: "uppercase",
+    marginBottom: 4,
   },
-  valueText: {
-    color: "white",
-    fontSize: 14,
-    flex: 1,
+  chipValue: {
+    color: "#FFF",
+    fontSize: 12,
+    fontWeight: "600",
+    textAlign: "center",
+  },
+  actionContainer: {
+    marginTop: 8,
   },
 });

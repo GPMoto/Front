@@ -119,7 +119,6 @@ export default function FormularioLogin(props: any) {
             {/* Login Button */}
             <View style={formularioLoginStyles.buttonContainer}>
               <ButtonArea size="small" title="Entrar" action={() => {
-                console.log("login cadastro ")
                 loginUser()}} />
             </View>
 

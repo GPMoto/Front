@@ -7,7 +7,6 @@ export function attachUnauthorizedInterceptor(api: AxiosInstance) {
     (error) => {
       const status = error?.response?.status;
       if (status === 401) {
-        console.log("401 intercepted - triggering logout");
         triggerUnauthorized();
       }
       return Promise.reject(error);
