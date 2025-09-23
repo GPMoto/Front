@@ -45,7 +45,7 @@ class MotoFetcher {
     size: number = 10
   ): Promise<PageableResponse<Moto>> {
     const response = await this.apiClient.get<PageableResponse<Moto>>(
-      `moto/filial/${idFilial}/paginados/`,
+      `moto/filial/${idFilial}/paginados/full`,
       {
         params: {
           search,
