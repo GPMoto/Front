@@ -40,8 +40,6 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
   };
 
   const hasChanges = () => {
-    console.log("routeMoto", routeMoto);
-    console.log("editingMoto", editingMoto);
     if (!routeMoto || !editingMoto) return false;
 
     return (
@@ -63,9 +61,7 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
       if (debouncedBusca) {
         setPage(1);
       }
-      console.log("Cheguei aqui!")
       const response = await motoService.getPagedMotosBySecaoFilial(idSecaoFilial!, debouncedBusca, page, size)
-      console.log("Olha esse dado: ", response);
       return response;
 
     },
@@ -122,7 +118,6 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
   const updateMotoMutation = useMutation({
     mutationFn: async (updateMoto: Moto) => {
       const result = hasChanges();
-      console.log("Tem mudanças? ", result);
       if (!result) {
         return undefined;
       }
@@ -152,9 +147,7 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
   });
 
   const atualizarMoto = () => {
-    console.log("Tentando atualizar moto:", editingMoto);
     if (!editingMoto) {
-      console.log("editingMoto está vazio!");
       return;
     }
     updateMotoMutation.mutate(editingMoto);
@@ -179,9 +172,7 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
   const saveChanges = () => {
     if (editingMoto && hasChanges()) {
       atualizarMoto();
-    } else {
-      console.log("Nenhuma mudança detectada ou editingMoto está vazio");
-    }
+    } 
   };
 
   const cancelEdit = () => {

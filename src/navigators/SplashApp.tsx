@@ -12,7 +12,6 @@ const SplashApp = () => {
   const { splashScreen, logout } = useAuth();
   useEffect(() => {
    registerUnauthorizedHandler(async () => {
-      console.log("Unauthorized handler triggered - logging out");
       await logout();
       resetToLogin();
     });

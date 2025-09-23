@@ -31,23 +31,18 @@ class ProfileFetcher {
 
   private interceptors() {
   this.apiClient.interceptors.request.use((config) => {
-    console.log('Token disponível:', this.token); // Debug
-    console.log('Headers antes:', config.headers); // Debug
     
     if (this.token && !config.headers["X-Skip-Auth"]) {
       config.headers.Authorization = `Bearer ${this.token}`;
-      console.log('Authorization header adicionado'); // Debug
     }
     
     delete config.headers["X-Skip-Auth"];
-    console.log('Headers finais:', config.headers); // Debug
     return config;
   });
 }
 
   async get(): Promise<UserData> {
     this.endpoint = "usuario/me"
-     console.log('Token atual:', this.token); // Debug
     const response: AxiosResponse<UserData> = await this.apiClient.get(
       this.endpoint
     );

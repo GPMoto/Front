@@ -66,11 +66,11 @@ export const formatCNPJ = (cnpj: string): string => {
 };
 
 export const formatIdentificador = (identificador: string): string => {
-  if (identificador.length <= 6) {
+  if (identificador.length <= 10) {
     return identificador;
   }
 
-  return identificador.substring(0, 6) + "...";
+  return identificador.substring(0, 10) + "...";
 };
 
 export function getSpringPage<T>(

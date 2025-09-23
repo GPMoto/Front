@@ -31,9 +31,7 @@ class FilialFetcher {
       if (this.token && !config.headers["X-Skip-Auth"]) {
         config.headers.Authorization = `Bearer ${this.token}`;
       }
-      if (!config.headers.Authorization) {
-        console.log("X-Skip funcionando!");
-      }
+      
       delete config.headers["X-Skip-Auth"];
       return config;
     });
@@ -47,7 +45,6 @@ class FilialFetcher {
   }
 
   async getAllFiliais(): Promise<Filial[]> {
-    console.log("Fetcher tentando puxar filiais");
     const response: AxiosResponse<Filial[]> = await this.apiClient.get(
       `filial`,
       {
@@ -56,8 +53,6 @@ class FilialFetcher {
         },
       }
     );
-    console.log("Dados:");
-    console.log(response.data);
     return response.data;
   }
 }

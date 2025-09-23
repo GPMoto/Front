@@ -4,7 +4,6 @@ export const setupAxiosDebug = (
   apiClient: AxiosInstance,
   serviceName: string = ""
 ) => {
-  // Request interceptor
   apiClient.interceptors.request.use(
     (config) => {
       console.log(`🌐 ${serviceName} Request:`, {

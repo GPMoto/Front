@@ -41,7 +41,6 @@ const useAllFiliais = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["filiais"],
     queryFn: async () => {
-      console.log("Todas as filiais sendo puxadas");
       return await new FilialService(null).getAllFiliais();
     },
     refetchOnMount: true,
@@ -59,7 +58,6 @@ const useAllFiliais = () => {
 
   const cadastroMutation = useMutation({
     mutationFn: (createUser: CreateUser) => {
-      console.log(createUser);
       return new AuthService().register(createUser);
     },
     onSuccess: (result: AuthResponse) => {

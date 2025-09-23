@@ -6,9 +6,9 @@ import {
   StyleSheet,
   ScrollView,
   ActivityIndicator,
+  TextInput,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { TextInput } from "react-native-gesture-handler";
 import { useMoto } from "@/control/MotoControl";
 import ButtonArea from "@/components/Button/ButtonArea";
 import { Picker } from "@react-native-picker/picker";
@@ -30,45 +30,41 @@ const SingleMoto = () => {
   }
 
   const { editing, moto: routeMoto } = route.params;
-  const { 
-    editingMoto, 
-    handleEditingForm, 
-    saveChanges, 
-    enterEditMode, 
+  const {
+    editingMoto,
+    handleEditingForm,
+    saveChanges,
+    enterEditMode,
     setRouteMoto,
-    singleMoto // Nova query
+    singleMoto, // Nova query
   } = useMoto({ motoId: routeMoto.idMoto });
   const { tipoMotos } = useTipoMoto();
 
-  // ✅ useEffect corrigido - só executa quando singleMoto.data mudar
   useEffect(() => {
     if (singleMoto.data) {
       setRouteMoto(singleMoto.data);
     }
-  }, [singleMoto.data]); // Apenas singleMoto.data como dependência
 
-  // ✅ useEffect separado para modo de edição - só executa quando necessário
-  useEffect(() => {
     if (editing && !editingMoto) {
       const motoToEdit = singleMoto.data || routeMoto;
       enterEditMode(motoToEdit);
     }
-  }, [editing]); // Apenas editing como dependência
+  }, [singleMoto.data, editing]);
 
-  // Use os dados da query se disponíveis, senão use routeMoto
   const currentMoto = singleMoto.data || routeMoto;
   const moto = editingMoto ?? currentMoto;
-  
-  const { identificadoresFilial } = useIdentificador({
-    idFilial: moto.idSecaoFilial.idFilial.idFilial,
-  });
 
-  const { secoes, error: secoesError, loading: secoesLoading } = useFilial()
+  const { secoes, error: secoesError, loading: secoesLoading } = useFilial();
 
   // Loading state para a query da moto - APÓS todos os hooks
   if (singleMoto.isLoading) {
     return (
-      <View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
+      <View
+        style={[
+          styles.container,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
         <ActivityIndicator size="large" color="#41C526" />
         <Text style={styles.subtitle}>Carregando moto...</Text>
       </View>
@@ -104,7 +100,6 @@ const SingleMoto = () => {
 
           {/* Informações */}
           <View style={styles.infoContainer}>
-
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Status</Text>
               {!editing ? (
@@ -202,30 +197,15 @@ const SingleMoto = () => {
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Identificador</Text>
               {!editing ? (
-                <Text style={styles.infoValue}>
-                  {moto.identificador}
-                </Text>
+                <Text style={styles.infoValue}>{moto.identificador}</Text>
               ) : (
-                <View style={[styles.pickerContainer, styles.editableInput]}>
-                  <Picker
-                    selectedValue={moto.identificador}
-                    onValueChange={(value) =>
-                      handleEditingForm("idTipoMoto", value)
-                    }
-                    style={styles.picker}
-                    dropdownIconColor="#8B8B8B"
-                  >
-                    {identificadoresFilial.data?.content?.map(
-                      (identificador) => (
-                        <Picker.Item
-                          label={capitalize(identificador.vlrIdentificador)}
-                          value={identificador}
-                          key={identificador.idIdentificador}
-                        />
-                      )
-                    )}
-                  </Picker>
-                </View>
+                <TextInput
+                  style={[styles.editableInput]}
+                  value={moto.identificador}
+                  onChangeText={(text) =>
+                    handleEditingForm("identificador", text)
+                  }
+                />
               )}
             </View>
 
@@ -245,20 +225,18 @@ const SingleMoto = () => {
                     style={styles.picker}
                     dropdownIconColor="#8B8B8B"
                   >
-                    {secoes && secoes.map(
-                      (secao) => (
+                    {secoes &&
+                      secoes.map((secao) => (
                         <Picker.Item
                           label={capitalize(secao.idTipoSecao.nmSecao)}
                           value={secao}
                           key={secao.idSecao}
                         />
-                      )
-                    )}
+                      ))}
                   </Picker>
                 </View>
               )}
             </View>
-
           </View>
         </View>
       </ScrollView>

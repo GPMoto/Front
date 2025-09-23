@@ -7,10 +7,6 @@ import { useEffect } from "react";
 const useProfile = () => {
   const { token, isAuthenticated } = useAuth();
 
-   console.log('Token no ProfileController:', token); // Debug
-  console.log('IsAuthenticated:', isAuthenticated); // Debug
-
-
   const queryClient = useQueryClient();
 
   useEffect(() => {

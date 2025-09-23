@@ -18,7 +18,6 @@ export default class IdentificadorService {
 
   async uploadPhoto(photo: PhotoFile) {
     if (!photo) throw new Error("Nenhuma foto selecionada");
-    console.log("photo: ", photo);
     return await this.identificadorFetcher.uploadPhoto(photo);
   }
 }

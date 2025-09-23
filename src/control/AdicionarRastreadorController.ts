@@ -23,7 +23,6 @@ export const useAdicionarRastreador = () => {
   useEffect(() => {
     if (qrCodeValor) {
       Alert.alert("Upload de imagem feito!");
-      console.log("QRCODE no Add Rastreador(njsankjdbn): ", qrCodeValor);
       setTimeout(() => {
         navigation.navigate("QRCode", {
           qrCode: qrCodeValor,
@@ -80,7 +79,6 @@ export const useAdicionarRastreador = () => {
 
       const file: PhotoFile = { uri, name: filename, type: mime };
       const response = await new IdentificadorService(token).uploadPhoto(file);
-      console.log("response: ", response);
       setQrCodeValor(response);
     } catch (error) {
       console.warn("openCamera error", error);
