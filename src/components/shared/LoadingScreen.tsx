@@ -37,7 +37,7 @@ const LoadingScreen = ({ children, visible = true } : LoadingScreenProps) => {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    backgroundColor: "rgba(0, 0, 0, 0.95)",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -47,12 +47,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   animation: {
-    width: 400,
-    height: 400,
+    width: 220,
+    height: 220,
   },
   textContainer: {
     marginTop: 20,
     alignItems: "center",
+    color: "#ffffff",
   },
 });
 
