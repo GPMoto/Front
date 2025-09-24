@@ -79,6 +79,10 @@ class MotoService {
     );
     return data;
   }
+
+  async delete(idMoto : number) {
+    return await this.motoFetcher.delete(idMoto);
+  }
 }
 
 export default MotoService;

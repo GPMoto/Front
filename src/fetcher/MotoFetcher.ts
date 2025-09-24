@@ -76,7 +76,7 @@ class MotoFetcher {
     }
   }
 
-  async update(idMoto : number, updateMoto: MotoDTO): Promise<Moto> {
+  async update(idMoto: number, updateMoto: MotoDTO): Promise<Moto> {
     const response: AxiosResponse<Moto> = await this.apiClient.put(
       `/moto/${idMoto}`,
       updateMoto
@@ -115,6 +115,15 @@ class MotoFetcher {
         },
       });
     return response.data;
+  }
+
+  async delete(idMoto: number) : Promise<boolean> {
+    try {
+      await this.apiClient.delete(`/moto/${idMoto}`);
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 }
 

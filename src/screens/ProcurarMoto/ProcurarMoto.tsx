@@ -18,6 +18,7 @@ import {
   AppDrawerNavigationProps,
   DrawerParamList,
 } from "@/navigators/NavigationTypes";
+import FloatingButton from "@/components/FloatingButton/FloatingButton";
 
 export default function ProcurarMoto() {
   const route = useRoute<RouteProp<DrawerParamList, "Procurar Moto">>();
@@ -32,6 +33,9 @@ export default function ProcurarMoto() {
     limparBusca,
     goToSingleMoto,
     reloadPage,
+    handleDelete,
+    deletingId,
+    goToCreateMoto
   } = useMoto({ size: 10, idSecaoFilial: params?.idSecaoFilial });
 
   if (pagedMotos.isLoading) {
@@ -94,7 +98,12 @@ export default function ProcurarMoto() {
               item.idMoto?.toString() || index.toString()
             }
             renderItem={({ item }) => (
-              <SingleMotoPaged verMais={goToSingleMoto} {...item} />
+              <SingleMotoPaged
+                verMais={goToSingleMoto}
+                handleDelete={handleDelete}
+                deletingId={deletingId}
+                {...item}
+              />
             )}
             showsVerticalScrollIndicator={false}
             refreshControl={
@@ -110,11 +119,7 @@ export default function ProcurarMoto() {
             }
             ListHeaderComponent={
               <View style={procurarMotoStyles.totalMotosContainer}>
-                <Text
-                  style={[
-                    procurarMotoStyles.pageText,
-                  ]}
-                >
+                <Text style={[procurarMotoStyles.pageText]}>
                   Total de motos: {pagedMotos.data!.totalElements || 0}
                 </Text>
               </View>
@@ -142,6 +147,10 @@ export default function ProcurarMoto() {
           />
         </View>
       </View>
+
+      <FloatingButton 
+        onPress={goToCreateMoto}
+      />
     </View>
   );
 }
