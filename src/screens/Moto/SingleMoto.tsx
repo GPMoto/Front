@@ -14,7 +14,6 @@ import ButtonArea from "@/components/Button/ButtonArea";
 import { Picker } from "@react-native-picker/picker";
 import { useTipoMoto } from "@/control/TipoMotoController";
 import { capitalize } from "@/utils/helpers";
-import { useIdentificador } from "@/control/IdentificadorController";
 import { useEffect } from "react";
 import useFilial from "@/control/FilialController";
 
@@ -36,7 +35,11 @@ const SingleMoto = () => {
     saveChanges,
     enterEditMode,
     setRouteMoto,
-    singleMoto, // Nova query
+    singleMoto,
+    verifyIsCreating,
+    saveLoading,
+    updateLoading,
+    handleSave,
   } = useMoto({ motoId: routeMoto.idMoto });
   const { tipoMotos } = useTipoMoto();
 
@@ -56,7 +59,6 @@ const SingleMoto = () => {
 
   const { secoes, error: secoesError, loading: secoesLoading } = useFilial();
 
-  // Loading state para a query da moto - APÓS todos os hooks
   if (singleMoto.isLoading) {
     return (
       <View
@@ -71,7 +73,6 @@ const SingleMoto = () => {
     );
   }
 
-  // Error state para a query da moto - APÓS todos os hooks
   if (singleMoto.isError) {
     return (
       <View style={styles.errorContainer}>
@@ -240,17 +241,51 @@ const SingleMoto = () => {
           </View>
         </View>
       </ScrollView>
-      <ButtonArea
-        title={!editing ? "Editar" : "Salvar"}
-        size="medium"
-        action={() => {
-          if (editing) {
-            saveChanges();
-          } else {
-            enterEditMode(routeMoto);
-          }
-        }}
-      />
+      <View style={{ padding: 16 }}>
+        {editing && verifyIsCreating(moto) && saveLoading ? (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <ActivityIndicator size="small" color="#41C526" />
+            <Text style={{ color: "#41C526", marginLeft: 8 }}>
+              Cadastrando moto...
+            </Text>
+          </View>
+        ) : editing && updateLoading ? (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <ActivityIndicator size="small" color="#41C526" />
+            <Text style={{ color: "#41C526", marginLeft: 8 }}>
+              Salvando alterações...
+            </Text>
+          </View>
+        ) : (
+          <ButtonArea
+            title={!editing ? "Editar" : "Salvar"}
+            size="medium"
+            action={() => {
+              if (editing) {
+                if (verifyIsCreating(moto)) {
+                  handleSave();
+                } else {
+                  saveChanges();
+                }
+              } else {
+                enterEditMode(routeMoto);
+              }
+            }}
+          />
+        )}
+      </View>
     </View>
   );
 };

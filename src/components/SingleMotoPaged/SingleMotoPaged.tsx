@@ -1,14 +1,20 @@
 import { Moto } from "@/model/Moto";
 import { statusBadge, formatIdentificador } from "@/utils/helpers";
 import { StyleSheet, Text, View } from "react-native";
+import { FontAwesome as Icon } from "@expo/vector-icons";
 import ButtonArea from "../Button/ButtonArea";
+import { ActivityIndicator } from "react-native";
 
 interface SingleMotoPagedProps extends Moto {
   verMais: (moto: Moto) => void;
+  handleDelete : (idMoto : number) => void
+  deletingId?: number | null;
 }
 
 export default function SingleMotoPaged({
   verMais,
+  handleDelete,
+  deletingId,
   ...item
 }: SingleMotoPagedProps) {
   return (
@@ -17,6 +23,11 @@ export default function SingleMotoPaged({
         <Text style={styles.tipoText}>{item.idTipoMoto.nmTipo}</Text>
         <Text style={styles.separatorText}> - </Text>
         <Text style={styles.identificadorText}>#{formatIdentificador(item.identificador)}</Text>
+        {deletingId && deletingId === item.idMoto ? (
+          <ActivityIndicator color="#ff5252" />
+        ) : (
+          <Icon name="trash-o" color={"red"} size={18} onPress={() => handleDelete(item.idMoto!)} />
+        )}
       </View>
 
       <View style={styles.secondaryInfo}>
