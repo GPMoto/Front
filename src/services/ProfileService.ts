@@ -1,22 +1,24 @@
 import { useAuth } from "@/context/AuthContext";
 import ProfileFetcher from "@/fetcher/ProfileFetcher";
-import { ProfileResponse } from "@/model/ProfileResponse";
-import { UserData } from "@/model/UserLogin";
+import { Perfil } from "@/model/Perfil";
+import { ProfileResponse } from "@/model/User";
+import { UserData } from "@/model/User";
 
 class ProfileService {
   private profileFetcher: ProfileFetcher;
 
-  constructor() {
-    this.profileFetcher = new ProfileFetcher();
+  constructor(token: string | null) {
+    this.profileFetcher = new ProfileFetcher(token);
   }
 
-  async get(token: string): Promise<ProfileResponse> {
-    console.log("Fazendo requisição para o profileFetcher()")
-    const response = await this.profileFetcher.get(token);
-    console.log("Objeto resposta para o profile service:")
-    console.log(response)
-    return response
+  async get(): Promise<UserData> {
+    return await this.profileFetcher.get();
   }
+
+  async getPerfis() : Promise<Perfil[]> {
+    return await this.profileFetcher.getPerfis();
+  }
+
 }
 
 export default ProfileService;

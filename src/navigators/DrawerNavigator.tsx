@@ -1,33 +1,50 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { ParamListBase } from "@react-navigation/native";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
 import React from "react";
 import Inicio from "@/screens/Inicio/Inicio";
 import Mapa from "@/screens/Mapa/Mapa";
 import ProcurarMoto from "@/screens/ProcurarMoto/ProcurarMoto";
 import AdicionarRastreador from "@/screens/AdicionarRastreador/AdicionarRastreador";
-import Relatorio from "@/screens/Relatorios/Relatorio";
-import { DrawerParamList } from "./NavigationTypes";
+import Scanner from "@/screens/AdicionarRastreador/LeituraRastreador"
+import SingleMoto from "@/screens/Moto/SingleMoto";
+import { AppDrawerNavigationProps, DrawerParamList } from "./NavigationTypes";
 import Settings from "@/screens/Settings";
+import { MaterialIcons as Icon } from "@expo/vector-icons";
+import { Platform } from "react-native";
+import QRCodePlaca from "@/components/QrCode/QrCode";
+import { useTheme } from "@/context/ThemeContext";
+import { useDarkColors } from "@/styles/theme-config";
+
 
 export default function DrawerNavigator() {
   const { Screen, Navigator } = createDrawerNavigator<DrawerParamList>();
+  const navigation = useNavigation<AppDrawerNavigationProps>();
+  
+  const { isDarkTheme } = useTheme();
+  const colors = useDarkColors();
 
   return (
     <Navigator
       initialRouteName="Inicio"
       screenOptions={{
-        headerStyle: { backgroundColor: "#2C2C2C" },
+        headerStyle: { backgroundColor: colors.cardBg },
         headerTitleStyle: {
           fontSize: 24,
+          color: colors.primaryText,
         },
-        drawerActiveBackgroundColor: "#41C52620",
+        drawerActiveBackgroundColor: isDarkTheme ? "#41C52620" : "#41C52610",
+        drawerActiveTintColor: "#41C526",
+        drawerInactiveTintColor: colors.secondaryText,
         drawerLabelStyle: {
-          color: "#41C526",
           fontSize: 18,
+          fontWeight: "600",
         },
         headerTintColor: "#41C526",
         drawerStyle: {
-          backgroundColor: "#2C2C2C",
+          backgroundColor: colors.cardBg,
+        },
+        drawerContentStyle: {
+          backgroundColor: colors.cardBg,
         },
       }}
     >
@@ -45,12 +62,61 @@ export default function DrawerNavigator() {
           <AdicionarRastreador {...props}></AdicionarRastreador>
         )}
       </Screen>
-      <Screen name="Relatórios">
-        {(props: ParamListBase) => <Relatorio {...props}></Relatorio>}
-      </Screen>
-       <Screen name="Configurações">
+      <Screen name="Configurações">
         {(props: ParamListBase) => <Settings {...props}></Settings>}
       </Screen>
+      <Screen
+        name="Moto"
+        options={{
+          drawerItemStyle: { display: "none" },
+          headerStyle: { backgroundColor: colors.cardBg },
+          headerTitleStyle: {
+            fontSize: 24,
+            color: colors.primaryText,
+          },
+          headerLeft: (props) => (
+            <Icon
+              size={24}
+              style={{
+                marginHorizontal: 16,
+              }}
+              name={Platform.OS === "android" ? "arrow-back" : "arrow-back-ios"}
+              color="#41C526"
+              onPress={() => navigation.navigate("Procurar Moto")}
+            />
+          ),
+        }}
+      >
+        {(props: ParamListBase) => <SingleMoto {...props}></SingleMoto>}
+      </Screen>
+      <Screen
+        name="QRCode"
+        options={{
+          drawerItemStyle: { display: "none" },
+          headerStyle: { backgroundColor: colors.cardBg },
+          headerTitleStyle: {
+            fontSize: 24,
+            color: colors.primaryText,
+          },
+          headerLeft: (props) => (
+            <Icon
+              size={24}
+              style={{
+                marginHorizontal: 16,
+              }}
+              name={Platform.OS === "android" ? "arrow-back" : "arrow-back-ios"}
+              color="#41C526"
+              onPress={() => navigation.navigate("Adicionar Rastreador")}
+            />
+          ),
+        }}
+      >
+        {(props: ParamListBase) => <QRCodePlaca {...props} />}
+      </Screen>
+      <Screen
+        name="Scanner"
+        component={Scanner}
+      />
     </Navigator>
   );
 }

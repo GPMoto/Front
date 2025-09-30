@@ -1,12 +1,64 @@
-import { View } from "react-native";
-import { globalStyles } from "../../styles/styles";
-import MapaComponent from "../../components/MapaComponent/MapaComponent";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  SafeAreaView,
+  StatusBar,
+} from "react-native";
+import useInicio from "@/control/InicioController";
+import { FontAwesome as Icon } from "@expo/vector-icons";
+import { useTheme } from "@/context/ThemeContext";
+import { useDarkColors } from "@/styles/theme-config";
+import { createStyles } from "./styles";
 
 export default function Inicio() {
+  const { appTitle, subtitle, goToMapa, goToProcurar, sections, motorcycles } =
+    useInicio();
+  const { isDarkTheme } = useTheme();
+  const colors = useDarkColors();
+  const styles = createStyles(colors, isDarkTheme);
+
   return (
-    <View style={globalStyles.container_center}>
-      <View style={{ height: 20 }}></View>
-      <MapaComponent />
-    </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.containerBg }}>
+      <StatusBar
+        barStyle={isDarkTheme ? "light-content" : "dark-content"}
+        backgroundColor={colors.containerBg}
+      />
+      <View style={{ flex: 1, backgroundColor: colors.containerBg, padding: 20 }}>
+        <View style={styles.hero}>
+          <View style={styles.heroLeft}>
+            <Text style={styles.subtitle}>{subtitle}</Text>
+            <Text style={styles.title}>{appTitle}</Text>
+          </View>
+          <View style={styles.heroRight}>
+            <Icon name="motorcycle" size={40} color="#41C526" />
+          </View>
+        </View>
+
+        <View style={styles.actionsRow}>
+          <TouchableOpacity style={styles.actionCard} onPress={goToMapa}>
+            <Icon name="map" size={28} color={colors.iconColor} />
+            <Text style={styles.actionText}>Mapa</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.actionCard} onPress={goToProcurar}>
+            <Icon name="search" size={28} color={colors.iconColor} />
+            <Text style={styles.actionText}>Procurar Moto</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.infoRow}>
+          <View style={styles.infoCard}>
+            <Text style={styles.infoLabel}>Seções</Text>
+            <Text style={styles.infoValue}>{sections}</Text>
+          </View>
+
+          <View style={styles.infoCard}>
+            <Text style={styles.infoLabel}>Motos</Text>
+            <Text style={styles.infoValue}>{motorcycles}</Text>
+          </View>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 }

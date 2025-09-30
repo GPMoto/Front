@@ -1,40 +1,42 @@
-import { AuthResponse } from "@/model/AuthResponse";
-import { ErrorResponseApi } from "@/model/ErrorResponseApi";
+import { AuthResponse } from "@/model/types/AuthResponse";
 import {
+  CreateUser,
   UserLogin,
   UserLoginErrorResponse,
   UserLoginResponse,
-} from "@/model/UserLogin";
+} from "@/model/User";
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
-import authMockApi from "./AuthFetcherMock";
+import authMockApi from "../mock/fetcher/AuthFetcherMock";
 import { getErrorMessage } from "@/utils/helpers";
+import { setupAxiosDebug } from "@/utils/axiosDebug";
+import { attachUnauthorizedInterceptor } from "@/services/NetworkInterceptor";
 
 class AuthFetcher {
-  private endpoint: string = '/auth';
-  private baseUrl: string;
+  private endpoint: string = "autenticacao/login";
+  private baseUrl: string = process.env.EXPO_PUBLIC_API_URL;
   private apiClient: AxiosInstance;
-  private mockApi: boolean = true;
+  private mockApi: boolean = !!!this.baseUrl;
 
   constructor() {
-    this.baseUrl = process.env.EXPO_PUBLIC_API_URL;
-    this.apiClient = this.mockApi
-      ? authMockApi
-      : axios.create({
+    this.apiClient = this.mockApi 
+    ? authMockApi
+    : axios.create({
           baseURL: this.baseUrl,
           timeout: 10000,
           headers: {
             "Content-Type": "application/json",
           },
         });
+    
+    setupAxiosDebug(this.apiClient, 'AuthFetcher');
+    attachUnauthorizedInterceptor(this.apiClient);
   }
 
-  
-
   async login(userLogin: UserLogin): Promise<AuthResponse> {
-    this.endpoint = "/auth/login";
+    this.endpoint = "/autenticacao/login";
     try {
       const response: AxiosResponse<UserLoginResponse> =
-        await this.apiClient.post(this.endpoint, userLogin);
+        await this.apiClient.post(`${this.endpoint}?username=${userLogin.email}&password=${userLogin.senha}` );
 
       return {
         data: response.data,
@@ -42,6 +44,26 @@ class AuthFetcher {
         success: true,
         message: "Login realizado com sucesso",
       };
+    } catch (error) {
+      const axiosError = error as AxiosError<UserLoginErrorResponse>;
+
+      return {
+        data: (axiosError.response?.data as UserLoginErrorResponse) || null,
+        status: axiosError.response?.status || 0,
+        success: false,
+        message: getErrorMessage(axiosError),
+      };
+    }
+  }
+
+  async register(createUser : CreateUser) : Promise<AuthResponse> {
+    this.endpoint = "usuario";
+    try {
+      await this.apiClient.post(this.endpoint, createUser);
+      return {
+        success: true, 
+        message: "Conta criada com sucesso!",
+      }
     } catch (error) {
       const axiosError = error as AxiosError<UserLoginErrorResponse>;
 

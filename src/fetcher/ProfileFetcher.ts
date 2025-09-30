@@ -1,20 +1,18 @@
-import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
-import profileMockApi from "./ProfileFetcherMock";
-import { UserData } from "@/model/UserLogin";
-import {
-  ProfileResponse,
-  UserDataErrorResponse,
-} from "@/model/ProfileResponse";
-import { getErrorMessage } from "@/utils/helpers";
+import axios, { AxiosInstance, AxiosResponse } from "axios";
+import profileMockApi from "../mock/fetcher/ProfileFetcherMock";
+import { UserData } from "@/model/User";
+import { Perfil } from "@/model/Perfil";
+import { setupAxiosDebug } from "@/utils/axiosDebug";
+import { attachUnauthorizedInterceptor } from "@/services/NetworkInterceptor";
 
 class ProfileFetcher {
   private apiClient: AxiosInstance;
-  private endpoint: string = "/usuario";
-  private mockApi: boolean = true;
-  private baseUrl: string;
+  private endpoint: string = "usuario";
+  private baseUrl: string = process.env.EXPO_PUBLIC_API_URL;
+  private mockApi: boolean = !!!this.baseUrl;
+  private token: string | null;
 
-  constructor() {
-    this.baseUrl = process.env.EXPO_PUBLIC_API_URL;
+  constructor(token: string | null) {
     this.apiClient = this.mockApi
       ? profileMockApi
       : axios.create({
@@ -24,35 +22,44 @@ class ProfileFetcher {
             "Content-Type": "application/json",
           },
         });
+    this.token = token;
+    this.interceptors();
+
+    setupAxiosDebug(this.apiClient, "ProfileFetcher");
+    attachUnauthorizedInterceptor(this.apiClient);
   }
 
-  async get(token: string): Promise<ProfileResponse> {
-    console.log("Iniciando req em get do ProfileFetcher!")
-    try {
-      const response: AxiosResponse<UserData> = await this.apiClient.get(
-        this.endpoint,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      return {
-        data: response.data,
-        status: response.status,
-        success: true,
-        message: "Dados do usuário obtidos com sucesso!",
-      };
-    } catch (error) {
-      const axiosError = error as AxiosError<UserDataErrorResponse>;
-
-      return {
-        data: (axiosError.response?.data as UserDataErrorResponse) || null,
-        status: axiosError.response?.status || 0,
-        success: false,
-        message: getErrorMessage(axiosError),
-      };
+  private interceptors() {
+  this.apiClient.interceptors.request.use((config) => {
+    
+    if (this.token && !config.headers["X-Skip-Auth"]) {
+      config.headers.Authorization = `Bearer ${this.token}`;
     }
+    
+    delete config.headers["X-Skip-Auth"];
+    return config;
+  });
+}
+
+  async get(): Promise<UserData> {
+    console.log("token: \n\n\n", this.token);
+    this.endpoint = "usuario/me"
+    const response: AxiosResponse<UserData> = await this.apiClient.get(
+      this.endpoint
+    );
+    return response.data;
+  }
+
+  async getPerfis(): Promise<Perfil[]> {
+    this.endpoint = "perfil";
+    const response: AxiosResponse<Perfil[]> = await this.apiClient.get(
+      this.endpoint,
+      {
+        headers: { "X-Skip-Auth": "true" },
+      }
+    );
+
+    return response.data;
   }
 }
 

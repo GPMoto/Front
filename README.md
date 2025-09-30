@@ -1,60 +1,163 @@
-# Projeto de Organização de Motos - Mottu
+# 🏍️ GPMoto - Sistema de Gestão de Motocicletas
 
-Este projeto foi desenvolvido para facilitar a organização e visualização das motos no pátio da Mottu. Ele utiliza uma interface interativa para exibir as motos, permitindo que os usuários selecionem e visualizem informações detalhadas sobre cada uma delas. Além disso, o sistema categoriza as motos por status e oferece uma visão geral das áreas administrativas, de estoque, recepção, entre outras.
+## 📱 Nome do App
+**GPMoto** - Aplicativo móvel para gestão completa de motocicletas em concessionárias e pátios organizacionais.
 
-## Funcionalidades Principais
+## 🎯 Proposta e Funcionalidades
 
-- **Visualização de Motos**: Exibição das motos em um layout de grade, com cores indicando o status de cada moto.
-- **Seleção de Motos**: Ao clicar em uma moto, é possível visualizar informações detalhadas e alterar seu status.
-- **Categorias**: Áreas como Conserto, Qualidade, Administrativo, Estoque e Recepção são representadas visualmente para facilitar a navegação.
+### Proposta
+O GPMoto é uma solução mobile desenvolvida para facilitar a organização, visualização e gestão de motocicletas em ambientes empresariais como concessionárias, locadoras e pátios de manutenção. O sistema oferece uma interface intuitiva que permite controle total sobre o inventário de motos.
 
-## Tecnologias Utilizadas
 
-- **React Native**: Para a construção da interface do usuário.
-- **Expo**: Para simplificar o desenvolvimento e execução do aplicativo.
-- **TypeScript**: Para tipagem estática e maior segurança no código.
 
-## Como Rodar o Projeto Localmente
+## 📁 Estrutura de Pastas
 
-Siga os passos abaixo para configurar e executar o projeto na sua máquina:
+```
+src/
+├── components/           # Componentes reutilizáveis
+│   ├── Button/          # Botões customizados
+│   ├── DrawerNav/       # Navegação drawer
+│   ├── FloatingButton/  # Botões flutuantes
+│   ├── InputLabel/      # Inputs com label
+│   ├── MapaComponent/   # Componentes do mapa
+│   ├── MotoDetailCard/  # Cards de detalhes
+│   ├── PickerArea/      # Seletores
+│   ├── QrCode/         # Componentes QR Code
+│   ├── shared/         # Componentes compartilhados
+│   └── SingleMotoPaged/ # Paginação de motos
+│
+├── context/             # Contextos React
+│   ├── AuthContext.tsx # Contexto de autenticação
+│   └── ThemeContext.tsx # Contexto de tema
+│
+├── control/             # Controllers/Hooks
+│   ├── AdicionarRastreadorController.ts
+│   ├── AuthController.ts
+│   ├── CadastroController.ts
+│   ├── FilialController.ts
+│   ├── IdentificadorController.ts
+│   ├── InicioController.ts
+│   ├── LeitorQrCodeController.ts
+│   ├── MotoControl.ts
+│   ├── ProfileController.ts
+│   ├── QrCodeController.ts
+│   └── TipoMotoController.ts
+│
+├── fetcher/             # Camada de dados
+│   ├── AuthFetcher.ts
+│   ├── Fetcher.ts
+│   ├── FilialFetcher.ts
+│   ├── IdentificadorFetcher.ts
+│   ├── MotoFetcher.ts
+│   ├── ProfileFetcher.ts
+│   └── TipoMotoFetcher.ts
+│
+├── model/               # Modelos de dados
+│   ├── dto/            # Data Transfer Objects
+│   ├── types/          # Tipos TypeScript
+│   ├── Cidade.ts
+│   ├── Contato.ts
+│   ├── Endereco.ts
+│   ├── Estado.ts
+│   ├── Filial.ts
+│   ├── Identificador.ts
+│   ├── Moto.ts         # Modelo principal
+│   ├── Pais.ts
+│   ├── Perfil.ts
+│   ├── SecaoFilial.ts
+│   ├── Telefone.ts
+│   ├── TipoMoto.ts
+│   ├── TipoSecao.ts
+│   └── User.ts
+│
+├── navigators/          # Configuração de navegação
+│   ├── AppNavigator.tsx
+│   ├── AuthNavigator.tsx
+│   ├── DrawerNavigator.tsx
+│   ├── NavigationTypes.ts
+│   ├── RootNavigator.tsx
+│   └── SplashApp.tsx
+│
+├── screens/             # Telas do aplicativo
+│   ├── AdicionarRastreador/
+│   ├── Cadastro/
+│   ├── Filial/
+│   ├── Inicio/
+│   ├── LoginCadastro/
+│   ├── Mapa/
+│   ├── Moto/
+│   ├── ProcurarMoto/
+│   └── Settings/
+│
+├── services/            # Serviços e APIs
+│   ├── AuthService.ts
+│   ├── FilialService.ts
+│   ├── IdentificadorService.ts
+│   ├── MotoService.ts
+│   ├── NetworkInterceptor.ts
+│   ├── ProfileService.ts
+│   ├── TipoMotoService.ts
+│   └── UnauthorizedHandler.ts
+│
+├── styles/              # Estilos e temas
+│   ├── styles.ts
+│   └── theme-config.ts
+│
+└── utils/               # Utilitários
+    ├── axiosDebug.ts
+    ├── helpers.ts
+    └── useDebounce.ts
+```
 
-### Pré-requisitos
+## 👥 Integrantes do Projeto
 
-- Node.js (versão 22 ou superior)
-- Expo CLI instalado globalmente (`npm install -g expo-cli`)
-- Um emulador Android/iOS ou dispositivo físico com o aplicativo Expo Go instalado
+| Nome | RM | GitHub |
+|------|----| -------|
+| **Gustavo Dias da Silva Cruz** | RM556448 | [@gustavodscruz](https://github.com/gustavodscruz) |
+| **Julia Angelozi** | RM556364 | [@JuliaAngelozi](https://github.com/JuliaAngelozi) |
+| **Felipe Ribeiro Tardochi da Silva** | RM555100 | [@feliperibeiroa](https://github.com/feliperibeiroa) |
 
-### Passos
 
-1. **Clone o repositório**:
-   ```bash
-   git clone https://https://github.com/GPMoto/Front.git
-   cd Front
-   ```
+### Execução
+- **Dispositivo físico**: Escaneie o QR Code com o app Expo Go
+- **Emulador Android**: Pressione `a` no terminal
+- **Simulador iOS**: Pressione `i` no terminal
 
-2. **Instale as dependências**:
-   ```bash
-   npm install
-   ```
+## 🛠️ Tecnologias Utilizadas
 
-3. **Inicie o servidor de desenvolvimento**:
-   ```bash
-   expo start
-   ```
+### Frontend Mobile
+- **React Native** - Framework principal
+- **Expo** - Plataforma de desenvolvimento
+- **TypeScript** - Tipagem estática
+- **React Navigation** - Navegação entre telas
 
-4. **Execute no dispositivo ou emulador**:
-   - Escaneie o QR Code exibido no terminal ou no navegador com o aplicativo Expo Go.
-   - Ou, se estiver usando um emulador, pressione `a` para Android ou `i` para iOS.
+### Gerenciamento de Estado
+- **TanStack React Query** - Cache e sincronização de dados
+- **React Context** - Estado global (Auth, Theme)
 
-### Estrutura do Projeto
+### UI/UX
+- **Expo Vector Icons** - Ícones
+- **React Native Picker** - Seletores
+- **Lottie React Native** - Animações
 
-- **components**: Contém os componentes reutilizáveis, como `MapaComponent` e `ModalMapaComponent`.
-- **styles**: Arquivos de estilo para o projeto.
-- **Util**: Contém mocks e interfaces para simular dados e definir tipos.
+### Validação e Formulários
+- **Yup** - Validação de schemas
 
-## Colaboradores
+### Networking
+- **Axios** - Cliente HTTP
+- **JWT** - Autenticação
 
-- **@cotete**
-- **@JuliaAngelozi**
-- **@gustavodscruz**
+## 📋 Funcionalidades Implementadas
+
+- ✅ Sistema de autenticação completo
+- ✅ CRUD de motocicletas com validação
+- ✅ Gestão de filiais e seções
+- ✅ Interface com tema claro/escuro
+- ✅ Navegação drawer responsiva
+- ✅ Mapa interativo do pátio
+- ✅ Sistema de busca e filtros
+- ✅ Validação em tempo real
+- ✅ Cache offline de dados
+- ✅ QR Code scanner/generator
+
 
