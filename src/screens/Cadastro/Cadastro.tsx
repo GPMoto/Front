@@ -36,6 +36,12 @@ const Cadastro = () => {
   const colors = useDarkColors();
   const styles = createStyles(colors, isDarkTheme);
 
+  // Debug logs
+  console.log("Filiais no componente:", filiais);
+  console.log("Loading:", filialLoading);
+  console.log("Error:", filialError);
+  console.log("Form:", form);
+
   if (filialLoading || cadastroForm.isPending) {
     return (
       <SafeAreaView style={styles.container}>
@@ -153,13 +159,21 @@ const Cadastro = () => {
               {/* Filial Picker */}
               <View style={styles.pickerWrapper}>
                 <Text style={styles.inputLabel}>Filial</Text>
+                
+                {/* Debug: Mostrar dados das filiais */}
+                <Text style={styles.inputLabel}>
+                  Debug: {filiais ? `${filiais.length} filiais carregadas` : 'Nenhuma filial'}
+                </Text>
+                
                 <View style={styles.pickerContainer}>
                   <Picker
-                    selectedValue={selectedFilial}
-                    onValueChange={(filial) => {
-                      setSelectedFilial(filial);
-                      if (filial) {
-                        handleForm(filial.idFilial.toString(), "idFilial");
+                    selectedValue={form.idFilial || 0}
+                    onValueChange={(idFilial) => {
+                      console.log("Picker onValueChange:", idFilial);
+                      if (idFilial && idFilial !== 0) {
+                        handleForm(idFilial.toString(), "idFilial");
+                        const filial = filiais?.find(f => f.idFilial === idFilial);
+                        setSelectedFilial(filial || null);
                       }
                     }}
                     style={styles.picker}
@@ -167,20 +181,38 @@ const Cadastro = () => {
                   >
                     <Picker.Item
                       label="Selecione uma filial"
-                      value={null}
+                      value={0}
                       color={isDarkTheme ? "#8B8B8B" : "#666"}
                     />
-                    {filiais &&
-                      filiais.map((filial) => (
+                    {filiais && filiais.length > 0 ?
+                      filiais.map((filial) => {
+                        console.log("Renderizando filial:", filial);
+                        const label = filial.idContato?.nmDono || `Filial ${filial.idFilial}`;
+                        return (
+                          <Picker.Item
+                            value={filial.idFilial}
+                            key={filial.idFilial}
+                            label={label}
+                            color={isDarkTheme ? "#8B8B8B" : "#666"}
+                          />
+                        );
+                      }) : (
                         <Picker.Item
-                          value={filial}
-                          key={filial.idFilial}
-                          label={filial.idContato.nmDono}
-                          color={isDarkTheme ? "#FFFFFF" : "#000000"}
+                          label="Nenhuma filial disponível"
+                          value={-1}
+                          color="#FF0000"
                         />
-                      ))}
+                      )
+                    }
                   </Picker>
                 </View>
+                
+                {/* Debug: Lista das filiais */}
+                {filiais && filiais.map((filial, index) => (
+                  <Text key={index} style={styles.inputLabel}>
+                    Filial {index + 1}: {filial.idContato?.nmDono || 'Sem nome'} (ID: {filial.idFilial})
+                  </Text>
+                ))}
               </View>
 
               {/* Password Input */}

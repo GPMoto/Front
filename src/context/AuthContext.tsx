@@ -51,10 +51,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const logout = async () => {
+    console.log("logout chamado")
+    console.log("token aqui no logout: ", token)
     setToken(null);
     await AsyncStorage.removeItem("TOKEN");
-    
-    // Limpar todas as queries do cache no logout
+    console.log("token removido", await AsyncStorage.getItem("TOKEN"))
     queryClient.clear();
   };
 

@@ -1,7 +1,6 @@
-import { number, object, Schema, string } from "yup";
+import { number, object, string } from "yup";
 import { TipoMoto } from "./TipoMoto";
 import { PageableResponse } from "./types/PageableResponse";
-import { Identificador } from "./Identificador";
 import { SecaoFilial } from "./SecaoFilial";
 
 interface Moto {
@@ -10,7 +9,7 @@ interface Moto {
   status: string;
   condicoesManutencao: string;
   idTipoMoto: TipoMoto;
-  idSecaoFilial : SecaoFilial;
+  idSecaoFilial: SecaoFilial;
 }
 
 interface MotoResponse {
@@ -18,7 +17,7 @@ interface MotoResponse {
   status?: number;
   message: string;
   success: boolean;
-  errors?: Partial<Moto>
+  errors?: { [key: string]: string };
 }
 
 const createMotoSchema = object({
@@ -26,13 +25,13 @@ const createMotoSchema = object({
     .nullable()
     .optional()
     .positive("ID da moto deve ser um número positivo"),
-  identificador: number()
+  identificador: string()
     .required("Identificador é obrigatório")
-    .positive("Identificador deve ser um número positivo"),
+    .min(6, "Identificador/placa deve ter no mínimo 6 caracteres"),
   status: string()
     .required("Status é obrigatório")
     .oneOf(
-      ["Disponível", "Manutenção", "Vendida"], 
+      ["Disponível", "Manutenção", "Vendida"],
       "Status deve ser: Disponível, Manutenção ou Vendida"
     ),
   condicoesManutencao: string()
@@ -44,27 +43,22 @@ const createMotoSchema = object({
   idTipoMoto: number()
     .required("Tipo da moto é obrigatório")
     .positive("Tipo da moto deve ser um número positivo"),
-  placa: string()
-    .required("Placa é obrigatória")
-    // .matches(
-    //   /^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/,
-    //   "Placa deve ter o formato válido (ABC1234 ou ABC1D23)"
-    // ),
-    ,
-  idSecaoFilial: object()
-    .required("Seção filial é obrigatória"),
+  idSecaoFilial: number()
+    .required("Seção filial é obrigatória")
+    .positive("Seção filial deve ser um número positivo"),
 });
 
 const updateMotoSchema = object({
   idMoto: number()
     .required("ID da moto é obrigatório para atualização")
     .positive("ID da moto deve ser um número positivo"),
-  identificador: object()
-    .required("Identificador é obrigatório"),
+  identificador: string()
+    .required("Identificador é obrigatório")
+    .min(6, "Identificador/placa deve ter no mínimo 6 caracteres"),
   status: string()
     .required("Status é obrigatório")
     .oneOf(
-      ["Disponível", "Manutenção", "Vendida"], 
+      ["Disponível", "Manutenção", "Vendida"],
       "Status deve ser: Disponível, Manutenção ou Vendida"
     ),
   condicoesManutencao: string()
@@ -73,18 +67,13 @@ const updateMotoSchema = object({
       ["Excelente", "Boa", "Regular", "Ruim", "Péssima"],
       "Condições de manutenção devem ser: Excelente, Boa, Regular, Ruim ou Péssima"
     ),
-  idTipoMoto: object()
-    .required("Tipo da moto é obrigatório"),
-  placa: string()
-    .required("Placa é obrigatória")
-    .matches(
-      /^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/,
-      "Placa deve ter o formato válido (ABC1234 ou ABC1D23)"
-    ),
-  idSecaoFilial: object()
-    .required("Seção filial é obrigatória"),
+  idTipoMoto: number()
+    .required("Tipo da moto é obrigatório")
+    .positive("Tipo da moto deve ser um número positivo"),
+  idSecaoFilial: number()
+    .required("Seção filial é obrigatória")
+    .positive("Seção filial deve ser um número positivo"),
 });
-
 
 type MotoData = MotoResponse["data"];
 

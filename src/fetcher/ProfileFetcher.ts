@@ -42,6 +42,7 @@ class ProfileFetcher {
 }
 
   async get(): Promise<UserData> {
+    console.log("token: \n\n\n", this.token);
     this.endpoint = "usuario/me"
     const response: AxiosResponse<UserData> = await this.apiClient.get(
       this.endpoint

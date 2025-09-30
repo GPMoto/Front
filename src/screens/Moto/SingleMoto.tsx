@@ -52,6 +52,7 @@ const SingleMoto = () => {
     saveLoading,
     updateLoading,
     handleSave,
+    motoErrors,
   } = useMoto({ motoId: routeMoto.idMoto });
   const { tipoMotos } = useTipoMoto();
 
@@ -132,30 +133,41 @@ const SingleMoto = () => {
               {!editing ? (
                 <Text style={styles.infoValue}>{moto.status}</Text>
               ) : (
-                <View style={[styles.pickerContainer, styles.editableInput]}>
-                  <Picker
-                    selectedValue={moto.status}
-                    onValueChange={(text) => handleEditingForm("status", text)}
-                    style={styles.picker}
-                    dropdownIconColor="#8B8B8B"
-                  >
-                    <Picker.Item
-                      label="Disponível"
-                      value="Disponível"
-                      color="#000000"
-                    />
-                    <Picker.Item
-                      label="Manutenção"
-                      value="Manutenção"
-                      color="#000000"
-                    />
-                    <Picker.Item
-                      label="Vendida"
-                      value="Vendida"
-                      color="#000000"
-                    />
-                  </Picker>
-                </View>
+                <>
+                  <View style={[
+                    styles.pickerContainer, 
+                    styles.editableInput,
+                    motoErrors.status && { borderColor: '#FF6B6B', borderWidth: 2 }
+                  ]}>
+                    <Picker
+                      selectedValue={moto.status}
+                      onValueChange={(text) => handleEditingForm("status", text)}
+                      style={styles.picker}
+                      dropdownIconColor="#8B8B8B"
+                    >
+                      <Picker.Item
+                        label="Disponível"
+                        value="Disponível"
+                        color="#000000"
+                      />
+                      <Picker.Item
+                        label="Manutenção"
+                        value="Manutenção"
+                        color="#000000"
+                      />
+                      <Picker.Item
+                        label="Vendida"
+                        value="Vendida"
+                        color="#000000"
+                      />
+                    </Picker>
+                  </View>
+                  {motoErrors.status && (
+                    <Text style={{ color: '#FF6B6B', fontSize: 12, marginTop: 4, fontStyle: 'italic' }}>
+                      {motoErrors.status}
+                    </Text>
+                  )}
+                </>
               )}
             </View>
 
@@ -164,34 +176,45 @@ const SingleMoto = () => {
               {!editing ? (
                 <Text style={styles.infoValue}>{moto.condicoesManutencao}</Text>
               ) : (
-                <View style={[styles.pickerContainer, styles.editableInput]}>
-                  <Picker
-                    selectedValue={moto.condicoesManutencao}
-                    onValueChange={(text) =>
-                      handleEditingForm("condicoesManutencao", text)
-                    }
-                    style={styles.picker}
-                    dropdownIconColor="#8B8B8B"
-                  >
-                    <Picker.Item
-                      label="Excelente"
-                      value="Excelente"
-                      color="#000000"
-                    />
-                    <Picker.Item label="Boa" value="Boa" color="#000000" />
-                    <Picker.Item
-                      label="Regular"
-                      value="Regular"
-                      color="#000000"
-                    />
-                    <Picker.Item label="Ruim" value="Ruim" color="#000000" />
-                    <Picker.Item
-                      label="Péssima"
-                      value="Péssima"
-                      color="#000000"
-                    />
-                  </Picker>
-                </View>
+                <>
+                  <View style={[
+                    styles.pickerContainer, 
+                    styles.editableInput,
+                    motoErrors.condicoesManutencao && { borderColor: '#FF6B6B', borderWidth: 2 }
+                  ]}>
+                    <Picker
+                      selectedValue={moto.condicoesManutencao}
+                      onValueChange={(text) =>
+                        handleEditingForm("condicoesManutencao", text)
+                      }
+                      style={styles.picker}
+                      dropdownIconColor="#8B8B8B"
+                    >
+                      <Picker.Item
+                        label="Excelente"
+                        value="Excelente"
+                        color="#000000"
+                      />
+                      <Picker.Item label="Boa" value="Boa" color="#000000" />
+                      <Picker.Item
+                        label="Regular"
+                        value="Regular"
+                        color="#000000"
+                      />
+                      <Picker.Item label="Ruim" value="Ruim" color="#000000" />
+                      <Picker.Item
+                        label="Péssima"
+                        value="Péssima"
+                        color="#000000"
+                      />
+                    </Picker>
+                  </View>
+                  {motoErrors.condicoesManutencao && (
+                    <Text style={{ color: '#FF6B6B', fontSize: 12, marginTop: 4, fontStyle: 'italic' }}>
+                      {motoErrors.condicoesManutencao}
+                    </Text>
+                  )}
+                </>
               )}
             </View>
 
@@ -200,24 +223,35 @@ const SingleMoto = () => {
               {!editing ? (
                 <Text style={styles.infoValue}>{moto.idTipoMoto.nmTipo}</Text>
               ) : (
-                <View style={[styles.pickerContainer, styles.editableInput]}>
-                  <Picker
-                    selectedValue={moto.idTipoMoto}
-                    onValueChange={(value) =>
-                      handleEditingForm("idTipoMoto", value)
-                    }
-                    style={styles.picker}
-                    dropdownIconColor="#8B8B8B"
-                  >
-                    {tipoMotos.data?.map((tipoMoto) => (
-                      <Picker.Item
-                        label={capitalize(tipoMoto.nmTipo)}
-                        value={tipoMoto}
-                        key={tipoMoto.id_tipo_moto}
-                      />
-                    ))}
-                  </Picker>
-                </View>
+                <>
+                  <View style={[
+                    styles.pickerContainer, 
+                    styles.editableInput,
+                    motoErrors.idTipoMoto && { borderColor: '#FF6B6B', borderWidth: 2 }
+                  ]}>
+                    <Picker
+                      selectedValue={moto.idTipoMoto}
+                      onValueChange={(value) =>
+                        handleEditingForm("idTipoMoto", value)
+                      }
+                      style={styles.picker}
+                      dropdownIconColor="#8B8B8B"
+                    >
+                      {tipoMotos.data?.map((tipoMoto) => (
+                        <Picker.Item
+                          label={capitalize(tipoMoto.nmTipo)}
+                          value={tipoMoto}
+                          key={tipoMoto.id_tipo_moto}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
+                  {motoErrors.idTipoMoto && (
+                    <Text style={{ color: '#FF6B6B', fontSize: 12, marginTop: 4, fontStyle: 'italic' }}>
+                      {typeof motoErrors.idTipoMoto === 'string' ? motoErrors.idTipoMoto : 'Tipo da moto é obrigatório'}
+                    </Text>
+                  )}
+                </>
               )}
             </View>
 
@@ -226,13 +260,23 @@ const SingleMoto = () => {
               {!editing ? (
                 <Text style={styles.infoValue}>{moto.identificador}</Text>
               ) : (
-                <TextInput
-                  style={[styles.editableInput]}
-                  value={moto.identificador}
-                  onChangeText={(text) =>
-                    handleEditingForm("identificador", text)
-                  }
-                />
+                <>
+                  <TextInput
+                    style={[
+                      styles.editableInput,
+                      motoErrors.identificador && { borderColor: '#FF6B6B', borderWidth: 2 }
+                    ]}
+                    value={moto.identificador}
+                    onChangeText={(text) =>
+                      handleEditingForm("identificador", text)
+                    }
+                  />
+                  {motoErrors.identificador && (
+                    <Text style={{ color: '#FF6B6B', fontSize: 12, marginTop: 4, fontStyle: 'italic' }}>
+                      {motoErrors.identificador}
+                    </Text>
+                  )}
+                </>
               )}
             </View>
 
@@ -243,25 +287,36 @@ const SingleMoto = () => {
                   {moto.idSecaoFilial.idTipoSecao.nmSecao}
                 </Text>
               ) : (
-                <View style={[styles.pickerContainer, styles.editableInput]}>
-                  <Picker
-                    selectedValue={moto.idSecaoFilial}
-                    onValueChange={(value) =>
-                      handleEditingForm("idSecaoFilial", value)
-                    }
-                    style={styles.picker}
-                    dropdownIconColor="#8B8B8B"
-                  >
-                    {secoes &&
-                      secoes.map((secao) => (
-                        <Picker.Item
-                          label={capitalize(secao.idTipoSecao.nmSecao)}
-                          value={secao}
-                          key={secao.idSecao}
-                        />
-                      ))}
-                  </Picker>
-                </View>
+                <>
+                  <View style={[
+                    styles.pickerContainer, 
+                    styles.editableInput,
+                    motoErrors.idSecaoFilial && { borderColor: '#FF6B6B', borderWidth: 2 }
+                  ]}>
+                    <Picker
+                      selectedValue={moto.idSecaoFilial}
+                      onValueChange={(value) =>
+                        handleEditingForm("idSecaoFilial", value)
+                      }
+                      style={styles.picker}
+                      dropdownIconColor="#8B8B8B"
+                    >
+                      {secoes &&
+                        secoes.map((secao) => (
+                          <Picker.Item
+                            label={capitalize(secao.idTipoSecao.nmSecao)}
+                            value={secao}
+                            key={secao.idSecao}
+                          />
+                        ))}
+                    </Picker>
+                  </View>
+                  {motoErrors.idSecaoFilial && (
+                    <Text style={{ color: '#FF6B6B', fontSize: 12, marginTop: 4, fontStyle: 'italic' }}>
+                      {typeof motoErrors.idSecaoFilial === 'string' ? motoErrors.idSecaoFilial : 'Seção filial é obrigatória'}
+                    </Text>
+                  )}
+                </>
               )}
             </View>
           </View>
@@ -270,6 +325,27 @@ const SingleMoto = () => {
       </TouchableWithoutFeedback>
 
       <View style={{ padding: 16 }}>
+        {/* Mostrar resumo de erros se houver */}
+        {editing && Object.keys(motoErrors).length > 0 && (
+          <View style={{
+            backgroundColor: isDarkTheme ? '#2D1B1B' : '#FFF5F5',
+            borderColor: '#FF6B6B',
+            borderWidth: 1,
+            borderRadius: 8,
+            padding: 12,
+            marginBottom: 16,
+          }}>
+            <Text style={{ color: '#FF6B6B', fontWeight: 'bold', marginBottom: 8 }}>
+              Corrija os seguintes erros:
+            </Text>
+            {Object.values(motoErrors).map((error, index) => (
+              <Text key={index} style={{ color: '#FF6B6B', fontSize: 12, marginBottom: 4 }}>
+                • {error}
+              </Text>
+            ))}
+          </View>
+        )}
+        
         {editing && verifyIsCreating(moto) && saveLoading ? (
           <View
             style={{
@@ -304,16 +380,10 @@ const SingleMoto = () => {
               if (editing) {
                 if (verifyIsCreating(moto)) {
                   handleSave();
-                  // Navegar para tela de procurar moto após salvar
-                  setTimeout(() => {
-                    (navigation as any).navigate("Procurar Moto");
-                  }, 1500); // Aguardar um pouco para o salvamento completar
+                  // A navegação agora é controlada pelo MotoControl baseada no sucesso/erro
                 } else {
                   saveChanges();
-                  // Navegar para tela de procurar moto após salvar
-                  setTimeout(() => {
-                    (navigation as any).navigate("Procurar Moto");
-                  }, 1500); // Aguardar um pouco para o salvamento completar
+                  // A navegação agora é controlada pelo MotoControl baseada no sucesso/erro
                 }
               } else {
                 enterEditMode(routeMoto);

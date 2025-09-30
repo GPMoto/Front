@@ -1,6 +1,6 @@
 import MotoFetcher from "@/fetcher/MotoFetcher";
 import MotoDTO, { convertToMotoDto } from "@/model/dto/MotoDTO";
-import { Moto, MotoResponse, createMotoSchema } from "@/model/Moto";
+import { Moto, MotoResponse, createMotoSchema, updateMotoSchema } from "@/model/Moto";
 import { PageableResponse } from "@/model/types/PageableResponse";
 import { ValidationError } from "yup";
 
@@ -27,17 +27,27 @@ class MotoService {
   }
 
   async save(novaMoto: Partial<Moto>): Promise<MotoResponse> {
-    let motoErrors: Partial<Moto> = {};
+    let motoErrors: { [key: string]: string } = {};
     try {
-      // await createMotoSchema.validate(novaMoto, { abortEarly: false });
+      // Preparar dados para validação (converter objetos para IDs)
+      const motoParaValidacao = {
+        ...novaMoto,
+        idTipoMoto: typeof novaMoto.idTipoMoto === 'object' && novaMoto.idTipoMoto?.id_tipo_moto 
+          ? novaMoto.idTipoMoto.id_tipo_moto 
+          : novaMoto.idTipoMoto,
+        idSecaoFilial: typeof novaMoto.idSecaoFilial === 'object' && novaMoto.idSecaoFilial?.idSecao 
+          ? novaMoto.idSecaoFilial.idSecao 
+          : novaMoto.idSecaoFilial,
+      };
+
+      await createMotoSchema.validate(motoParaValidacao, { abortEarly: false });
       return await this.motoFetcher.save(convertToMotoDto(novaMoto));
     } catch (error) {
       if (error instanceof ValidationError) {
         error.inner.forEach((err) => {
-          motoErrors = {
-            ...motoErrors,
-            [err.path as keyof typeof motoErrors]: err.message,
-          };
+          if (err.path) {
+            motoErrors[err.path] = err.message;
+          }
         });
       }
 
@@ -49,12 +59,54 @@ class MotoService {
     }
   }
 
-  async update(updateMoto: Moto): Promise<Moto> {
-    return await this.motoFetcher.update(updateMoto.idMoto!, {
-      ...updateMoto,
-      idSecaoFilial: updateMoto.idSecaoFilial.idSecao,
-      idTipoMoto: updateMoto.idTipoMoto.id_tipo_moto,
-    });
+  async update(updateMoto: Moto): Promise<{ success: boolean; data?: Moto; errors?: { [key: string]: string }; message?: string }> {
+    let motoErrors: { [key: string]: string } = {};
+    try {
+      // Preparar dados para validação (converter objetos para IDs)
+      const motoParaValidacao = {
+        ...updateMoto,
+        idTipoMoto: typeof updateMoto.idTipoMoto === 'object' && updateMoto.idTipoMoto?.id_tipo_moto 
+          ? updateMoto.idTipoMoto.id_tipo_moto 
+          : updateMoto.idTipoMoto,
+        idSecaoFilial: typeof updateMoto.idSecaoFilial === 'object' && updateMoto.idSecaoFilial?.idSecao 
+          ? updateMoto.idSecaoFilial.idSecao 
+          : updateMoto.idSecaoFilial,
+      };
+
+      // Validar dados antes de atualizar
+      await updateMotoSchema.validate(motoParaValidacao, { abortEarly: false });
+      
+      const updatedMoto = await this.motoFetcher.update(updateMoto.idMoto!, {
+        ...updateMoto,
+        idSecaoFilial: updateMoto.idSecaoFilial.idSecao,
+        idTipoMoto: updateMoto.idTipoMoto.id_tipo_moto,
+      });
+
+      return {
+        success: true,
+        data: updatedMoto,
+        message: "Moto atualizada com sucesso"
+      };
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        error.inner.forEach((err) => {
+          if (err.path) {
+            motoErrors[err.path] = err.message;
+          }
+        });
+
+        return {
+          success: false,
+          errors: motoErrors,
+          message: "Dados inválidos para atualização"
+        };
+      }
+
+      return {
+        success: false,
+        message: "Erro ao atualizar moto"
+      };
+    }
   }
 
   async getMotoById(idMoto: number): Promise<Moto> {

@@ -10,7 +10,6 @@ import { useDebounce } from "@/utils/useDebounce";
 import { useNavigation } from "@react-navigation/native";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { ValidationError } from "yup";
 import { useProfile } from "./ProfileController";
 import { Alert } from "react-native";
 import TipoMotoService from "@/services/TipoMotoService";
@@ -35,7 +34,7 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
 
   const motoService = new MotoService(token);
 
-  const [motoErrors, setMotoErrors] = useState<Partial<Moto>>({});
+  const [motoErrors, setMotoErrors] = useState<{ [key: string]: string }>({});
 
   const [busca, setBusca] = useState<string | null>(null);
 
@@ -108,27 +107,28 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
     refetchOnWindowFocus: false,
   });
 
-  const saveMotoMutation = useMutation({
+    const saveMotoMutation = useMutation({
     mutationFn: async (newMoto: Partial<Moto>) => {
       console.log('saveMotoMutation.mutationFn called with:', newMoto);
       const result = await motoService.save(newMoto);
       console.log('saveMotoMutation.mutationFn result:', result);
       return result;
     },
-    onSuccess: () => {
+    onSuccess: (result) => {
       console.log('saveMotoMutation.onSuccess called');
-      queryClient.invalidateQueries({ queryKey: ["motos"] });
+      if (result.success) {
+        queryClient.invalidateQueries({ queryKey: ["motos"] });
+        setMotoErrors({}); // Limpar erros
+        // Só navega se salvou com sucesso
+        setEditingMoto(null);
+        drawerNavigator.navigate("Procurar Moto");
+      } else if (result.errors) {
+        // Definir erros de validação - mantém na tela atual
+        setMotoErrors(result.errors);
+      }
     },
     onError: (error: Error) => {
       console.log('saveMotoMutation.onError called:', error);
-      if (error instanceof ValidationError) {
-        error.inner.forEach((err: ValidationError) => {
-          setMotoErrors((motoErrors) => ({
-            ...motoErrors,
-            [err.path as keyof typeof motoErrors]: err.message,
-          }));
-        });
-      }
     },
   });
 
@@ -138,30 +138,28 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
     mutationFn: async (updateMoto: Moto) => {
       const result = hasChanges();
       if (!result) {
-        return undefined;
+        return { success: false, message: "Nenhuma alteração detectada" };
       }
       return await motoService.update(updateMoto);
     },
-    onSuccess: (updatedMoto: Moto | undefined) => {
-      if (updatedMoto) {
+    onSuccess: (result) => {
+      if (result?.success && result.data) {
         // Invalida todas as queries relacionadas a motos
         queryClient.invalidateQueries({ queryKey: ["motos"] });
         queryClient.refetchQueries({ queryKey: ["motos"] });
         // Atualiza a moto sendo editada
-        setRouteMoto(updatedMoto);
+        setRouteMoto(result.data);
         setEditingMoto(null);
+        setMotoErrors({}); // Limpar erros
+        // Só navega se não há erros
         drawerNavigator.navigate("Procurar Moto");
+      } else if (!result?.success && result?.errors) {
+        // Definir erros de validação - mantém na tela atual
+        setMotoErrors(result.errors);
       }
     },
     onError: (error) => {
-      if (error instanceof ValidationError) {
-        error.inner.forEach((err: ValidationError) => {
-          setMotoErrors((motoErrors) => ({
-            ...motoErrors,
-            [err.path as keyof typeof motoErrors]: err.message,
-          }));
-        });
-      }
+      console.error("Erro ao atualizar moto:", error);
     },
   });
 
@@ -200,7 +198,10 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
 
   const saveChanges = () => {
     if (editingMoto && hasChanges()) {
-      atualizarMoto();
+      setUpdating(true);
+      updateMotoMutation.mutate(editingMoto, {
+        onSettled: () => setUpdating(false),
+      });
     }
   };
 
@@ -256,6 +257,7 @@ const useMoto = ({ size = 2, motoId, idSecaoFilial }: UseMotoProps) => {
       console.log('handleSave: editingMoto is null');
       return null;
     }
+    
     console.log('handleSave: editingMoto data:', editingMoto);
     console.log('handleSave: calling setSaving(true)');
     setSaving(true);
