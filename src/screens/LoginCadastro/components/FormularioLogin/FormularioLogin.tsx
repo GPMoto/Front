@@ -2,45 +2,35 @@ import {
   View,
   Text,
   TextInput,
-  Pressable,
   ActivityIndicator,
-  Animated,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
 } from "react-native";
-import { useState, useRef } from "react";
-import { formularioLoginStyles } from "./FormularioLoginStyles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useAuthControl } from "@/control/AuthController";
+import ButtonArea from "@/components/Button/ButtonArea";
+import { useTheme } from "@/context/ThemeContext";
+import { useDarkColors } from "@/styles/theme-config";
+import { createStyles } from "./styles";
 
 export default function FormularioLogin(props: any) {
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [emailFocused, setEmailFocused] = useState(false);
-  const [senhaFocused, setSenhaFocused] = useState(false);
-  //TODO: receber error do controller useAuthControl()
-  const { loading, loginUser, loginErrors, error } = useAuthControl();
+  const {
+    loading,
+    loginUser,
+    loginErrors,
+    error,
+    handleForm,
+    formulario,
+    goToRegisterPage,
+  } = useAuthControl();
 
-  const buttonScale = useRef(new Animated.Value(1)).current;
-
-  const handleButtonPressIn = () => {
-    Animated.spring(buttonScale, {
-      toValue: 0.95,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const handleButtonPressOut = () => {
-    Animated.spring(buttonScale, {
-      toValue: 1,
-      useNativeDriver: true,
-    }).start();
-  };
+  const { isDarkTheme } = useTheme();
+  const colors = useDarkColors();
+  const styles = createStyles(colors, isDarkTheme);
 
   return (
-    <View style={formularioLoginStyles.container}>
+    <View style={styles.container}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={"padding"}
@@ -56,15 +46,15 @@ export default function FormularioLogin(props: any) {
           showsVerticalScrollIndicator={false}
           bounces={false}
         >
-          <View style={formularioLoginStyles.loginCard}>
+          <View style={styles.loginCard}>
             {/* Header */}
-            <View style={formularioLoginStyles.header}>
-              <Text style={formularioLoginStyles.welcomeText}>
+            <View style={styles.header}>
+              <Text style={styles.welcomeText}>
                 Bem-vindo de volta!
               </Text>
-              <Text style={formularioLoginStyles.subtitleText}>
+              <Text style={styles.subtitleText}>
                 Entre na sua conta do{" "}
-                <Text style={formularioLoginStyles.brandHighlight}>
+                <Text style={styles.brandHighlight}>
                   GPSMottu
                 </Text>
               </Text>
@@ -72,33 +62,28 @@ export default function FormularioLogin(props: any) {
 
             {/* Error Message */}
             {error ? (
-              <View style={formularioLoginStyles.errorContainer}>
+              <View style={styles.errorContainer}>
                 <MaterialIcons
                   name="error-outline"
                   size={18}
                   color="#FF4444"
-                  style={formularioLoginStyles.errorIcon}
+                  style={styles.errorIcon}
                 />
-                <Text style={formularioLoginStyles.errorText}>{error}</Text>
+                <Text style={styles.errorText}>{error}</Text>
               </View>
             ) : null}
 
             {/* Form */}
-            <View style={formularioLoginStyles.inputContainer}>
+            <View style={styles.inputContainer}>
               {/* Email Input */}
-              <View style={formularioLoginStyles.inputWrapper}>
-                <Text style={formularioLoginStyles.inputLabel}>Email</Text>
+              <View style={styles.inputWrapper}>
+                <Text style={styles.inputLabel}>Nome</Text>
                 <TextInput
-                  style={[
-                    formularioLoginStyles.inputField,
-                    emailFocused && formularioLoginStyles.inputFieldFocused,
-                  ]}
-                  placeholder="Digite seu email"
-                  placeholderTextColor="#8B8B8B"
-                  value={email}
-                  onChangeText={setEmail}
-                  onFocus={() => setEmailFocused(true)}
-                  onBlur={() => setEmailFocused(false)}
+                  style={styles.inputField}
+                  placeholder="Digite seu nome"
+                  placeholderTextColor={isDarkTheme ? "#8B8B8B" : "#666"}
+                  value={formulario.email}
+                  onChangeText={(text) => handleForm(text, "email")}
                   keyboardType="email-address"
                   autoCapitalize="none"
                   autoComplete="email"
@@ -107,109 +92,60 @@ export default function FormularioLogin(props: any) {
                   returnKeyType="next"
                 />
                 {loginErrors.email && (
-                  <Text style={formularioLoginStyles.fieldErrorText}>
+                  <Text style={styles.fieldErrorText}>
                     {loginErrors.email}
                   </Text>
                 )}
               </View>
 
               {/* Password Input */}
-              <View style={formularioLoginStyles.inputWrapper}>
-                <Text style={formularioLoginStyles.inputLabel}>Senha</Text>
-                <View style={{ position: "relative" }}>
-                  <TextInput
-                    style={[
-                      formularioLoginStyles.inputField,
-                      senhaFocused && formularioLoginStyles.inputFieldFocused,
-                      { paddingRight: 50 },
-                    ]}
-                    placeholder="Digite sua senha"
-                    placeholderTextColor="#8B8B8B"
-                    value={senha}
-                    onChangeText={setSenha}
-                    onFocus={() => setSenhaFocused(true)}
-                    onBlur={() => setSenhaFocused(false)}
-                    secureTextEntry={!showPassword}
-                    autoComplete="password"
-                    editable={!loading}
-                    blurOnSubmit={true}
-                    returnKeyType="done"
-                    onSubmitEditing={() =>
-                      loginUser({ email, password: senha })
-                    }
-                  />
-                  {loginErrors.password && (
-                    <Text style={formularioLoginStyles.fieldErrorText}>
-                      {loginErrors.password}
-                    </Text>
-                  )}
-
-                  <Pressable
-                    style={{
-                      position: "absolute",
-                      right: 15,
-                      top: 15,
-                      padding: 5,
-                    }}
-                    onPress={() => setShowPassword(!showPassword)}
-                  >
-                    <MaterialIcons
-                      name={showPassword ? "visibility" : "visibility-off"}
-                      size={24}
-                      color="#8B8B8B"
-                    />
-                  </Pressable>
-                </View>
+              <View style={styles.inputWrapper}>
+                <Text style={styles.inputLabel}>Senha</Text>
+                <TextInput
+                  style={styles.inputField}
+                  placeholder="Digite sua senha"
+                  placeholderTextColor={isDarkTheme ? "#8B8B8B" : "#666"}
+                  value={formulario.senha}
+                  onChangeText={(text) => handleForm(text, "senha")}
+                  secureTextEntry
+                  autoComplete="password"
+                  editable={!loading}
+                  blurOnSubmit={true}
+                  returnKeyType="done"
+                  onSubmitEditing={loginUser}
+                />
+                {loginErrors.senha && (
+                  <Text style={styles.fieldErrorText}>
+                    {loginErrors.senha}
+                  </Text>
+                )}
               </View>
             </View>
 
             {/* Login Button */}
-            <View style={formularioLoginStyles.buttonContainer}>
-              <Pressable
-                onPress={() => loginUser({ email, password: senha })}
-                onPressIn={handleButtonPressIn}
-                onPressOut={handleButtonPressOut}
-                disabled={loading}
-                style={({ pressed }) => [
-                  formularioLoginStyles.loginButton,
-                  pressed && formularioLoginStyles.loginButtonPressed,
-                ]}
-              >
-                <Animated.View style={{ transform: [{ scale: buttonScale }] }}>
-                  {loading ? (
-                    <ActivityIndicator color="#FFFFFF" size="small" />
-                  ) : (
-                    <Text style={formularioLoginStyles.loginButtonText}>
-                      Entrar
-                    </Text>
-                  )}
-                </Animated.View>
-              </Pressable>
-            </View>
-
-            {/* Forgot Password */}
-            <View style={formularioLoginStyles.forgotPasswordContainer}>
-              <Text style={formularioLoginStyles.forgotPasswordText}>
-                Esqueceu sua senha?{" "}
-                <Text style={formularioLoginStyles.forgotPasswordLink}>
-                  Clique aqui
-                </Text>
-              </Text>
+            <View style={styles.buttonContainer}>
+              <ButtonArea size="small" title="Entrar" action={() => {
+                loginUser()}} />
             </View>
 
             {/* Loading Overlay */}
             {loading && (
-              <View style={formularioLoginStyles.loadingContainer}>
+              <View style={styles.loadingContainer}>
                 <ActivityIndicator color="#41C526" size="large" />
               </View>
             )}
           </View>
 
           {/* Footer */}
-          <View style={formularioLoginStyles.footerContainer}>
-            <Text style={formularioLoginStyles.footerText}>
+          <View style={styles.footerContainer}>
+            <Text style={styles.footerText}>
               Não tem uma conta?{" "}
-              <Text style={formularioLoginStyles.footerLink}>Cadastre-se</Text>
+              <Text
+                style={styles.footerLink}
+                onPress={goToRegisterPage}
+              >
+                Cadastre-se
+              </Text>
             </Text>
           </View>
         </ScrollView>

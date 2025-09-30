@@ -1,12 +1,22 @@
-import { View } from "react-native";
+import { View, StatusBar, SafeAreaView } from "react-native";
 import FormularioLogin from "./components/FormularioLogin/FormularioLogin";
-import { globalStyles } from "../../styles/styles";
+import { useTheme } from "@/context/ThemeContext";
+import { useDarkColors } from "@/styles/theme-config";
+import { createStyles } from "./styles";
 
 export default function LoginCadastro(props: any) {
+  const { isDarkTheme } = useTheme();
+  const colors = useDarkColors();
+  const styles = createStyles(colors, isDarkTheme);
+
   return (
-    <View style={[globalStyles.container, globalStyles.pageColor]}>
+    <SafeAreaView style={styles.container}>
+      <StatusBar
+        barStyle={isDarkTheme ? "light-content" : "dark-content"}
+        backgroundColor={colors.containerBg}
+      />
       <FormularioLogin {...props}></FormularioLogin>
-    </View>
+    </SafeAreaView>
   );
 }
 

@@ -1,6 +1,7 @@
 import LottieView from "lottie-react-native";
 import React from "react";
 import { View, StyleSheet, Text, Modal } from "react-native";
+import { useTheme } from "@/context/ThemeContext";
 
 interface LoadingScreenProps {
   children?: React.ReactNode;
@@ -8,6 +9,12 @@ interface LoadingScreenProps {
 }
 
 const LoadingScreen = ({ children, visible = true } : LoadingScreenProps) => {
+  const { isDarkTheme } = useTheme();
+
+  const overlayColor = isDarkTheme 
+    ? "rgba(12, 12, 12, 0.95)" 
+    : "rgba(255, 255, 255, 0.95)";
+
   return (
     <Modal
       visible={visible}
@@ -15,7 +22,7 @@ const LoadingScreen = ({ children, visible = true } : LoadingScreenProps) => {
       animationType="fade"
       statusBarTranslucent={true}
     >
-      <View style={styles.overlay}>
+      <View style={[styles.overlay, { backgroundColor: overlayColor }]}>
         <View style={styles.container}>
           <LottieView
             source={require("~/assets/splash-bike.json")}
@@ -37,7 +44,6 @@ const LoadingScreen = ({ children, visible = true } : LoadingScreenProps) => {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(255, 255, 255, 0.95)",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -47,8 +53,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   animation: {
-    width: 400,
-    height: 400,
+    width: 220,
+    height: 220,
   },
   textContainer: {
     marginTop: 20,
