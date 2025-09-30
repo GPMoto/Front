@@ -24,9 +24,9 @@ export default function SingleMotoPaged({
         <Text style={styles.separatorText}> - </Text>
         <Text style={styles.identificadorText}>#{formatIdentificador(item.identificador)}</Text>
         {deletingId && deletingId === item.idMoto ? (
-          <ActivityIndicator color="#ff5252" />
+          <ActivityIndicator style={styles.deleteIcon} color="#ff5252" />
         ) : (
-          <Icon name="trash-o" color={"red"} size={18} onPress={() => handleDelete(item.idMoto!)} />
+          <Icon style={styles.deleteIcon} name="trash-o" color={"red"} size={18} onPress={() => handleDelete(item.idMoto!)} />
         )}
       </View>
 
@@ -121,5 +121,8 @@ const styles = StyleSheet.create({
   },
   actionContainer: {
     marginTop: 8,
+  },
+  deleteIcon: {
+    marginLeft: 10,
   },
 });

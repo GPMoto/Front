@@ -57,7 +57,7 @@ class MotoFetcher {
     return response.data;
   }
 
-  async save(novaMoto: Partial<Moto>) {
+  async save(novaMoto: MotoDTO) {
     try {
       await this.apiClient.post("/moto", novaMoto);
       return {

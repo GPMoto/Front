@@ -1,5 +1,5 @@
 import MotoFetcher from "@/fetcher/MotoFetcher";
-import MotoDTO from "@/model/dto/MotoDTO";
+import MotoDTO, { convertToMotoDto } from "@/model/dto/MotoDTO";
 import { Moto, MotoResponse, createMotoSchema } from "@/model/Moto";
 import { PageableResponse } from "@/model/types/PageableResponse";
 import { ValidationError } from "yup";
@@ -29,8 +29,8 @@ class MotoService {
   async save(novaMoto: Partial<Moto>): Promise<MotoResponse> {
     let motoErrors: Partial<Moto> = {};
     try {
-      await createMotoSchema.validate(novaMoto, { abortEarly: false });
-      return await this.motoFetcher.save(novaMoto);
+      // await createMotoSchema.validate(novaMoto, { abortEarly: false });
+      return await this.motoFetcher.save(convertToMotoDto(novaMoto));
     } catch (error) {
       if (error instanceof ValidationError) {
         error.inner.forEach((err) => {

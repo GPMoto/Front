@@ -11,13 +11,28 @@ import { globalStyles } from "../../styles/styles";
 import useAdicionarRastreador from "@/control/AdicionarRastreadorController";
 import { FontAwesome as Icon } from "@expo/vector-icons";
 import { Identificador } from "@/model/Identificador";
+import { Moto } from "@/model/Moto";
+import { useNavigation } from "@react-navigation/native";
+import LoadingScreen from "@/components/shared/LoadingScreen";
 
 export default function AdicionarRastreador() {
-  const { identificadoresFilial, openCamera } = useAdicionarRastreador();
+  const { openCamera, motos, motosError, motosLoading, processingImage, getQRCodeFromIdentifier } = useAdicionarRastreador();
+  const navigation = useNavigation();
 
-  const loading = identificadoresFilial.isLoading;
-  const error = identificadoresFilial.isError;
-  const identificadores = identificadoresFilial.data?.content ?? [];
+  // Mostrar LoadingScreen quando estiver processando imagem
+  if (processingImage) {
+    return (
+      <LoadingScreen>
+        <Text style={{ color: "#FFFFFF", fontSize: 18, fontWeight: "bold", textAlign: "center" }}>
+          Processando imagem...
+        </Text>
+        <Text style={{ color: "#BFC9B8", fontSize: 14, textAlign: "center", marginTop: 8 }}>
+          Extraindo texto da foto capturada
+        </Text>
+      </LoadingScreen>
+    );
+  }
+  
 
   return (
     <View style={[globalStyles.container, globalStyles.pageColor]}>
@@ -28,35 +43,38 @@ export default function AdicionarRastreador() {
         </Text>
       </View>
 
-      {loading ? (
+      {motosLoading ? (
         <View style={styles.emptyContainer}>
           <Text style={globalStyles.whiteText}>
             Carregando identificadores...
           </Text>
         </View>
-      ) : error ? (
+      ) : motosError ? (
         <View style={styles.emptyContainer}>
           <Text style={globalStyles.whiteText}>Erro carregando dados</Text>
         </View>
       ) : (
         <FlatList
-          data={identificadores}
-          keyExtractor={(item: Identificador) => `${item.idIdentificador}`}
+          data={motos}
+          keyExtractor={(item: Moto) => `${item.idMoto}`}
           contentContainerStyle={styles.list}
           renderItem={({ item }) => (
-            <View style={styles.card}>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => getQRCodeFromIdentifier(item.identificador)}
+            >
               <View style={styles.cardLeft}>
                 <Icon name="id-badge" size={20} color="#41C526" />
               </View>
               <View style={styles.cardBody}>
                 <Text style={styles.identificadorText}>
-                  {item.vlrIdentificador}
+                  {item.identificador}
                 </Text>
                 <Text style={styles.identificadorSub}>
-                  {item.idFilial?.idContato.nmDono || ""}
+                  {item.idTipoMoto.nmTipo || ""}
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
           )}
         />
       )}

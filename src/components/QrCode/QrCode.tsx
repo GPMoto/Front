@@ -1,62 +1,70 @@
-import {QrCodeResponse} from "@/model/types/QrCodeResponse";
+import { QrCodeResponse } from "@/model/types/QrCodeResponse";
 import { DrawerParamList } from "@/navigators/NavigationTypes";
 import { RouteProp, useRoute } from "@react-navigation/native";
+import { useRef } from "react";
 import QRCode from "react-native-qrcode-svg";
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  Alert,
+} from "react-native";
 import { FontAwesome as Icon } from "@expo/vector-icons";
-
+import { useQrCodeControl } from "@/control/QrCodeController";
 
 export default function QRCodePlaca() {
   const route = useRoute<RouteProp<DrawerParamList, "QRCode">>();
   const { qrCode: item, placa } = route.params;
 
-  const handlePrint = () => {
-    Alert.alert("Imprimir", "Funcionalidade de impressão (visual)");
+  const { handlePrint, handleSave, handleShare } = useQrCodeControl();
+
+  const svgRef = useRef<any>(null);
+
+  const exportAndRun = (action: (base64: string) => Promise<void> | void) => {
+    svgRef.current?.toDataURL((data: string) => {
+      action(data);
+    });
   };
 
-  const handleShare = () => {
-    Alert.alert("Compartilhar", "Funcionalidade de compartilhamento (visual)");
-  };
-
-  const handleSave = () => {
-    Alert.alert("Salvar", "Funcionalidade de salvar imagem (visual)");
-  };
+  const onPrint = () => exportAndRun(handlePrint);
+  const onShare = () => exportAndRun(handleShare);
+  const onSave = () => exportAndRun(handleSave);
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>QR Code da Moto</Text>
         <Text style={styles.message}>
-          O QR code da moto com placa <Text style={styles.placa}>{placa}</Text> é esse abaixo
+          O QR code da moto com placa <Text style={styles.placa}>{placa}</Text>{" "}
+          é esse abaixo
         </Text>
       </View>
 
       <View style={styles.qrContainer}>
         <View style={styles.qrWrapper}>
-          <QRCode 
-            value={item['qrCode']} 
-            size={280} 
+          <QRCode
+            value={item["qrCode"]}
+            size={280}
             backgroundColor="#FFFFFF"
             color="#000000"
+            getRef={(c) => svgRef.current = c}
           />
         </View>
       </View>
 
       <View style={styles.actionsContainer}>
-        <TouchableOpacity style={styles.actionButton} onPress={handlePrint}>
+        <TouchableOpacity style={styles.actionButton} onPress={onPrint}>
           <Icon name="print" size={20} color="#FFFFFF" />
           <Text style={styles.actionText}>Imprimir</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.actionButton} onPress={handleShare}>
+        <TouchableOpacity style={styles.actionButton} onPress={onShare}>
           <Icon name="share" size={20} color="#FFFFFF" />
           <Text style={styles.actionText}>Compartilhar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.actionButton} onPress={handleSave}>
-          <Icon name="download" size={20} color="#FFFFFF" />
-          <Text style={styles.actionText}>Salvar</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
