@@ -7,10 +7,12 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
-import { formularioLoginStyles } from "./FormularioLoginStyles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useAuthControl } from "@/control/AuthController";
 import ButtonArea from "@/components/Button/ButtonArea";
+import { useTheme } from "@/context/ThemeContext";
+import { useDarkColors } from "@/styles/theme-config";
+import { createStyles } from "./styles";
 
 export default function FormularioLogin(props: any) {
   const {
@@ -23,8 +25,12 @@ export default function FormularioLogin(props: any) {
     goToRegisterPage,
   } = useAuthControl();
 
+  const { isDarkTheme } = useTheme();
+  const colors = useDarkColors();
+  const styles = createStyles(colors, isDarkTheme);
+
   return (
-    <View style={formularioLoginStyles.container}>
+    <View style={styles.container}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={"padding"}
@@ -40,15 +46,15 @@ export default function FormularioLogin(props: any) {
           showsVerticalScrollIndicator={false}
           bounces={false}
         >
-          <View style={formularioLoginStyles.loginCard}>
+          <View style={styles.loginCard}>
             {/* Header */}
-            <View style={formularioLoginStyles.header}>
-              <Text style={formularioLoginStyles.welcomeText}>
+            <View style={styles.header}>
+              <Text style={styles.welcomeText}>
                 Bem-vindo de volta!
               </Text>
-              <Text style={formularioLoginStyles.subtitleText}>
+              <Text style={styles.subtitleText}>
                 Entre na sua conta do{" "}
-                <Text style={formularioLoginStyles.brandHighlight}>
+                <Text style={styles.brandHighlight}>
                   GPSMottu
                 </Text>
               </Text>
@@ -56,26 +62,26 @@ export default function FormularioLogin(props: any) {
 
             {/* Error Message */}
             {error ? (
-              <View style={formularioLoginStyles.errorContainer}>
+              <View style={styles.errorContainer}>
                 <MaterialIcons
                   name="error-outline"
                   size={18}
                   color="#FF4444"
-                  style={formularioLoginStyles.errorIcon}
+                  style={styles.errorIcon}
                 />
-                <Text style={formularioLoginStyles.errorText}>{error}</Text>
+                <Text style={styles.errorText}>{error}</Text>
               </View>
             ) : null}
 
             {/* Form */}
-            <View style={formularioLoginStyles.inputContainer}>
+            <View style={styles.inputContainer}>
               {/* Email Input */}
-              <View style={formularioLoginStyles.inputWrapper}>
-                <Text style={formularioLoginStyles.inputLabel}>Nome</Text>
+              <View style={styles.inputWrapper}>
+                <Text style={styles.inputLabel}>Nome</Text>
                 <TextInput
-                  style={formularioLoginStyles.inputField}
+                  style={styles.inputField}
                   placeholder="Digite seu nome"
-                  placeholderTextColor="#8B8B8B"
+                  placeholderTextColor={isDarkTheme ? "#8B8B8B" : "#666"}
                   value={formulario.email}
                   onChangeText={(text) => handleForm(text, "email")}
                   keyboardType="email-address"
@@ -86,19 +92,19 @@ export default function FormularioLogin(props: any) {
                   returnKeyType="next"
                 />
                 {loginErrors.email && (
-                  <Text style={formularioLoginStyles.fieldErrorText}>
+                  <Text style={styles.fieldErrorText}>
                     {loginErrors.email}
                   </Text>
                 )}
               </View>
 
               {/* Password Input */}
-              <View style={formularioLoginStyles.inputWrapper}>
-                <Text style={formularioLoginStyles.inputLabel}>Senha</Text>
+              <View style={styles.inputWrapper}>
+                <Text style={styles.inputLabel}>Senha</Text>
                 <TextInput
-                  style={formularioLoginStyles.inputField}
+                  style={styles.inputField}
                   placeholder="Digite sua senha"
-                  placeholderTextColor="#8B8B8B"
+                  placeholderTextColor={isDarkTheme ? "#8B8B8B" : "#666"}
                   value={formulario.senha}
                   onChangeText={(text) => handleForm(text, "senha")}
                   secureTextEntry
@@ -109,7 +115,7 @@ export default function FormularioLogin(props: any) {
                   onSubmitEditing={loginUser}
                 />
                 {loginErrors.senha && (
-                  <Text style={formularioLoginStyles.fieldErrorText}>
+                  <Text style={styles.fieldErrorText}>
                     {loginErrors.senha}
                   </Text>
                 )}
@@ -117,35 +123,25 @@ export default function FormularioLogin(props: any) {
             </View>
 
             {/* Login Button */}
-            <View style={formularioLoginStyles.buttonContainer}>
+            <View style={styles.buttonContainer}>
               <ButtonArea size="small" title="Entrar" action={() => {
                 loginUser()}} />
             </View>
 
-            {/* Forgot Password */}
-            { /* <View style={formularioLoginStyles.forgotPasswordContainer}>
-              <Text style={formularioLoginStyles.forgotPasswordText}>
-                Esqueceu sua senha?{" "}
-                <Text style={formularioLoginStyles.forgotPasswordLink}>
-                  Clique aqui
-                </Text>
-              </Text>
-            </View> */}
-
             {/* Loading Overlay */}
             {loading && (
-              <View style={formularioLoginStyles.loadingContainer}>
+              <View style={styles.loadingContainer}>
                 <ActivityIndicator color="#41C526" size="large" />
               </View>
             )}
           </View>
 
           {/* Footer */}
-          <View style={formularioLoginStyles.footerContainer}>
-            <Text style={formularioLoginStyles.footerText}>
+          <View style={styles.footerContainer}>
+            <Text style={styles.footerText}>
               Não tem uma conta?{" "}
               <Text
-                style={formularioLoginStyles.footerLink}
+                style={styles.footerLink}
                 onPress={goToRegisterPage}
               >
                 Cadastre-se

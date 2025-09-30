@@ -8,11 +8,15 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  StatusBar,
+  SafeAreaView,
 } from "react-native";
-import { cadastroStyles } from "./CadastroStyles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import useAllFiliais from "@/control/CadastroController";
+import { useTheme } from "@/context/ThemeContext";
+import { useDarkColors } from "@/styles/theme-config";
+import { createStyles } from "./styles";
 
 const Cadastro = () => {
   const {
@@ -28,26 +32,46 @@ const Cadastro = () => {
     salvar,
   } = useAllFiliais();
 
+  const { isDarkTheme } = useTheme();
+  const colors = useDarkColors();
+  const styles = createStyles(colors, isDarkTheme);
+
   if (filialLoading || cadastroForm.isPending) {
     return (
-      <View style={cadastroStyles.loadingContainer}>
-        <ActivityIndicator size={"large"} color="#41C526" />
-        <Text style={cadastroStyles.loadingText}>Criando sua conta...</Text>
-      </View>
+      <SafeAreaView style={styles.container}>
+        <StatusBar
+          barStyle={isDarkTheme ? "light-content" : "dark-content"}
+          backgroundColor={colors.containerBg}
+        />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size={"large"} color="#41C526" />
+          <Text style={styles.loadingText}>Criando sua conta...</Text>
+        </View>
+      </SafeAreaView>
     );
   }
   if (filialError) {
     return (
-      <View style={cadastroStyles.loadingContainer}>
-        <Text style={cadastroStyles.errorText}>
-          Ah não, deu erro:{" "}
-          {filialError?.message ?? cadastroForm.error?.message}
-        </Text>
-      </View>
+      <SafeAreaView style={styles.container}>
+        <StatusBar
+          barStyle={isDarkTheme ? "light-content" : "dark-content"}
+          backgroundColor={colors.containerBg}
+        />
+        <View style={styles.loadingContainer}>
+          <Text style={styles.errorText}>
+            Ah não, deu erro:{" "}
+            {filialError?.message ?? cadastroForm.error?.message}
+          </Text>
+        </View>
+      </SafeAreaView>
     );
   }
   return (
-    <View style={cadastroStyles.container}>
+    <SafeAreaView style={styles.container}>
+      <StatusBar
+        barStyle={isDarkTheme ? "light-content" : "dark-content"}
+        backgroundColor={colors.containerBg}
+      />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={"padding"}
@@ -63,37 +87,37 @@ const Cadastro = () => {
           showsVerticalScrollIndicator={false}
           bounces={false}
         >
-          <View style={cadastroStyles.cadastroCard}>
-            <View style={cadastroStyles.header}>
-              <Text style={cadastroStyles.welcomeText}>Crie sua conta!</Text>
-              <Text style={cadastroStyles.subtitleText}>
+          <View style={styles.cadastroCard}>
+            <View style={styles.header}>
+              <Text style={styles.welcomeText}>Crie sua conta!</Text>
+              <Text style={styles.subtitleText}>
                 Cadastre-se no{" "}
-                <Text style={cadastroStyles.brandHighlight}>GPSMottu</Text>
+                <Text style={styles.brandHighlight}>GPSMottu</Text>
               </Text>
             </View>
             {cadastroForm.error ? (
-              <View style={cadastroStyles.errorContainer}>
+              <View style={styles.errorContainer}>
                 <MaterialIcons
                   name="error-outline"
                   size={18}
                   color="#FF4444"
-                  style={cadastroStyles.errorIcon}
+                  style={styles.errorIcon}
                 />
-                <Text style={cadastroStyles.errorText}>
+                <Text style={styles.errorText}>
                   {cadastroForm.error.message}
                 </Text>
               </View>
             ) : null}
 
             {/* Form */}
-            <View style={cadastroStyles.inputContainer}>
+            <View style={styles.inputContainer}>
               {/* Nome Input */}
-              <View style={cadastroStyles.inputWrapper}>
-                <Text style={cadastroStyles.inputLabel}>Nome</Text>
+              <View style={styles.inputWrapper}>
+                <Text style={styles.inputLabel}>Nome</Text>
                 <TextInput
-                  style={cadastroStyles.inputField}
+                  style={styles.inputField}
                   placeholder="Digite seu nome"
-                  placeholderTextColor="#8B8B8B"
+                  placeholderTextColor={isDarkTheme ? "#8B8B8B" : "#666"}
                   value={form.nome}
                   onChangeText={(text) => handleForm(text, "nome")}
                   keyboardType="default"
@@ -101,18 +125,18 @@ const Cadastro = () => {
                   autoComplete="email"
                 />
                 {formErrors.nome && (
-                  <Text style={cadastroStyles.fieldErrorText}>
+                  <Text style={styles.fieldErrorText}>
                     {formErrors.nome}
                   </Text>
                 )}
               </View>
 
-              <View style={cadastroStyles.inputWrapper}>
-                <Text style={cadastroStyles.inputLabel}>Email</Text>
+              <View style={styles.inputWrapper}>
+                <Text style={styles.inputLabel}>Email</Text>
                 <TextInput
-                  style={cadastroStyles.inputField}
+                  style={styles.inputField}
                   placeholder="Digite seu email"
-                  placeholderTextColor="#8B8B8B"
+                  placeholderTextColor={isDarkTheme ? "#8B8B8B" : "#666"}
                   value={form.email}
                   onChangeText={(text) => handleForm(text, "email")}
                   keyboardType="email-address"
@@ -120,16 +144,16 @@ const Cadastro = () => {
                   autoComplete="email"
                 />
                 {formErrors.email && (
-                  <Text style={cadastroStyles.fieldErrorText}>
+                  <Text style={styles.fieldErrorText}>
                     {formErrors.email}
                   </Text>
                 )}
               </View>
 
               {/* Filial Picker */}
-              <View style={cadastroStyles.pickerWrapper}>
-                <Text style={cadastroStyles.inputLabel}>Filial</Text>
-                <View style={cadastroStyles.pickerContainer}>
+              <View style={styles.pickerWrapper}>
+                <Text style={styles.inputLabel}>Filial</Text>
+                <View style={styles.pickerContainer}>
                   <Picker
                     selectedValue={selectedFilial}
                     onValueChange={(filial) => {
@@ -138,13 +162,13 @@ const Cadastro = () => {
                         handleForm(filial.idFilial.toString(), "idFilial");
                       }
                     }}
-                    style={cadastroStyles.picker}
-                    dropdownIconColor="#8B8B8B"
+                    style={styles.picker}
+                    dropdownIconColor={isDarkTheme ? "#8B8B8B" : "#666"}
                   >
                     <Picker.Item
                       label="Selecione uma filial"
                       value={null}
-                      color="#8B8B8B"
+                      color={isDarkTheme ? "#8B8B8B" : "#666"}
                     />
                     {filiais &&
                       filiais.map((filial) => (
@@ -152,7 +176,7 @@ const Cadastro = () => {
                           value={filial}
                           key={filial.idFilial}
                           label={filial.idContato.nmDono}
-                          color="#000000"
+                          color={isDarkTheme ? "#FFFFFF" : "#000000"}
                         />
                       ))}
                   </Picker>
@@ -160,19 +184,19 @@ const Cadastro = () => {
               </View>
 
               {/* Password Input */}
-              <View style={cadastroStyles.inputWrapper}>
-                <Text style={cadastroStyles.inputLabel}>Senha</Text>
+              <View style={styles.inputWrapper}>
+                <Text style={styles.inputLabel}>Senha</Text>
                 <TextInput
-                  style={cadastroStyles.inputField}
+                  style={styles.inputField}
                   placeholder="Digite sua senha"
-                  placeholderTextColor="#8B8B8B"
+                  placeholderTextColor={isDarkTheme ? "#8B8B8B" : "#666"}
                   value={form.senha}
                   onChangeText={(text) => handleForm(text, "senha")}
                   secureTextEntry
                   autoComplete="password"
                 />
                 {formErrors.senha && (
-                  <Text style={cadastroStyles.fieldErrorText}>
+                  <Text style={styles.fieldErrorText}>
                     {formErrors.senha}
                   </Text>
                 )}
@@ -180,13 +204,13 @@ const Cadastro = () => {
             </View>
 
             {/* Register Button */}
-            <View style={cadastroStyles.buttonContainer}>
+            <View style={styles.buttonContainer}>
               <ButtonArea size="small" title="Registrar" action={salvar} />
             </View>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 };
 

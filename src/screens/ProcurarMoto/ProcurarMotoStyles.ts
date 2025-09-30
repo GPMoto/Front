@@ -1,36 +1,33 @@
+import { useDarkColors } from "@/styles/theme-config";
 import { StyleSheet } from "react-native";
 
-const procurarMotoStyles = StyleSheet.create({
-  listArea: {
-    display: "flex",
-    flexDirection: "column",
-    padding: 16,
-    width: "100%",
+export const createStyles = (colors: ReturnType<typeof useDarkColors>, isDarkTheme: boolean) => StyleSheet.create({
+  container: {
     flex: 1,
-    backgroundColor: "#2A2A2A",
-    borderRadius: 16,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
-  },
-  contentArea: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    width: "90%",
-    height: "100%",
-    marginTop: 16,
-  },
-  mainContainer: {
+    backgroundColor: colors.containerBg,
     alignItems: "center",
+    justifyContent: "flex-start",
+    padding: 10,
     gap: 0,
     paddingTop: 10,
+  },
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: colors.containerBg,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  errorContainer: {
+    flex: 1,
+    backgroundColor: colors.containerBg,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  errorText: {
+    color: "#FF6B6B",
+    fontSize: 16,
+    textAlign: "center",
   },
   inputContainer: {
     width: "90%",
@@ -42,23 +39,49 @@ const procurarMotoStyles = StyleSheet.create({
   },
   textInput: {
     fontSize: 16,
-    color: "#000",
-    backgroundColor: "white",
+    color: isDarkTheme ? "#000" : "#000",
+    backgroundColor: isDarkTheme ? "white" : "white",
     borderColor: "#41C526",
     borderWidth: 2,
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    paddingRight: 50, // Espaço para o botão
-    height: 48, // Altura fixa para consistência
-    textAlignVertical: 'center', // Centraliza o texto verticalmente
+    paddingRight: 50,
+    height: 48,
+    textAlignVertical: 'center',
   },
   clearButton: {
     position: 'absolute',
     right: 15,
     top: '50%',
-    marginTop: -10, // Metade da altura do ícone para centralizar
+    marginTop: -10,
     paddingHorizontal: 5,
+  },
+  contentArea: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    width: "90%",
+    height: "100%",
+    marginTop: 16,
+  },
+  listArea: {
+    display: "flex",
+    flexDirection: "column",
+    padding: 16,
+    width: "100%",
+    flex: 1,
+    backgroundColor: colors.cardBg,
+    borderRadius: 16,
+    shadowColor: colors.shadowColor,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: isDarkTheme ? 0.3 : 0.1,
+    shadowRadius: 4.65,
+    elevation: 8,
   },
   paginationContainer: {
     flexDirection: "row",
@@ -69,12 +92,20 @@ const procurarMotoStyles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: "#1E1E1E",
+    backgroundColor: colors.cardBg,
     borderRadius: 12,
     marginTop: 16,
+    shadowColor: colors.shadowColor,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: isDarkTheme ? 0.2 : 0.1,
+    shadowRadius: 3,
+    elevation: 3,
   },
   pageText: {
-    color: "black",
+    color: colors.primaryText,
     fontSize: 18,
     fontWeight: "600",
   },
@@ -96,13 +127,16 @@ const procurarMotoStyles = StyleSheet.create({
   emptyStateContainer: {
     padding: 40,
     alignItems: "center",
-    backgroundColor: "#1E1E1E",
+    backgroundColor: colors.cardBg,
     borderRadius: 12,
     marginVertical: 20,
     borderWidth: 2,
     borderColor: "#41C526",
     borderStyle: "dashed",
   },
+  emptyStateText: {
+    color: colors.secondaryText,
+    fontSize: 16,
+    textAlign: "center",
+  },
 });
-
-export { procurarMotoStyles };
