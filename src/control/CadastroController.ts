@@ -40,7 +40,9 @@ const useAllFiliais = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["filiais"],
     queryFn: async () => {
-      return await new FilialService(null).getAllFiliais();
+      const response = await new FilialService(null).getAllFiliais();
+      console.log("fialiais chegando: ", response);
+      return response;
     },
     refetchOnMount: true,
     refetchOnWindowFocus: false,
@@ -50,6 +52,7 @@ const useAllFiliais = () => {
     if (field === "idFilial" || field === "idPerfil") {
       const number = Number(text);
       setForm((form) => ({ ...form, [field]: number }));
+      return;
     }
 
     setForm((form) => ({ ...form, [field]: text }));

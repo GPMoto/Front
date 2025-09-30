@@ -92,7 +92,6 @@ export const mockEnderecos: Endereco[] = Array.from({ length: 35 }, (_, i) => ({
 // 4. TERCEIRA CAMADA
 export const mockFiliais: Filial[] = Array.from({ length: 15 }, (_, i) => ({
   idFilial: i + 1,
-  nome: faker.company.name(),
   cnpjFilial: faker.string.numeric(14),
   senhaFilial: faker.internet.password(),
   idEndereco: mockEnderecos[i % mockEnderecos.length],
