@@ -59,4 +59,50 @@ export default class IdentificadorFetcher {
     
     return response.data;
   }
+
+  async readTextFromImage(imageData: Uint8Array): Promise<string[]> {
+    const key = process.env.EXPO_PUBLIC_AZ_COG_KEY;
+    const endpoint = process.env.EXPO_PUBLIC_AZ_COG_ENDPOINT;
+
+    if (!key) throw new Error("Azure key not found");
+    if (!endpoint) throw new Error("Azure endpoint not found");
+
+    const analyzeUrl = `${endpoint}/vision/v3.2/read/analyze`;
+    const postResponse = await axios.post(analyzeUrl, imageData, {
+      headers: {
+        "Ocp-Apim-Subscription-Key": key,
+        "Content-Type": "application/octet-stream",
+      },
+      validateStatus: () => true, 
+    });
+
+    if (postResponse.status !== 202) {
+      throw new Error(`Erro ao enviar imagem: ${postResponse.statusText}`);
+    }
+
+    const operationLocation = postResponse.headers["operation-location"];
+    if (!operationLocation) throw new Error("Não recebeu Operation-Location do Azure");
+
+    let result: any;
+    while (true) {
+      await new Promise((r) => setTimeout(r, 1000)); // esperar 1s
+      const getResponse = await axios.get(operationLocation, {
+        headers: { "Ocp-Apim-Subscription-Key": key },
+      });
+      result = getResponse.data;
+      if (result.status === "succeeded" || result.status === "failed") break;
+    }
+
+    if (result.status === "failed") throw new Error("Falha no OCR do Azure");
+
+    const texts: string[] = [];
+    const readResults = result.analyzeResult?.readResults || [];
+    for (const page of readResults) {
+      for (const line of page.lines || []) {
+        texts.push(line.text);
+      }
+    }
+
+    return texts;
+  }
 }

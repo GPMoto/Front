@@ -1,5 +1,5 @@
 import { DrawerParamList } from "@/navigators/NavigationTypes";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { RouteProp, useRoute, useNavigation } from "@react-navigation/native";
 import {
   Text,
   View,
@@ -7,6 +7,10 @@ import {
   ScrollView,
   ActivityIndicator,
   TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useMoto } from "@/control/MotoControl";
@@ -19,6 +23,7 @@ import useFilial from "@/control/FilialController";
 
 const SingleMoto = () => {
   const route = useRoute<RouteProp<DrawerParamList, "Moto">>();
+  const navigation = useNavigation();
 
   if (!route.params?.moto) {
     return (
@@ -84,11 +89,17 @@ const SingleMoto = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}
-      >
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
         <View style={styles.card}>
           {/* Header */}
           <View style={styles.header}>
@@ -240,7 +251,9 @@ const SingleMoto = () => {
             </View>
           </View>
         </View>
-      </ScrollView>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+
       <View style={{ padding: 16 }}>
         {editing && verifyIsCreating(moto) && saveLoading ? (
           <View
@@ -276,8 +289,16 @@ const SingleMoto = () => {
               if (editing) {
                 if (verifyIsCreating(moto)) {
                   handleSave();
+                  // Navegar para tela de procurar moto após salvar
+                  setTimeout(() => {
+                    (navigation as any).navigate("Procurar Moto");
+                  }, 1500); // Aguardar um pouco para o salvamento completar
                 } else {
                   saveChanges();
+                  // Navegar para tela de procurar moto após salvar
+                  setTimeout(() => {
+                    (navigation as any).navigate("Procurar Moto");
+                  }, 1500); // Aguardar um pouco para o salvamento completar
                 }
               } else {
                 enterEditMode(routeMoto);
@@ -286,7 +307,7 @@ const SingleMoto = () => {
           />
         )}
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
