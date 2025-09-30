@@ -14,9 +14,8 @@ const useAllFiliais = () => {
   const { data: perfilConvidado, isSuccess: perfilLoaded } = useQuery({
     queryKey: ["perfis"],
     queryFn: async () => {
-      return (await new ProfileService(null).getPerfis()).find(
-        (perfil) => perfil.nmPerfil.toUpperCase() === "CONVIDADO"
-      );
+      const perfis = await new ProfileService(null).getPerfis();
+      return perfis[0];
     },
     refetchOnMount: true,
     refetchOnWindowFocus: false,

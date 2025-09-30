@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useState, useContext, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface AuthContextProps {
   token: string | null;
@@ -15,7 +16,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [token, setToken] = useState<string | null>(null);
-  const [splashScreen, setSplashScreen] = useState<boolean>(true)
+  const [splashScreen, setSplashScreen] = useState<boolean>(true);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     loadStoredToken();
@@ -37,11 +39,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const login = async (authToken: string) => {
     setToken(authToken);
     await AsyncStorage.setItem("TOKEN", authToken);
+    
+    // Invalidar queries específicas primeiro
+    await queryClient.invalidateQueries({ queryKey: ["perfil"] });
+    await queryClient.invalidateQueries({ queryKey: ["motos"] });
+    await queryClient.invalidateQueries({ queryKey: ["filiais"] });
+    await queryClient.invalidateQueries({ queryKey: ["tipos-moto"] });
+    
+    // Invalidar todas as outras queries para garantir dados atualizados
+    await queryClient.invalidateQueries();
   };
 
   const logout = async () => {
     setToken(null);
     await AsyncStorage.removeItem("TOKEN");
+    
+    // Limpar todas as queries do cache no logout
+    queryClient.clear();
   };
 
   return (

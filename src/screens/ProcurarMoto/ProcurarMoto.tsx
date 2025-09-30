@@ -6,12 +6,13 @@ import {
   View,
   ScrollView,
   RefreshControl,
+  SafeAreaView,
+  StatusBar,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import Pagination from "@cherry-soft/react-native-basic-pagination";
 import SingleMotoPaged from "@/components/SingleMotoPaged/SingleMotoPaged";
-import { procurarMotoStyles } from "./ProcurarMotoStyles";
-import { globalStyles } from "@/styles/styles";
+import { createStyles } from "./ProcurarMotoStyles";
 import { FontAwesome6 as Icon } from "@expo/vector-icons";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import {
@@ -19,10 +20,15 @@ import {
   DrawerParamList,
 } from "@/navigators/NavigationTypes";
 import FloatingButton from "@/components/FloatingButton/FloatingButton";
+import { useTheme } from "@/context/ThemeContext";
+import { useDarkColors } from "@/styles/theme-config";
 
 export default function ProcurarMoto() {
   const route = useRoute<RouteProp<DrawerParamList, "Procurar Moto">>();
   const params = route.params;
+  const { isDarkTheme } = useTheme();
+  const colors = useDarkColors();
+  const styles = createStyles(colors, isDarkTheme);
 
   const {
     pagedMotos,
@@ -40,41 +46,42 @@ export default function ProcurarMoto() {
 
   if (pagedMotos.isLoading) {
     return (
-      <View
-        style={[globalStyles.container_center, { justifyContent: "center" }]}
-      >
-        <ActivityIndicator />
-      </View>
+      <SafeAreaView style={styles.loadingContainer}>
+        <StatusBar
+          barStyle={isDarkTheme ? "light-content" : "dark-content"}
+          backgroundColor={colors.containerBg}
+        />
+        <ActivityIndicator size="large" color="#41C526" />
+      </SafeAreaView>
     );
   }
 
   if (pagedMotos.isError) {
     return (
-      <View
-        style={[globalStyles.container_center, { justifyContent: "center" }]}
-      >
-        <Text
-          style={[
-            globalStyles.TextInput,
-            { color: "#FF6B6B", textAlign: "center" },
-          ]}
-        >
+      <SafeAreaView style={styles.errorContainer}>
+        <StatusBar
+          barStyle={isDarkTheme ? "light-content" : "dark-content"}
+          backgroundColor={colors.containerBg}
+        />
+        <Text style={styles.errorText}>
           Erro ao carregar motos: {pagedMotos.error.message}
         </Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View
-      style={[globalStyles.container_center, procurarMotoStyles.mainContainer]}
-    >
-      <View style={procurarMotoStyles.inputContainer}>
-        <View style={procurarMotoStyles.inputWrapper}>
+    <SafeAreaView style={styles.container}>
+      <StatusBar
+        barStyle={isDarkTheme ? "light-content" : "dark-content"}
+        backgroundColor={colors.containerBg}
+      />
+      <View style={styles.inputContainer}>
+        <View style={styles.inputWrapper}>
           <TextInput
             placeholder="Digite a placa da moto..."
             placeholderTextColor="#999"
-            style={[globalStyles.Input, procurarMotoStyles.textInput]}
+            style={styles.textInput}
             onChangeText={setBusca}
             value={busca ?? ""}
           />
@@ -84,14 +91,14 @@ export default function ProcurarMoto() {
               color={"red"}
               size={20}
               onPress={limparBusca}
-              style={procurarMotoStyles.clearButton}
+              style={styles.clearButton}
             />
           )}
         </View>
       </View>
 
-      <View style={procurarMotoStyles.contentArea}>
-        <View style={procurarMotoStyles.listArea}>
+      <View style={styles.contentArea}>
+        <View style={styles.listArea}>
           <FlatList
             data={pagedMotos.data!.content}
             keyExtractor={(item, index) =>
@@ -118,22 +125,22 @@ export default function ProcurarMoto() {
               />
             }
             ListHeaderComponent={
-              <View style={procurarMotoStyles.totalMotosContainer}>
-                <Text style={[procurarMotoStyles.pageText]}>
+              <View style={styles.totalMotosContainer}>
+                <Text style={[styles.pageText, { color: "#FFFFFF" }]}>
                   Total de motos: {pagedMotos.data!.totalElements || 0}
                 </Text>
               </View>
             }
             ListEmptyComponent={
-              <View style={procurarMotoStyles.emptyStateContainer}>
-                <Text style={[globalStyles.TextInput, { textAlign: "center" }]}>
+              <View style={styles.emptyStateContainer}>
+                <Text style={styles.emptyStateText}>
                   Nenhuma moto encontrada
                 </Text>
               </View>
             }
             ListFooterComponent={
               pagedMotos.data && pagedMotos.data.totalPages! > 1 ? (
-                <View style={procurarMotoStyles.paginationContainer}>
+                <View style={styles.paginationContainer}>
                   <Pagination
                     currentPage={page}
                     onPageChange={setPage}
@@ -151,6 +158,6 @@ export default function ProcurarMoto() {
       <FloatingButton 
         onPress={goToCreateMoto}
       />
-    </View>
+    </SafeAreaView>
   );
 }

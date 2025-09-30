@@ -3,7 +3,6 @@ import { RouteProp, useRoute, useNavigation } from "@react-navigation/native";
 import {
   Text,
   View,
-  StyleSheet,
   ScrollView,
   ActivityIndicator,
   TextInput,
@@ -11,6 +10,8 @@ import {
   Platform,
   Keyboard,
   TouchableWithoutFeedback,
+  SafeAreaView,
+  StatusBar,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useMoto } from "@/control/MotoControl";
@@ -20,10 +21,16 @@ import { useTipoMoto } from "@/control/TipoMotoController";
 import { capitalize } from "@/utils/helpers";
 import { useEffect } from "react";
 import useFilial from "@/control/FilialController";
+import { useTheme } from "@/context/ThemeContext";
+import { useDarkColors } from "@/styles/theme-config";
+import { createStyles } from "./styles";
 
 const SingleMoto = () => {
   const route = useRoute<RouteProp<DrawerParamList, "Moto">>();
   const navigation = useNavigation();
+  const { isDarkTheme } = useTheme();
+  const colors = useDarkColors();
+  const styles = createStyles(colors, isDarkTheme);
 
   if (!route.params?.moto) {
     return (
@@ -66,38 +73,46 @@ const SingleMoto = () => {
 
   if (singleMoto.isLoading) {
     return (
-      <View
-        style={[
-          styles.container,
-          { justifyContent: "center", alignItems: "center" },
-        ]}
-      >
+      <SafeAreaView style={styles.loadingContainer}>
+        <StatusBar
+          barStyle={isDarkTheme ? "light-content" : "dark-content"}
+          backgroundColor={colors.containerBg}
+        />
         <ActivityIndicator size="large" color="#41C526" />
-        <Text style={styles.subtitle}>Carregando moto...</Text>
-      </View>
+        <Text style={styles.loadingText}>Carregando moto...</Text>
+      </SafeAreaView>
     );
   }
 
   if (singleMoto.isError) {
     return (
-      <View style={styles.errorContainer}>
+      <SafeAreaView style={styles.errorContainer}>
+        <StatusBar
+          barStyle={isDarkTheme ? "light-content" : "dark-content"}
+          backgroundColor={colors.containerBg}
+        />
         <Text style={styles.errorText}>
           Erro ao carregar moto: {singleMoto.error?.message}
         </Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
-    >
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <ScrollView
-          contentContainerStyle={styles.scrollContainer}
-          showsVerticalScrollIndicator={false}
+    <SafeAreaView style={styles.container}>
+      <StatusBar
+        barStyle={isDarkTheme ? "light-content" : "dark-content"}
+        backgroundColor={colors.containerBg}
+      />
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+      >
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
         <View style={styles.card}>
@@ -307,102 +322,9 @@ const SingleMoto = () => {
           />
         )}
       </View>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#0C0C0C",
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    padding: 20,
-  },
-  card: {
-    backgroundColor: "#1A1A1A",
-    borderRadius: 8,
-    padding: 32,
-    shadowColor: "#41C526",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
-    borderWidth: 1,
-    borderColor: "#2A2A2A",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 32,
-  },
-  headerText: {
-    marginLeft: 16,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#FFFFFF",
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#8B8B8B",
-    marginTop: 4,
-  },
-  infoContainer: {
-    gap: 20,
-  },
-  infoRow: {
-    marginBottom: 4,
-  },
-  infoLabel: {
-    fontSize: 16,
-    color: "#FFFFFF",
-    fontWeight: "600",
-    marginBottom: 8,
-  },
-  infoValue: {
-    fontSize: 16,
-    color: "#8B8B8B",
-    backgroundColor: "#2A2A2A",
-    padding: 12,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: "#3A3A3A",
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#0C0C0C",
-  },
-  errorText: {
-    color: "#FF6B6B",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  pickerContainer: {
-    backgroundColor: "#2A2A2A",
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: "#3A3A3A",
-    minHeight: 50,
-    justifyContent: "center",
-  },
-  picker: {
-    color: "#FFFFFF",
-    fontSize: 16,
-    height: 50,
-  },
-  editableInput: {
-    backgroundColor: "#404040",
-    borderColor: "#41C526",
-    borderWidth: 2,
-  },
-});
 
 export default SingleMoto;

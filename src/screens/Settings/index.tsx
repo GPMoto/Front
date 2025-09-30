@@ -1,11 +1,21 @@
+import React from "react";
 import { useAuth } from "@/context/AuthContext";
 import { ParamListBase } from "@react-navigation/native";
-import { Text, View } from "react-native";
+import {
+  Text,
+  View,
+  Switch,
+  StyleSheet,
+  StatusBar,
+  SafeAreaView,
+} from "react-native";
 import { FontAwesome as Icon } from "@expo/vector-icons";
 import { useProfile } from "@/control/ProfileController";
-import { StyleSheet } from "react-native";
 import LoadingScreen from "@/components/shared/LoadingScreen";
 import ButtonArea from "@/components/Button/ButtonArea";
+import { useTheme } from "@/context/ThemeContext";
+import { useDarkColors } from "@/styles/theme-config";
+import { createStyles } from "./styles";
 
 interface SettingsProps extends ParamListBase {}
 
@@ -13,11 +23,14 @@ const Settings = (props: SettingsProps) => {
   const { logout } = useAuth();
   const { isLoading, isError, error, profile, refetch, formatCNPJ } =
     useProfile();
+  const { toggleTheme, isDarkTheme } = useTheme();
+  const colors = useDarkColors();
+  const styles = createStyles(colors, isDarkTheme);
 
   if (isLoading) {
     return (
       <LoadingScreen>
-        <Text style={{ color: "#666", fontSize: 16 }}>
+        <Text style={{ color: colors.secondaryText, fontSize: 16 }}>
           Carregando seus dados de usuário...
         </Text>
       </LoadingScreen>
@@ -26,18 +39,25 @@ const Settings = (props: SettingsProps) => {
 
   if (isError) {
     return (
-      <View>
-        <Text>Erro ao carregar perfil: {error?.message}</Text>
+      <View style={[styles.container, { justifyContent: "center" }]}>
+        <Text style={[styles.text, { textAlign: "center", marginBottom: 20 }]}>
+          Erro ao carregar perfil: {error?.message}
+        </Text>
         <ButtonArea title="Tentar novamente" action={refetch} size="medium" />
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      {/* StatusBar ajustado para ambos os temas */}
+      <StatusBar
+        barStyle={isDarkTheme ? "light-content" : "dark-content"}
+        backgroundColor={colors.containerBg}
+      />
       <View style={styles.headerCardVertical}>
         <View style={styles.avatarWrapVertical}>
-          <Icon name="user-circle-o" size={96} color="#FFFFFF" />
+          <Icon name="user-circle-o" size={96} color={colors.iconColor} />
         </View>
         {profile && (
           <View style={styles.headerTextVertical}>
@@ -46,13 +66,14 @@ const Settings = (props: SettingsProps) => {
           </View>
         )}
       </View>
-
       <View style={styles.profileSection}>
         {profile && (
           <View style={styles.userInfoGrid}>
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Filial</Text>
-              <Text style={styles.infoValue}>{profile.idFilial.idContato.nmDono}</Text>
+              <Text style={styles.infoValue}>
+                {`${profile.idFilial.idContato.nmDono}`}
+              </Text>
             </View>
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Grupo</Text>
@@ -73,7 +94,13 @@ const Settings = (props: SettingsProps) => {
             <View style={[styles.infoRow, { alignItems: "flex-start" }]}>
               <Text style={styles.infoLabel}>Endereço</Text>
               <Text
-                style={[styles.infoValue, { width: "70%", textAlign: "right" }]}
+                style={[
+                  styles.infoValue,
+                  {
+                    width: "70%",
+                    textAlign: "right",
+                  },
+                ]}
               >
                 {profile.idFilial.idEndereco.nmLogradouro},{" "}
                 {profile.idFilial.idEndereco.idCidade.nmCidade},{" "}
@@ -82,6 +109,29 @@ const Settings = (props: SettingsProps) => {
             </View>
           </View>
         )}
+      </View>
+
+      {/* Theme toggle */}
+      <View style={[styles.actionsSection, { marginBottom: 16 }]}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <View>
+            <Text style={[styles.infoValue, { fontSize: 14 }]}>
+              Tema {isDarkTheme ? "Escuro" : "Claro"}
+            </Text>
+          </View>
+          <Switch
+            value={isDarkTheme}
+            onValueChange={toggleTheme}
+            trackColor={{ false: "#767577", true: "#41C526" }}
+            thumbColor={isDarkTheme ? "#FFFFFF" : "#f4f3f4"}
+          />
+        </View>
       </View>
 
       <ButtonArea
@@ -93,135 +143,8 @@ const Settings = (props: SettingsProps) => {
           shadowColor: "#DC143C",
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default Settings;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#0C0C0C",
-    padding: 20,
-  },
-  profileSection: {
-    backgroundColor: "#1F1F1F",
-    borderRadius: 12,
-    padding: 20,
-    marginBottom: 20,
-    alignItems: "center",
-    alignSelf: 'center',
-    width: '100%',
-    maxWidth: 720,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 6,
-  },
-  userInfo: {
-    alignItems: "center",
-    width: "100%",
-  },
-  userName: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#FFFFFF",
-    marginBottom: 8,
-    textAlign: "center",
-  },
-  userEmail: {
-    fontSize: 16,
-    color: "#BFC9B8",
-    marginBottom: 5,
-  },
-  userDetail: {
-    fontSize: 14,
-    color: "#9FB99A",
-    marginBottom: 3,
-  },
-  actionsSection: {
-    backgroundColor: "#1F1F1F",
-    borderRadius: 12,
-    padding: 20,
-    alignSelf: 'center',
-    width: '100%',
-    maxWidth: 720,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 6,
-  },
-  headerCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 18,
-    paddingHorizontal: 10,
-    marginBottom: 16,
-  },
-  headerCardVertical: {
-    alignItems: "center",
-    paddingVertical: 18,
-    paddingHorizontal: 10,
-    marginBottom: 16,
-    alignSelf: 'center',
-    width: '100%',
-    maxWidth: 720,
-  },
-  avatarWrap: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    borderWidth: 3,
-    borderColor: "rgba(65,197,38,0.18)",
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 12,
-    backgroundColor: "#2C2C2C",
-  },
-  avatarWrapVertical: {
-    width: 108,
-    height: 108,
-    borderRadius: 54,
-    borderWidth: 3,
-    borderColor: "rgba(65,197,38,0.18)",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 12,
-    backgroundColor: "#2C2C2C",
-  },
-  headerText: {
-    flex: 1,
-  },
-  headerTextVertical: {
-    alignItems: "center",
-  },
-  userInfoGrid: {
-    width: "100%",
-  },
-  infoRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: "rgba(65,197,38,0.04)",
-  },
-  infoLabel: {
-    color: "#BFC9B8",
-    fontSize: 14,
-    width: "30%",
-  },
-  infoValue: {
-    color: "#FFFFFF",
-    fontSize: 14,
-    fontWeight: "600",
-  },
-});
