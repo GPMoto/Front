@@ -156,14 +156,8 @@ const Cadastro = () => {
                 )}
               </View>
 
-              {/* Filial Picker */}
               <View style={styles.pickerWrapper}>
                 <Text style={styles.inputLabel}>Filial</Text>
-                
-                {/* Debug: Mostrar dados das filiais */}
-                <Text style={styles.inputLabel}>
-                  Debug: {filiais ? `${filiais.length} filiais carregadas` : 'Nenhuma filial'}
-                </Text>
                 
                 <View style={styles.pickerContainer}>
                   <Picker
@@ -207,12 +201,7 @@ const Cadastro = () => {
                   </Picker>
                 </View>
                 
-                {/* Debug: Lista das filiais */}
-                {filiais && filiais.map((filial, index) => (
-                  <Text key={index} style={styles.inputLabel}>
-                    Filial {index + 1}: {filial.idContato?.nmDono || 'Sem nome'} (ID: {filial.idFilial})
-                  </Text>
-                ))}
+               
               </View>
 
               {/* Password Input */}
