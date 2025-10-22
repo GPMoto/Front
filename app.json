@@ -21,7 +21,8 @@
           "recordAudioAndroid": true
         }
       ],
-      "expo-barcode-scanner"
+      "expo-barcode-scanner",
+      "expo-localization"
     ],
     "ios": {
       "supportsTablet": true

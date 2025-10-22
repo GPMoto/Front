@@ -13,8 +13,11 @@ import ButtonArea from "@/components/Button/ButtonArea";
 import { useTheme } from "@/context/ThemeContext";
 import { useDarkColors } from "@/styles/theme-config";
 import { createStyles } from "./styles";
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function FormularioLogin(props: any) {
+export default function FormularioLogin() {
   const {
     loading,
     loginUser,
@@ -28,6 +31,18 @@ export default function FormularioLogin(props: any) {
   const { isDarkTheme } = useTheme();
   const colors = useDarkColors();
   const styles = createStyles(colors, isDarkTheme);
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language;
+
+  useEffect(() => {
+    const loadLanguage = async () => {
+      const savedLanguage = await AsyncStorage.getItem("language");
+      if (savedLanguage) {
+        i18n.changeLanguage(savedLanguage);
+      }
+    };
+    loadLanguage();
+  }, [i18n]);
 
   return (
     <View style={styles.container}>
@@ -49,14 +64,10 @@ export default function FormularioLogin(props: any) {
           <View style={styles.loginCard}>
             {/* Header */}
             <View style={styles.header}>
-              <Text style={styles.welcomeText}>
-                Bem-vindo de volta!
-              </Text>
+              <Text style={styles.welcomeText}>{t('home.welcome')}</Text>
               <Text style={styles.subtitleText}>
                 Entre na sua conta do{" "}
-                <Text style={styles.brandHighlight}>
-                  GPSMottu
-                </Text>
+                <Text style={styles.brandHighlight}>GPSMottu</Text>
               </Text>
             </View>
 
@@ -92,9 +103,7 @@ export default function FormularioLogin(props: any) {
                   returnKeyType="next"
                 />
                 {loginErrors.email && (
-                  <Text style={styles.fieldErrorText}>
-                    {loginErrors.email}
-                  </Text>
+                  <Text style={styles.fieldErrorText}>{loginErrors.email}</Text>
                 )}
               </View>
 
@@ -115,17 +124,20 @@ export default function FormularioLogin(props: any) {
                   onSubmitEditing={loginUser}
                 />
                 {loginErrors.senha && (
-                  <Text style={styles.fieldErrorText}>
-                    {loginErrors.senha}
-                  </Text>
+                  <Text style={styles.fieldErrorText}>{loginErrors.senha}</Text>
                 )}
               </View>
             </View>
 
             {/* Login Button */}
             <View style={styles.buttonContainer}>
-              <ButtonArea size="small" title="Entrar" action={() => {
-                loginUser()}} />
+              <ButtonArea
+                size="small"
+                title="Entrar"
+                action={() => {
+                  loginUser();
+                }}
+              />
             </View>
 
             {/* Loading Overlay */}
@@ -140,10 +152,7 @@ export default function FormularioLogin(props: any) {
           <View style={styles.footerContainer}>
             <Text style={styles.footerText}>
               Não tem uma conta?{" "}
-              <Text
-                style={styles.footerLink}
-                onPress={goToRegisterPage}
-              >
+              <Text style={styles.footerLink} onPress={goToRegisterPage}>
                 Cadastre-se
               </Text>
             </Text>
