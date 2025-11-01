@@ -10,6 +10,8 @@ import { FontAwesome as Icon } from "@expo/vector-icons";
 import { useTheme } from "@/context/ThemeContext";
 import { useDarkColors } from "@/styles/theme-config";
 import { createStyles } from "./styles";
+import { usePushNotifications } from "@/hooks/usePushNotifications";
+import { useCallback, useEffect } from "react";
 
 export default function Inicio() {
   const { appTitle, subtitle, goToMapa, goToProcurar, sections, motorcycles } =
@@ -18,13 +20,21 @@ export default function Inicio() {
   const colors = useDarkColors();
   const styles = createStyles(colors, isDarkTheme);
 
+  const handleNotification = useCallback(() => {
+    console.log("Notification received");
+  }, []);
+
+  usePushNotifications(handleNotification);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.containerBg }}>
       <StatusBar
         barStyle={isDarkTheme ? "light-content" : "dark-content"}
         backgroundColor={colors.containerBg}
       />
-      <View style={{ flex: 1, backgroundColor: colors.containerBg, padding: 20 }}>
+      <View
+        style={{ flex: 1, backgroundColor: colors.containerBg, padding: 20 }}
+      >
         <View style={styles.hero}>
           <View style={styles.heroLeft}>
             <Text style={styles.subtitle}>{subtitle}</Text>

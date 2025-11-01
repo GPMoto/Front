@@ -1,0 +1,16 @@
+{
+  "language": "Language",
+  "home": {
+    "welcome": "Welcome!"
+  },
+  "login": {
+    "subtitle": "Log in to your GPSMottu account",
+    "emailLabel": "Name",
+    "emailPlaceholder": "Enter your name",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "loginButton": "Login",
+    "noAccount": "Don't have an account?",
+    "registerLink": "Sign up"
+  }
+}

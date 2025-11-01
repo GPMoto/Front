@@ -36,12 +36,6 @@ const Cadastro = () => {
   const colors = useDarkColors();
   const styles = createStyles(colors, isDarkTheme);
 
-  // Debug logs
-  console.log("Filiais no componente:", filiais);
-  console.log("Loading:", filialLoading);
-  console.log("Error:", filialError);
-  console.log("Form:", form);
-
   if (filialLoading || cadastroForm.isPending) {
     return (
       <SafeAreaView style={styles.container}>
@@ -131,9 +125,7 @@ const Cadastro = () => {
                   autoComplete="email"
                 />
                 {formErrors.nome && (
-                  <Text style={styles.fieldErrorText}>
-                    {formErrors.nome}
-                  </Text>
+                  <Text style={styles.fieldErrorText}>{formErrors.nome}</Text>
                 )}
               </View>
 
@@ -150,21 +142,14 @@ const Cadastro = () => {
                   autoComplete="email"
                 />
                 {formErrors.email && (
-                  <Text style={styles.fieldErrorText}>
-                    {formErrors.email}
-                  </Text>
+                  <Text style={styles.fieldErrorText}>{formErrors.email}</Text>
                 )}
               </View>
 
               {/* Filial Picker */}
               <View style={styles.pickerWrapper}>
                 <Text style={styles.inputLabel}>Filial</Text>
-                
-                {/* Debug: Mostrar dados das filiais */}
-                <Text style={styles.inputLabel}>
-                  Debug: {filiais ? `${filiais.length} filiais carregadas` : 'Nenhuma filial'}
-                </Text>
-                
+
                 <View style={styles.pickerContainer}>
                   <Picker
                     selectedValue={form.idFilial || 0}
@@ -172,7 +157,9 @@ const Cadastro = () => {
                       console.log("Picker onValueChange:", idFilial);
                       if (idFilial && idFilial !== 0) {
                         handleForm(idFilial.toString(), "idFilial");
-                        const filial = filiais?.find(f => f.idFilial === idFilial);
+                        const filial = filiais?.find(
+                          (f) => f.idFilial === idFilial,
+                        );
                         setSelectedFilial(filial || null);
                       }
                     }}
@@ -184,10 +171,12 @@ const Cadastro = () => {
                       value={0}
                       color={isDarkTheme ? "#8B8B8B" : "#666"}
                     />
-                    {filiais && filiais.length > 0 ?
+                    {filiais && filiais.length > 0 ? (
                       filiais.map((filial) => {
                         console.log("Renderizando filial:", filial);
-                        const label = filial.idContato?.nmDono || `Filial ${filial.idFilial}`;
+                        const label =
+                          filial.idContato?.nmDono ||
+                          `Filial ${filial.idFilial}`;
                         return (
                           <Picker.Item
                             value={filial.idFilial}
@@ -196,23 +185,16 @@ const Cadastro = () => {
                             color={isDarkTheme ? "#8B8B8B" : "#666"}
                           />
                         );
-                      }) : (
-                        <Picker.Item
-                          label="Nenhuma filial disponível"
-                          value={-1}
-                          color="#FF0000"
-                        />
-                      )
-                    }
+                      })
+                    ) : (
+                      <Picker.Item
+                        label="Nenhuma filial disponível"
+                        value={-1}
+                        color="#FF0000"
+                      />
+                    )}
                   </Picker>
                 </View>
-                
-                {/* Debug: Lista das filiais */}
-                {filiais && filiais.map((filial, index) => (
-                  <Text key={index} style={styles.inputLabel}>
-                    Filial {index + 1}: {filial.idContato?.nmDono || 'Sem nome'} (ID: {filial.idFilial})
-                  </Text>
-                ))}
               </View>
 
               {/* Password Input */}
@@ -228,9 +210,7 @@ const Cadastro = () => {
                   autoComplete="password"
                 />
                 {formErrors.senha && (
-                  <Text style={styles.fieldErrorText}>
-                    {formErrors.senha}
-                  </Text>
+                  <Text style={styles.fieldErrorText}>{formErrors.senha}</Text>
                 )}
               </View>
             </View>

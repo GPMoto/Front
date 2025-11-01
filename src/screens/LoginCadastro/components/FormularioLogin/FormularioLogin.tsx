@@ -64,11 +64,8 @@ export default function FormularioLogin() {
           <View style={styles.loginCard}>
             {/* Header */}
             <View style={styles.header}>
-              <Text style={styles.welcomeText}>{t('home.welcome')}</Text>
-              <Text style={styles.subtitleText}>
-                Entre na sua conta do{" "}
-                <Text style={styles.brandHighlight}>GPSMottu</Text>
-              </Text>
+              <Text style={styles.welcomeText}>{t("home.welcome")}</Text>
+              <Text style={styles.subtitleText}>{t("login.subtitle")}</Text>
             </View>
 
             {/* Error Message */}
@@ -88,10 +85,10 @@ export default function FormularioLogin() {
             <View style={styles.inputContainer}>
               {/* Email Input */}
               <View style={styles.inputWrapper}>
-                <Text style={styles.inputLabel}>Nome</Text>
+                <Text style={styles.inputLabel}>{t("login.emailLabel")}</Text>
                 <TextInput
                   style={styles.inputField}
-                  placeholder="Digite seu nome"
+                  placeholder={t("login.emailPlaceholder")}
                   placeholderTextColor={isDarkTheme ? "#8B8B8B" : "#666"}
                   value={formulario.email}
                   onChangeText={(text) => handleForm(text, "email")}
@@ -109,10 +106,12 @@ export default function FormularioLogin() {
 
               {/* Password Input */}
               <View style={styles.inputWrapper}>
-                <Text style={styles.inputLabel}>Senha</Text>
+                <Text style={styles.inputLabel}>
+                  {t("login.passwordLabel")}
+                </Text>
                 <TextInput
                   style={styles.inputField}
-                  placeholder="Digite sua senha"
+                  placeholder={t("login.passwordPlaceholder")}
                   placeholderTextColor={isDarkTheme ? "#8B8B8B" : "#666"}
                   value={formulario.senha}
                   onChangeText={(text) => handleForm(text, "senha")}
@@ -133,7 +132,7 @@ export default function FormularioLogin() {
             <View style={styles.buttonContainer}>
               <ButtonArea
                 size="small"
-                title="Entrar"
+                title={t("login.loginButton")}
                 action={() => {
                   loginUser();
                 }}
@@ -151,9 +150,9 @@ export default function FormularioLogin() {
           {/* Footer */}
           <View style={styles.footerContainer}>
             <Text style={styles.footerText}>
-              Não tem uma conta?{" "}
+              {t("login.noAccount")}{" "}
               <Text style={styles.footerLink} onPress={goToRegisterPage}>
-                Cadastre-se
+                {t("login.registerLink")}
               </Text>
             </Text>
           </View>

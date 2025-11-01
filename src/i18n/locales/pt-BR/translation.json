@@ -1,6 +1,16 @@
 {
-    "language" : "Idioma",
-    "home" : {
-        "welcome" : "Seja bem vindo!"
-    }
+  "language": "Idioma",
+  "home": {
+    "welcome": "Seja bem vindo!"
+  },
+  "login": {
+    "subtitle": "Entre na sua conta do GPSMottu",
+    "emailLabel": "Nome",
+    "emailPlaceholder": "Digite seu nome",
+    "passwordLabel": "Senha",
+    "passwordPlaceholder": "Digite sua senha",
+    "loginButton": "Entrar",
+    "noAccount": "Não tem uma conta?",
+    "registerLink": "Cadastre-se"
+  }
 }
