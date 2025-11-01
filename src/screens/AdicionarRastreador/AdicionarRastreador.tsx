@@ -15,11 +15,20 @@ import LoadingScreen from "@/components/shared/LoadingScreen";
 import { useTheme } from "@/context/ThemeContext";
 import { useDarkColors } from "@/styles/theme-config";
 import { createStyles } from "./styles";
+import { useTranslation } from "react-i18next";
 
 export default function AdicionarRastreador() {
-  const { openCamera, motos, motosError, motosLoading, processingImage, getQRCodeFromIdentifier } = useAdicionarRastreador();
+  const { t } = useTranslation();
+  const {
+    openCamera,
+    motos,
+    motosError,
+    motosLoading,
+    processingImage,
+    getQRCodeFromIdentifier,
+  } = useAdicionarRastreador();
   const navigation = useNavigation();
-  
+
   const { isDarkTheme } = useTheme();
   const colors = useDarkColors();
   const styles = createStyles(colors, isDarkTheme);
@@ -29,15 +38,14 @@ export default function AdicionarRastreador() {
     return (
       <LoadingScreen>
         <Text style={styles.loadingText}>
-          Processando imagem...
+          {t("addTracker.processingImage")}
         </Text>
         <Text style={styles.loadingSubtext}>
-          Extraindo texto da foto capturada
+          {t("addTracker.extractingText")}
         </Text>
       </LoadingScreen>
     );
   }
-  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -46,21 +54,19 @@ export default function AdicionarRastreador() {
         backgroundColor={colors.containerBg}
       />
       <View style={styles.header}>
-        <Text style={styles.title}>Adicionar Rastreador</Text>
-        <Text style={styles.subtitle}>
-          Tire uma foto da placa ou selecione um identificador abaixo.
-        </Text>
+        <Text style={styles.title}>{t("addTracker.title")}</Text>
+        <Text style={styles.subtitle}>{t("addTracker.subtitle")}</Text>
       </View>
 
       {motosLoading ? (
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>
-            Carregando identificadores...
+            {t("addTracker.loadingIdentifiers")}
           </Text>
         </View>
       ) : motosError ? (
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>Erro carregando dados</Text>
+          <Text style={styles.emptyText}>{t("addTracker.errorLoading")}</Text>
         </View>
       ) : (
         <FlatList
@@ -93,6 +99,4 @@ export default function AdicionarRastreador() {
       </TouchableOpacity>
     </SafeAreaView>
   );
-};
-
-
+}

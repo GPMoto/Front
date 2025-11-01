@@ -1,5 +1,6 @@
 import translationPt from "@/i18n/locales/pt-BR/translation.json";
 import translationEn from "@/i18n/locales/en/translation.json";
+import translationEs from "@/i18n/locales/es/translation.json";
 import { initReactI18next } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Localization from "expo-localization";
@@ -8,6 +9,7 @@ import i18n from "i18next";
 const resources = {
   "pt-BR": { translation: translationPt },
   en: { translation: translationEn },
+  es: { translation: translationEs },
 };
 
 const initI18n = async () => {

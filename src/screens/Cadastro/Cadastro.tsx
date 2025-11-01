@@ -17,8 +17,10 @@ import useAllFiliais from "@/control/CadastroController";
 import { useTheme } from "@/context/ThemeContext";
 import { useDarkColors } from "@/styles/theme-config";
 import { createStyles } from "./styles";
+import { useTranslation } from "react-i18next";
 
 const Cadastro = () => {
+  const { t } = useTranslation();
   const {
     data: filiais,
     error: filialError,
@@ -45,7 +47,7 @@ const Cadastro = () => {
         />
         <View style={styles.loadingContainer}>
           <ActivityIndicator size={"large"} color="#41C526" />
-          <Text style={styles.loadingText}>Criando sua conta...</Text>
+          <Text style={styles.loadingText}>{t("register.loadingText")}</Text>
         </View>
       </SafeAreaView>
     );
@@ -59,7 +61,7 @@ const Cadastro = () => {
         />
         <View style={styles.loadingContainer}>
           <Text style={styles.errorText}>
-            Ah não, deu erro:{" "}
+            {t("register.errorPrefix")}{" "}
             {filialError?.message ?? cadastroForm.error?.message}
           </Text>
         </View>
@@ -89,10 +91,12 @@ const Cadastro = () => {
         >
           <View style={styles.cadastroCard}>
             <View style={styles.header}>
-              <Text style={styles.welcomeText}>Crie sua conta!</Text>
+              <Text style={styles.welcomeText}>{t("register.title")}</Text>
               <Text style={styles.subtitleText}>
-                Cadastre-se no{" "}
-                <Text style={styles.brandHighlight}>GPSMottu</Text>
+                {t("register.subtitle")}{" "}
+                <Text style={styles.brandHighlight}>
+                  {t("register.brandName")}
+                </Text>
               </Text>
             </View>
             {cadastroForm.error ? (
@@ -113,10 +117,10 @@ const Cadastro = () => {
             <View style={styles.inputContainer}>
               {/* Nome Input */}
               <View style={styles.inputWrapper}>
-                <Text style={styles.inputLabel}>Nome</Text>
+                <Text style={styles.inputLabel}>{t("register.nameLabel")}</Text>
                 <TextInput
                   style={styles.inputField}
-                  placeholder="Digite seu nome"
+                  placeholder={t("register.namePlaceholder")}
                   placeholderTextColor={isDarkTheme ? "#8B8B8B" : "#666"}
                   value={form.nome}
                   onChangeText={(text) => handleForm(text, "nome")}
@@ -130,10 +134,12 @@ const Cadastro = () => {
               </View>
 
               <View style={styles.inputWrapper}>
-                <Text style={styles.inputLabel}>Email</Text>
+                <Text style={styles.inputLabel}>
+                  {t("register.emailLabel")}
+                </Text>
                 <TextInput
                   style={styles.inputField}
-                  placeholder="Digite seu email"
+                  placeholder={t("register.emailPlaceholder")}
                   placeholderTextColor={isDarkTheme ? "#8B8B8B" : "#666"}
                   value={form.email}
                   onChangeText={(text) => handleForm(text, "email")}
@@ -148,7 +154,9 @@ const Cadastro = () => {
 
               {/* Filial Picker */}
               <View style={styles.pickerWrapper}>
-                <Text style={styles.inputLabel}>Filial</Text>
+                <Text style={styles.inputLabel}>
+                  {t("register.filialLabel")}
+                </Text>
 
                 <View style={styles.pickerContainer}>
                   <Picker
@@ -167,7 +175,7 @@ const Cadastro = () => {
                     dropdownIconColor={isDarkTheme ? "#8B8B8B" : "#666"}
                   >
                     <Picker.Item
-                      label="Selecione uma filial"
+                      label={t("register.filialPlaceholder")}
                       value={0}
                       color={isDarkTheme ? "#8B8B8B" : "#666"}
                     />
@@ -188,7 +196,7 @@ const Cadastro = () => {
                       })
                     ) : (
                       <Picker.Item
-                        label="Nenhuma filial disponível"
+                        label={t("register.filialNone")}
                         value={-1}
                         color="#FF0000"
                       />
@@ -199,10 +207,12 @@ const Cadastro = () => {
 
               {/* Password Input */}
               <View style={styles.inputWrapper}>
-                <Text style={styles.inputLabel}>Senha</Text>
+                <Text style={styles.inputLabel}>
+                  {t("register.passwordLabel")}
+                </Text>
                 <TextInput
                   style={styles.inputField}
-                  placeholder="Digite sua senha"
+                  placeholder={t("register.passwordPlaceholder")}
                   placeholderTextColor={isDarkTheme ? "#8B8B8B" : "#666"}
                   value={form.senha}
                   onChangeText={(text) => handleForm(text, "senha")}
@@ -217,7 +227,11 @@ const Cadastro = () => {
 
             {/* Register Button */}
             <View style={styles.buttonContainer}>
-              <ButtonArea size="small" title="Registrar" action={salvar} />
+              <ButtonArea
+                size="small"
+                title={t("register.registerButton")}
+                action={salvar}
+              />
             </View>
           </View>
         </ScrollView>

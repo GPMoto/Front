@@ -12,8 +12,10 @@ import { useDarkColors } from "@/styles/theme-config";
 import { createStyles } from "./styles";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
 import { useCallback, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Inicio() {
+  const { t } = useTranslation();
   const { appTitle, subtitle, goToMapa, goToProcurar, sections, motorcycles } =
     useInicio();
   const { isDarkTheme } = useTheme();
@@ -37,8 +39,8 @@ export default function Inicio() {
       >
         <View style={styles.hero}>
           <View style={styles.heroLeft}>
-            <Text style={styles.subtitle}>{subtitle}</Text>
-            <Text style={styles.title}>{appTitle}</Text>
+            <Text style={styles.subtitle}>{t("home.subtitle")}</Text>
+            <Text style={styles.title}>{t("home.title")}</Text>
           </View>
           <View style={styles.heroRight}>
             <Icon name="motorcycle" size={40} color="#41C526" />
@@ -48,23 +50,23 @@ export default function Inicio() {
         <View style={styles.actionsRow}>
           <TouchableOpacity style={styles.actionCard} onPress={goToMapa}>
             <Icon name="map" size={28} color={colors.iconColor} />
-            <Text style={styles.actionText}>Mapa</Text>
+            <Text style={styles.actionText}>{t("home.mapButton")}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.actionCard} onPress={goToProcurar}>
             <Icon name="search" size={28} color={colors.iconColor} />
-            <Text style={styles.actionText}>Procurar Moto</Text>
+            <Text style={styles.actionText}>{t("home.searchButton")}</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.infoRow}>
           <View style={styles.infoCard}>
-            <Text style={styles.infoLabel}>Seções</Text>
+            <Text style={styles.infoLabel}>{t("home.sectionsLabel")}</Text>
             <Text style={styles.infoValue}>{sections}</Text>
           </View>
 
           <View style={styles.infoCard}>
-            <Text style={styles.infoLabel}>Motos</Text>
+            <Text style={styles.infoLabel}>{t("home.motosLabel")}</Text>
             <Text style={styles.infoValue}>{motorcycles}</Text>
           </View>
         </View>

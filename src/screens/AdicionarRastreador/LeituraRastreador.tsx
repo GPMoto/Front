@@ -1,13 +1,21 @@
 import React from "react";
-import { Text, View, TouchableOpacity, StatusBar, SafeAreaView } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StatusBar,
+  SafeAreaView,
+} from "react-native";
 import { Camera, CameraView } from "expo-camera";
 import { FontAwesome } from "@expo/vector-icons";
 import { useLeitorQrCode } from "@/control/LeitorQrCodeController";
 import { useTheme } from "@/context/ThemeContext";
 import { useDarkColors } from "@/styles/theme-config";
 import { createStyles } from "./styles-leitura";
+import { useTranslation } from "react-i18next";
 
 export default function TesteLeituraRastreador() {
+  const { t } = useTranslation();
   const {
     hasPermission,
     scanned,
@@ -17,7 +25,7 @@ export default function TesteLeituraRastreador() {
     resetScanner,
     onCameraReady,
   } = useLeitorQrCode();
-  
+
   const { isDarkTheme } = useTheme();
   const colors = useDarkColors();
   const styles = createStyles(colors, isDarkTheme);
@@ -30,13 +38,20 @@ export default function TesteLeituraRastreador() {
           backgroundColor={colors.containerBg}
         />
         <View style={styles.messageContainer}>
-          <FontAwesome name="camera" size={60} color="#41C526" style={styles.icon} />
-          <Text style={styles.messageText}>Solicitando permissão da câmera...</Text>
+          <FontAwesome
+            name="camera"
+            size={60}
+            color="#41C526"
+            style={styles.icon}
+          />
+          <Text style={styles.messageText}>
+            {t("addTracker.requestingPermission")}
+          </Text>
         </View>
       </SafeAreaView>
     );
   }
-  
+
   if (hasPermission === false) {
     return (
       <SafeAreaView style={styles.container}>
@@ -45,9 +60,14 @@ export default function TesteLeituraRastreador() {
           backgroundColor={colors.containerBg}
         />
         <View style={styles.messageContainer}>
-          <FontAwesome name="exclamation-triangle" size={60} color="#FF6B6B" style={styles.icon} />
-          <Text style={styles.messageText}>Sem acesso à câmera</Text>
-          <Text style={styles.subText}>Permita o acesso à câmera nas configurações</Text>
+          <FontAwesome
+            name="exclamation-triangle"
+            size={60}
+            color="#FF6B6B"
+            style={styles.icon}
+          />
+          <Text style={styles.messageText}>{t("addTracker.noAccess")}</Text>
+          <Text style={styles.subText}>{t("addTracker.allowAccess")}</Text>
         </View>
       </SafeAreaView>
     );
@@ -55,11 +75,8 @@ export default function TesteLeituraRastreador() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor="#000000"
-      />
-      
+      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+
       <View style={styles.scannerContainer}>
         <CameraView
           style={styles.scanner}
@@ -70,7 +87,7 @@ export default function TesteLeituraRastreador() {
             barcodeTypes: ["qr", "pdf417"],
           }}
         />
-        
+
         {/* Scanner overlay with corner markers */}
         <View style={styles.overlay}>
           <View style={styles.scanArea}>
@@ -79,9 +96,9 @@ export default function TesteLeituraRastreador() {
             <View style={[styles.corner, styles.bottomLeft]} />
             <View style={[styles.corner, styles.bottomRight]} />
           </View>
-          
+
           <Text style={styles.instructionText}>
-            Posicione o QR Code dentro da área marcada
+            {t("addTracker.positionQR")}
           </Text>
         </View>
       </View>
@@ -89,19 +106,34 @@ export default function TesteLeituraRastreador() {
       {data && (
         <View style={styles.resultContainer}>
           <View style={styles.resultCard}>
-            <FontAwesome name="check-circle" size={32} color="#41C526" style={styles.resultIcon} />
-            <Text style={styles.resultLabel}>QR Code</Text>
+            <FontAwesome
+              name="check-circle"
+              size={32}
+              color="#41C526"
+              style={styles.resultIcon}
+            />
+            <Text style={styles.resultLabel}>
+              {t("addTracker.qrCodeLabel")}
+            </Text>
             <Text style={styles.resultValue}>{data}</Text>
           </View>
-          
-          <TouchableOpacity style={styles.scanAgainButton} onPress={resetScanner}>
-            <FontAwesome name="camera" size={18} color="#FFFFFF" style={styles.buttonIcon} />
-            <Text style={styles.scanAgainText}>Escanear Novamente</Text>
+
+          <TouchableOpacity
+            style={styles.scanAgainButton}
+            onPress={resetScanner}
+          >
+            <FontAwesome
+              name="camera"
+              size={18}
+              color="#FFFFFF"
+              style={styles.buttonIcon}
+            />
+            <Text style={styles.scanAgainText}>
+              {t("addTracker.scanAgain")}
+            </Text>
           </TouchableOpacity>
         </View>
       )}
     </SafeAreaView>
   );
-};
-
-
+}
