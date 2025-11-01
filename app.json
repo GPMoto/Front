@@ -21,11 +21,14 @@
           "recordAudioAndroid": true
         }
       ],
-      "expo-barcode-scanner",
-      "expo-localization"
+      ["expo-localization"],
+      ["expo-notifications"],
+      ["expo-font"],
+      ["expo-dev-client"]
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gpmottu.app"
     },
     "android": {
       "package": "com.gpmottu.app",
