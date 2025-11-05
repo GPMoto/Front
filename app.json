@@ -33,7 +33,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.gpmottu.app"
+      "bundleIdentifier": "com.gpmottu.app",
+      "googleServicesFile": "./google-services-android.json"
     },
     "android": {
       "package": "com.gpmottu.app",

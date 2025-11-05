@@ -29,7 +29,11 @@ async function registerForPushNotificationsAsync() {
     });
   }
 
-  if (Device.isDevice) {
+  if (!Device.isDevice) {
+    console.log("Tem que ser um dispositivo físico para receber notificações push");
+    return null;
+  }
+
     const { status: existingStatus } =
       await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
@@ -47,17 +51,13 @@ async function registerForPushNotificationsAsync() {
     console.log('projectId peido 2.0:', Constants.expoConfig?.extra?.eas?.projectId);
 
     try{
-      token = await Notifications.getExpoPushTokenAsync({
-        projectId: Constants.expoConfig?.extra?.eas?.projectId,
-      });
+      token = await Notifications.getDevicePushTokenAsync();
     } catch (error) {
       console.log("error on getExpoPushTokenAsync", error);
     }
 
     console.log("Expo Push Token:", token);
-  } else {
-    console.log("Must use physical device for Push Notifications");
-  }
+
 
   return token?.data;
 }
@@ -87,15 +87,34 @@ export const usePushNotifications = (
         }
       }
 
+      // Listener para quando a notificação chega (app em foreground)
       notificationListener.current =
-        Notifications.addNotificationReceivedListener((notification) => {
+        Notifications.addNotificationReceivedListener(async (notification) => {
+          console.log("Notification received in foreground:", notification);
+
+          // Chamar callback customizado
           onPushNotificationReceived(notification);
+
+          // Mostrar a notificação local mesmo estando no app (foreground)
+          await Notifications.scheduleNotificationAsync({
+            content: {
+              title: notification.request.content.title || "Nova notificação",
+              body: notification.request.content.body || "",
+              data: notification.request.content.data || {},
+              sound: true,
+            },
+            trigger: null, // Exibir imediatamente
+          });
         });
 
+      // Listener para quando o usuário clica na notificação
       responseListener.current =
         Notifications.addNotificationResponseReceivedListener(
           (response: Notifications.NotificationResponse) => {
-            console.log("Notification response received:", response);
+            console.log("Notification clicked:", response);
+            // Aqui você pode navegar para uma tela específica baseado nos dados
+            const data = response.notification.request.content.data;
+            console.log("Notification data:", data);
           },
         );
     };
