@@ -23,6 +23,7 @@
     "@react-navigation/native": "^7.1.8",
     "@react-navigation/native-stack": "^7.3.12",
     "@tanstack/react-query": "^5.85.8",
+<<<<<<< HEAD
     "@types/socket.io": "^3.0.1",
     "axios": "^1.9.0",
     "expo": "~53.0.23",
@@ -53,6 +54,27 @@
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "yup": "^1.7.0"
+=======
+    "axios": "^1.9.0",
+    "expo": "53.0.22",
+    "expo-barcode-scanner": "^13.0.1",
+    "expo-camera": "~16.1.6",
+    "expo-dev-client": "~5.2.4",
+    "expo-image-picker": "~16.1.4",
+    "expo-status-bar": "~2.2.3",
+    "lottie-react-native": "7.2.2",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-native": "0.79.5",
+    "react-native-gesture-handler": "2.24.0",
+    "react-native-qrcode-svg": "^6.3.15",
+    "react-native-reanimated": "3.17.4",
+    "react-native-text-recognition": "^1.0.2",
+    "react-native-web": "^0.20.0",
+    "yup": "^1.7.0",
+    "expo-print": "~14.1.4",
+    "expo-sharing": "~13.1.5"
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
