@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+import {
+  FlatList,
+  Text,
+  View,
+  Dimensions,
+  SafeAreaView,
+  StatusBar,
+=======
 import { 
   FlatList, 
   Text, 
@@ -5,6 +14,7 @@ import {
   Dimensions, 
   SafeAreaView, 
   StatusBar 
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
 } from "react-native";
 import useFilial from "@/control/FilialController";
 import LoadingScreen from "@/components/shared/LoadingScreen";
@@ -15,11 +25,21 @@ import { AppDrawerNavigationProps } from "@/navigators/NavigationTypes";
 import { useTheme } from "@/context/ThemeContext";
 import { useDarkColors } from "@/styles/theme-config";
 import { createStyles } from "./styles";
+<<<<<<< HEAD
+import { useTranslation } from "react-i18next";
+
+const { width: windowWidth } = Dimensions.get("window");
+const ITEM_WIDTH = Math.round(windowWidth);
+
+export default function Mapa() {
+  const { t } = useTranslation();
+=======
 
 const { width: windowWidth } = Dimensions.get('window');
 const ITEM_WIDTH = Math.round(windowWidth);
 
 export default function Mapa() {
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
   const { secoes, error, loading } = useFilial();
   const { height } = Dimensions.get("window");
   const navigation = useNavigation<AppDrawerNavigationProps>();
@@ -39,9 +59,15 @@ export default function Mapa() {
           backgroundColor={colors.containerBg}
         />
         <Icon name="exclamation-triangle" size={48} color="#FF6B6B" />
+<<<<<<< HEAD
+        <Text style={styles.errorTitle}>{t("map.errorTitle")}</Text>
+        <Text style={styles.errorMessage}>
+          {t("map.errorMessage")} {error.message}
+=======
         <Text style={styles.errorTitle}>Ops! Algo deu errado</Text>
         <Text style={styles.errorMessage}>
           Erro ao carregar seções da filial: {error.message}
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
         </Text>
       </SafeAreaView>
     );
@@ -50,7 +76,11 @@ export default function Mapa() {
   if (loading) {
     return (
       <LoadingScreen>
+<<<<<<< HEAD
+        <Text style={styles.loadingText}>{t("map.loading")}</Text>
+=======
         <Text style={styles.loadingText}>Carregando mapa da filial...</Text>
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
       </LoadingScreen>
     );
   }
@@ -63,9 +93,15 @@ export default function Mapa() {
       />
       <View style={styles.header}>
         <Icon name="map" size={24} color="#007AFF" />
+<<<<<<< HEAD
+        <Text style={styles.headerTitle}>{t("map.title")}</Text>
+        <Text style={styles.headerSubtitle}>
+          {secoes?.length || 0} {t("map.sectionsFound")}
+=======
         <Text style={styles.headerTitle}>Mapa da Filial</Text>
         <Text style={styles.headerSubtitle}>
           {secoes?.length || 0} seções encontradas
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
         </Text>
       </View>
 
@@ -73,23 +109,78 @@ export default function Mapa() {
         data={secoes!}
         horizontal
         showsHorizontalScrollIndicator={false}
+<<<<<<< HEAD
+        decelerationRate={"fast"}
+        snapToInterval={ITEM_WIDTH} // full width items
+        snapToAlignment={"center"}
+        contentContainerStyle={styles.listContainer}
+        renderItem={({ item }) => (
+          <View
+            style={[
+              styles.sectionCard,
+              { height: Math.max(300, height * 0.6), width: ITEM_WIDTH },
+            ]}
+          >
+=======
         decelerationRate={'fast'}
         snapToInterval={ITEM_WIDTH} // full width items
         snapToAlignment={'center'}
         contentContainerStyle={styles.listContainer}
         renderItem={({ item }) => (
           <View style={[styles.sectionCard, {height: Math.max(300, height * 0.6), width: ITEM_WIDTH}]}>
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
             <View style={styles.cardHeader}>
               <View style={styles.sectionIconContainer}>
                 <Icon name="cube" size={20} color="#FFF" />
               </View>
               <View style={styles.cardHeaderText}>
+<<<<<<< HEAD
+                <Text style={styles.sectionName}>
+                  {item.idTipoSecao.nmSecao}
+                </Text>
+                <Text style={styles.sectionId}>
+                  {t("map.sectionId")}
+                  {item.idSecao}
+                </Text>
+=======
                 <Text style={styles.sectionName}>{item.idTipoSecao.nmSecao}</Text>
                 <Text style={styles.sectionId}>Seção #{item.idSecao}</Text>
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
               </View>
             </View>
 
             <View style={styles.measurementsContainer}>
+<<<<<<< HEAD
+              <Text style={styles.measurementsTitle}>
+                {t("map.dimensionsTitle")}
+              </Text>
+              <View style={styles.measurementsGrid}>
+                <View style={styles.measurementItem}>
+                  <Text style={styles.measurementLabel}>{t("map.side1")}</Text>
+                  <Text style={styles.measurementValue}>{item.lado1}m</Text>
+                </View>
+                <View style={styles.measurementItem}>
+                  <Text style={styles.measurementLabel}>{t("map.side2")}</Text>
+                  <Text style={styles.measurementValue}>{item.lado2}m</Text>
+                </View>
+                <View style={styles.measurementItem}>
+                  <Text style={styles.measurementLabel}>{t("map.side3")}</Text>
+                  <Text style={styles.measurementValue}>{item.lado3}m</Text>
+                </View>
+                <View style={styles.measurementItem}>
+                  <Text style={styles.measurementLabel}>{t("map.side4")}</Text>
+                  <Text style={styles.measurementValue}>{item.lado4}m</Text>
+                </View>
+              </View>
+              <ButtonArea
+                size="medium"
+                title={t("map.viewMotos")}
+                additionalStyles={{
+                  marginTop: 12,
+                }}
+                action={() => handleVerMotos(item.idSecao)}
+              />
+=======
               <Text style={styles.measurementsTitle}>Dimensões (metros)</Text>
               <View style={styles.measurementsGrid}>
                 <View style={styles.measurementItem}>
@@ -112,6 +203,7 @@ export default function Mapa() {
               <ButtonArea size="medium" title="Ver as motos" additionalStyles={{
                 marginTop: 12,
               }} action={() => handleVerMotos(item.idSecao)} />
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
             </View>
           </View>
         )}

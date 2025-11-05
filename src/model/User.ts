@@ -17,11 +17,23 @@ interface UserLogin {
   senha: string;
 }
 
+<<<<<<< HEAD
+interface LanguagePreferenceResponse {
+  message: string;
+}
+
+// String nome,
+//       String email,
+//       String senha,
+//       Long idFilial,
+//       Long idPerfil
+=======
   // String nome,
   //       String email,
   //       String senha,
   //       Long idFilial,
   //       Long idPerfil
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
 
 interface CreateUser {
   nome: string;
@@ -88,4 +100,8 @@ export {
   ProfileData,
   CreateUser,
   createUserSchema,
+<<<<<<< HEAD
+  LanguagePreferenceResponse,
+=======
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
 };

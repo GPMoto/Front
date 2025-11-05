@@ -7,10 +7,11 @@ import { ActivityIndicator } from "react-native";
 import { useTheme } from "@/context/ThemeContext";
 import { useDarkColors } from "@/styles/theme-config";
 import { createStyles } from "./styles";
+import { useTranslation } from "react-i18next";
 
 interface SingleMotoPagedProps extends Moto {
   verMais: (moto: Moto) => void;
-  handleDelete : (idMoto : number) => void
+  handleDelete: (idMoto: number) => void;
   deletingId?: number | null;
 }
 
@@ -20,6 +21,7 @@ export default function SingleMotoPaged({
   deletingId,
   ...item
 }: SingleMotoPagedProps) {
+  const { t } = useTranslation();
   const { isDarkTheme } = useTheme();
   const colors = useDarkColors();
   const styles = createStyles(colors, isDarkTheme);
@@ -29,22 +31,30 @@ export default function SingleMotoPaged({
       <View style={styles.header}>
         <Text style={styles.tipoText}>{item.idTipoMoto.nmTipo}</Text>
         <Text style={styles.separatorText}> - </Text>
-        <Text style={styles.identificadorText}>#{formatIdentificador(item.identificador)}</Text>
+        <Text style={styles.identificadorText}>
+          #{formatIdentificador(item.identificador)}
+        </Text>
         {deletingId && deletingId === item.idMoto ? (
           <ActivityIndicator style={styles.deleteIcon} color="#ff5252" />
         ) : (
-          <Icon style={styles.deleteIcon} name="trash-o" color={"red"} size={18} onPress={() => handleDelete(item.idMoto!)} />
+          <Icon
+            style={styles.deleteIcon}
+            name="trash-o"
+            color={"red"}
+            size={18}
+            onPress={() => handleDelete(item.idMoto!)}
+          />
         )}
       </View>
 
       <View style={styles.secondaryInfo}>
         <View style={styles.infoChip}>
-          <Text style={styles.chipLabel}>Status</Text>
+          <Text style={styles.chipLabel}>{t("searchMoto.status")}</Text>
           <Text style={styles.chipValue}>{item.status}</Text>
         </View>
-        
+
         <View style={styles.infoChip}>
-          <Text style={styles.chipLabel}>Manutenção</Text>
+          <Text style={styles.chipLabel}>{t("searchMoto.maintenance")}</Text>
           <Text style={styles.chipValue}>{item.condicoesManutencao}</Text>
         </View>
       </View>
@@ -52,7 +62,7 @@ export default function SingleMotoPaged({
       <View style={styles.actionContainer}>
         <ButtonArea
           size="small"
-          title="Ver detalhes"
+          title={t("searchMoto.viewDetails")}
           action={() => verMais(item)}
         />
       </View>

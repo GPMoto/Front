@@ -15,11 +15,28 @@ import LoadingScreen from "@/components/shared/LoadingScreen";
 import { useTheme } from "@/context/ThemeContext";
 import { useDarkColors } from "@/styles/theme-config";
 import { createStyles } from "./styles";
+<<<<<<< HEAD
+import { useTranslation } from "react-i18next";
+
+export default function AdicionarRastreador() {
+  const { t } = useTranslation();
+  const {
+    openCamera,
+    motos,
+    motosError,
+    motosLoading,
+    processingImage,
+    getQRCodeFromIdentifier,
+  } = useAdicionarRastreador();
+  const navigation = useNavigation();
+
+=======
 
 export default function AdicionarRastreador() {
   const { openCamera, motos, motosError, motosLoading, processingImage, getQRCodeFromIdentifier } = useAdicionarRastreador();
   const navigation = useNavigation();
   
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
   const { isDarkTheme } = useTheme();
   const colors = useDarkColors();
   const styles = createStyles(colors, isDarkTheme);
@@ -29,15 +46,25 @@ export default function AdicionarRastreador() {
     return (
       <LoadingScreen>
         <Text style={styles.loadingText}>
+<<<<<<< HEAD
+          {t("addTracker.processingImage")}
+        </Text>
+        <Text style={styles.loadingSubtext}>
+          {t("addTracker.extractingText")}
+=======
           Processando imagem...
         </Text>
         <Text style={styles.loadingSubtext}>
           Extraindo texto da foto capturada
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
         </Text>
       </LoadingScreen>
     );
   }
+<<<<<<< HEAD
+=======
   
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
 
   return (
     <SafeAreaView style={styles.container}>
@@ -46,21 +73,34 @@ export default function AdicionarRastreador() {
         backgroundColor={colors.containerBg}
       />
       <View style={styles.header}>
+<<<<<<< HEAD
+        <Text style={styles.title}>{t("addTracker.title")}</Text>
+        <Text style={styles.subtitle}>{t("addTracker.subtitle")}</Text>
+=======
         <Text style={styles.title}>Adicionar Rastreador</Text>
         <Text style={styles.subtitle}>
           Tire uma foto da placa ou selecione um identificador abaixo.
         </Text>
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
       </View>
 
       {motosLoading ? (
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>
+<<<<<<< HEAD
+            {t("addTracker.loadingIdentifiers")}
+=======
             Carregando identificadores...
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
           </Text>
         </View>
       ) : motosError ? (
         <View style={styles.emptyContainer}>
+<<<<<<< HEAD
+          <Text style={styles.emptyText}>{t("addTracker.errorLoading")}</Text>
+=======
           <Text style={styles.emptyText}>Erro carregando dados</Text>
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
         </View>
       ) : (
         <FlatList
@@ -93,6 +133,10 @@ export default function AdicionarRastreador() {
       </TouchableOpacity>
     </SafeAreaView>
   );
+<<<<<<< HEAD
+}
+=======
 };
 
 
+>>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4

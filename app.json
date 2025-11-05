@@ -21,10 +21,20 @@
           "recordAudioAndroid": true
         }
       ],
-      "expo-barcode-scanner"
+      ["expo-localization"],
+      ["expo-notifications"],
+      ["@react-native-firebase/app", {
+        "android" : {
+          "googleServicesFile" : "./google-services-android.json"
+        }
+      }],
+      ["expo-font"],
+      ["expo-dev-client"]
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gpmottu.app",
+      "googleServicesFile": "./google-services-android.json"
     },
     "android": {
       "package": "com.gpmottu.app",
@@ -35,8 +45,11 @@
       "edgeToEdgeEnabled": true,
       "permissions": [
         "android.permission.CAMERA",
-        "android.permission.RECORD_AUDIO"
-      ]
+        "android.permission.RECORD_AUDIO",
+        "android.permission.POST_NOTIFICATIONS"
+      ],
+      "googleServicesFile" : "./google-services-android.json",
+      "useNextNotificationsApi": true
     },
     "web": {
       "favicon": "./assets/favicon.png"

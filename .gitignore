@@ -39,3 +39,9 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+/android
+/ios
+
+google-services-android.json
+gpsmottu-firebase*.json
