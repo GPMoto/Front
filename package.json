@@ -23,7 +23,6 @@
     "@react-navigation/native": "^7.1.8",
     "@react-navigation/native-stack": "^7.3.12",
     "@tanstack/react-query": "^5.85.8",
-<<<<<<< HEAD
     "@types/socket.io": "^3.0.1",
     "axios": "^1.9.0",
     "expo": "~53.0.23",
@@ -54,7 +53,6 @@
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "yup": "^1.7.0"
-=======
     "axios": "^1.9.0",
     "expo": "53.0.22",
     "expo-barcode-scanner": "^13.0.1",
@@ -74,7 +72,6 @@
     "yup": "^1.7.0",
     "expo-print": "~14.1.4",
     "expo-sharing": "~13.1.5"
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
