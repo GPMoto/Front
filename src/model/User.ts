@@ -17,11 +17,15 @@ interface UserLogin {
   senha: string;
 }
 
-  // String nome,
-  //       String email,
-  //       String senha,
-  //       Long idFilial,
-  //       Long idPerfil
+interface LanguagePreferenceResponse {
+  message: string;
+}
+
+// String nome,
+//       String email,
+//       String senha,
+//       Long idFilial,
+//       Long idPerfil
 
 interface CreateUser {
   nome: string;
@@ -88,4 +92,5 @@ export {
   ProfileData,
   CreateUser,
   createUserSchema,
+  LanguagePreferenceResponse,
 };

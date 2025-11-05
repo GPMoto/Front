@@ -1,7 +1,13 @@
 {
   "language": "Language",
   "home": {
-    "welcome": "Welcome!"
+    "subtitle": "Welcome to",
+    "title": "GPSMottu",
+    "welcome": "Welcome!",
+    "mapButton": "Map",
+    "searchButton": "Search Motorcycle",
+    "sectionsLabel": "Sections",
+    "motosLabel": "Motorcycles"
   },
   "login": {
     "subtitle": "Log in to your GPSMottu account",
@@ -120,13 +126,5 @@
     "moto": "Motorcycle",
     "qrcode": "QRCode",
     "scanner": "Scanner"
-  },
-  "home": {
-    "subtitle": "Welcome to",
-    "title": "GPSMottu",
-    "mapButton": "Map",
-    "searchButton": "Search Motorcycle",
-    "sectionsLabel": "Sections",
-    "motosLabel": "Motorcycles"
   }
 }

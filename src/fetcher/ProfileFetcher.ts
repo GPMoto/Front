@@ -1,15 +1,10 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import profileMockApi from "../mock/fetcher/ProfileFetcherMock";
-import { UserData } from "@/model/User";
+import { LanguagePreferenceResponse, UserData } from "@/model/User";
 import { Perfil } from "@/model/Perfil";
 import { setupAxiosDebug } from "@/utils/axiosDebug";
 import { attachUnauthorizedInterceptor } from "@/services/NetworkInterceptor";
-
-interface PushNotificationDto {
-  id: number;
-  userId: number;
-  token: string;
-}
+import { PushNotificationDto } from "@/model/dto/PushNotificationDTO";
 
 class ProfileFetcher {
   private apiClient: AxiosInstance;
@@ -72,6 +67,15 @@ class ProfileFetcher {
     const response: AxiosResponse<PushNotificationDto> =
       await this.apiClient.post(this.endpoint, { token: pushToken });
 
+    return response.data;
+  }
+
+  async saveLanguagePreference(
+    lang: string,
+  ): Promise<LanguagePreferenceResponse> {
+    this.endpoint = "usuario/language";
+    const response: AxiosResponse<LanguagePreferenceResponse> =
+      await this.apiClient.post(this.endpoint, { language: lang });
     return response.data;
   }
 }

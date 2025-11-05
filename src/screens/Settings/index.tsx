@@ -20,11 +20,12 @@ import { useDarkColors } from "@/styles/theme-config";
 import { createStyles } from "./styles";
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ProfileService from "@/services/ProfileService";
 
 interface SettingsProps extends ParamListBase {}
 
 const Settings = (props: SettingsProps) => {
-  const { logout } = useAuth();
+  const { logout, token: authToken } = useAuth();
   const { isLoading, isError, error, profile, refetch, formatCNPJ } =
     useProfile();
   const { toggleTheme, isDarkTheme } = useTheme();
@@ -36,6 +37,10 @@ const Settings = (props: SettingsProps) => {
   const changeLanguage = async (lang: string) => {
     await i18n.changeLanguage(lang);
     await AsyncStorage.setItem("language", lang);
+
+    await new ProfileService(authToken).saveLanguagePreference(
+      translateToExpectedSpringEnums(lang),
+    );
     setCurrentLanguage(lang);
   };
 
@@ -44,6 +49,21 @@ const Settings = (props: SettingsProps) => {
     { code: "en", name: "English", flag: "🇺🇸" },
     { code: "es", name: "Español", flag: "🇪🇸" },
   ];
+
+  const translateToExpectedSpringEnums = (lang: string) => {
+    lang = lang.toUpperCase();
+
+    switch (lang) {
+      case "PT-BR":
+        return "PTBR";
+      case "EN":
+        return lang;
+      case "ES":
+        return lang;
+      default:
+        return "PTBR";
+    }
+  };
 
   if (isLoading) {
     return (

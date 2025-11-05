@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "613771728223",
+    "project_id": "gpsmottu",
+    "storage_bucket": "gpsmottu.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613771728223:android:8ac119d5c90ddd1b6852ea",
+        "android_client_info": {
+          "package_name": "com.gpmottu.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByFQ-9C8-3KjvwjN-dGrq2Sy4Ki_AuobY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -23,6 +23,11 @@
       ],
       ["expo-localization"],
       ["expo-notifications"],
+      ["@react-native-firebase/app", {
+        "android" : {
+          "googleServicesFile" : "./google-services-android.json"
+        }
+      }],
       ["expo-font"],
       ["expo-dev-client"]
     ],
@@ -39,8 +44,11 @@
       "edgeToEdgeEnabled": true,
       "permissions": [
         "android.permission.CAMERA",
-        "android.permission.RECORD_AUDIO"
-      ]
+        "android.permission.RECORD_AUDIO",
+        "android.permission.POST_NOTIFICATIONS"
+      ],
+      "googleServicesFile" : "./google-services-android.json",
+      "useNextNotificationsApi": true
     },
     "web": {
       "favicon": "./assets/favicon.png"

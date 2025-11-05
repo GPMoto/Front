@@ -10,23 +10,19 @@ import { FontAwesome as Icon } from "@expo/vector-icons";
 import { useTheme } from "@/context/ThemeContext";
 import { useDarkColors } from "@/styles/theme-config";
 import { createStyles } from "./styles";
-import { usePushNotifications } from "@/hooks/usePushNotifications";
-import { useCallback, useEffect } from "react";
+
 import { useTranslation } from "react-i18next";
+import { usePushNotifications } from "@/hooks/usePushNotifications";
 
 export default function Inicio() {
+  usePushNotifications(() => console.log("Notification received"));
+
   const { t } = useTranslation();
-  const { appTitle, subtitle, goToMapa, goToProcurar, sections, motorcycles } =
+  const { goToMapa, goToProcurar, sections, motorcycles } =
     useInicio();
   const { isDarkTheme } = useTheme();
   const colors = useDarkColors();
   const styles = createStyles(colors, isDarkTheme);
-
-  const handleNotification = useCallback(() => {
-    console.log("Notification received");
-  }, []);
-
-  usePushNotifications(handleNotification);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.containerBg }}>
