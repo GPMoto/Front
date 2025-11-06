@@ -1,17 +1,10 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import profileMockApi from "../mock/fetcher/ProfileFetcherMock";
-<<<<<<< HEAD
 import { LanguagePreferenceResponse, UserData } from "@/model/User";
 import { Perfil } from "@/model/Perfil";
 import { setupAxiosDebug } from "@/utils/axiosDebug";
 import { attachUnauthorizedInterceptor } from "@/services/NetworkInterceptor";
 import { PushNotificationDto } from "@/model/dto/PushNotificationDTO";
-=======
-import { UserData } from "@/model/User";
-import { Perfil } from "@/model/Perfil";
-import { setupAxiosDebug } from "@/utils/axiosDebug";
-import { attachUnauthorizedInterceptor } from "@/services/NetworkInterceptor";
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
 
 class ProfileFetcher {
   private apiClient: AxiosInstance;
@@ -38,7 +31,6 @@ class ProfileFetcher {
   }
 
   private interceptors() {
-<<<<<<< HEAD
     this.apiClient.interceptors.request.use((config) => {
       if (this.token && !config.headers["X-Skip-Auth"]) {
         config.headers.Authorization = `Bearer ${this.token}`;
@@ -54,24 +46,6 @@ class ProfileFetcher {
     this.endpoint = "usuario/me";
     const response: AxiosResponse<UserData> = await this.apiClient.get(
       this.endpoint,
-=======
-  this.apiClient.interceptors.request.use((config) => {
-    
-    if (this.token && !config.headers["X-Skip-Auth"]) {
-      config.headers.Authorization = `Bearer ${this.token}`;
-    }
-    
-    delete config.headers["X-Skip-Auth"];
-    return config;
-  });
-}
-
-  async get(): Promise<UserData> {
-    console.log("token: \n\n\n", this.token);
-    this.endpoint = "usuario/me"
-    const response: AxiosResponse<UserData> = await this.apiClient.get(
-      this.endpoint
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
     );
     return response.data;
   }
@@ -82,16 +56,11 @@ class ProfileFetcher {
       this.endpoint,
       {
         headers: { "X-Skip-Auth": "true" },
-<<<<<<< HEAD
       },
-=======
-      }
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
     );
 
     return response.data;
   }
-<<<<<<< HEAD
 
   async savePushToken(pushToken: string): Promise<PushNotificationDto> {
     this.endpoint = "usuario/token";
@@ -109,8 +78,6 @@ class ProfileFetcher {
       await this.apiClient.post(this.endpoint, { language: lang });
     return response.data;
   }
-=======
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
 }
 
 export default ProfileFetcher;

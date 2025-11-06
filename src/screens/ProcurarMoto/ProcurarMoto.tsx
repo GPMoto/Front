@@ -22,15 +22,11 @@ import {
 import FloatingButton from "@/components/FloatingButton/FloatingButton";
 import { useTheme } from "@/context/ThemeContext";
 import { useDarkColors } from "@/styles/theme-config";
-<<<<<<< HEAD
 import { useTranslation } from "react-i18next";
 
 export default function ProcurarMoto() {
   const { t } = useTranslation();
-=======
 
-export default function ProcurarMoto() {
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
   const route = useRoute<RouteProp<DrawerParamList, "Procurar Moto">>();
   const params = route.params;
   const { isDarkTheme } = useTheme();
@@ -48,11 +44,7 @@ export default function ProcurarMoto() {
     reloadPage,
     handleDelete,
     deletingId,
-<<<<<<< HEAD
     goToCreateMoto,
-=======
-    goToCreateMoto
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
   } = useMoto({ size: 10, idSecaoFilial: params?.idSecaoFilial });
 
   if (pagedMotos.isLoading) {
@@ -75,11 +67,7 @@ export default function ProcurarMoto() {
           backgroundColor={colors.containerBg}
         />
         <Text style={styles.errorText}>
-<<<<<<< HEAD
           {t("searchMoto.loadingError")} {pagedMotos.error.message}
-=======
-          Erro ao carregar motos: {pagedMotos.error.message}
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
         </Text>
       </SafeAreaView>
     );
@@ -94,11 +82,7 @@ export default function ProcurarMoto() {
       <View style={styles.inputContainer}>
         <View style={styles.inputWrapper}>
           <TextInput
-<<<<<<< HEAD
             placeholder={t("searchMoto.searchPlaceholder")}
-=======
-            placeholder="Digite a placa da moto..."
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
             placeholderTextColor="#999"
             style={styles.textInput}
             onChangeText={setBusca}
@@ -146,23 +130,15 @@ export default function ProcurarMoto() {
             ListHeaderComponent={
               <View style={styles.totalMotosContainer}>
                 <Text style={[styles.pageText, { color: "#FFFFFF" }]}>
-<<<<<<< HEAD
                   {t("searchMoto.totalMotos")}{" "}
                   {pagedMotos.data!.totalElements || 0}
-=======
-                  Total de motos: {pagedMotos.data!.totalElements || 0}
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
                 </Text>
               </View>
             }
             ListEmptyComponent={
               <View style={styles.emptyStateContainer}>
                 <Text style={styles.emptyStateText}>
-<<<<<<< HEAD
                   {t("searchMoto.noMotosFound")}
-=======
-                  Nenhuma moto encontrada
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
                 </Text>
               </View>
             }
@@ -183,13 +159,7 @@ export default function ProcurarMoto() {
         </View>
       </View>
 
-<<<<<<< HEAD
       <FloatingButton onPress={goToCreateMoto} />
-=======
-      <FloatingButton 
-        onPress={goToCreateMoto}
-      />
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
     </SafeAreaView>
   );
 }
