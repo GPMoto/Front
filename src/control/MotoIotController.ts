@@ -6,7 +6,7 @@ import { useState } from "react";
 export const useMotoIOT = () => {
   const [toggleIot, setToggleIot] = useState(false);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch, isRefetching } = useQuery({
     queryKey: ["motos-iot"],
     queryFn: async () => await new MotoIotService().getMotoWithDevices(),
   });
@@ -30,5 +30,7 @@ export const useMotoIOT = () => {
     callMotoLoading,
     callMotoData,
     call,
+    refetch,
+    isRefetching,
   };
 };

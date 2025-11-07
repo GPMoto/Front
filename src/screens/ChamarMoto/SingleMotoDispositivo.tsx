@@ -1,12 +1,8 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { createStyles } from "./styles";
-import { useTranslation } from "react-i18next";
-import { useTheme } from "@/context/ThemeContext";
-import { useDarkColors } from "@/styles/theme-config";
 import { IMotoIot } from "@/model/types/MotoIotDictionary";
 import { statusBadge } from "@/utils/helpers";
 import { TFunction } from "i18next";
-import { globalStyles } from "@/styles/styles";
 
 interface SingleMotoDispositivoProps {
   localStyles: ReturnType<typeof createStyles>;
@@ -32,31 +28,31 @@ export const SingleMotoDispositivo = ({
       activeOpacity={0.8}
     >
       <View style={localStyles.cardHeader}>
-        <Text style={[localStyles.cardTitle, globalStyles.whiteText]}>
+        <Text style={localStyles.cardTitle}>
           {item.nome}
         </Text>
         <View style={[localStyles.badge, { backgroundColor: badgeColor }]}>
-          <Text style={[localStyles.badgeText, globalStyles.whiteText]}>
+          <Text style={localStyles.badgeText}>
             {item.condicao ?? "—"}
           </Text>
         </View>
       </View>
 
       <View style={localStyles.cardBody}>
-        <Text style={[localStyles.cardSubtitle, globalStyles.paragraph]}>
-          Distrito: {item.distrito?.nome ?? "—"}
+        <Text style={localStyles.cardSubtitle}>
+          {t('callMoto.district')}: {item.distrito?.nome ?? "—"}
         </Text>
-        <Text style={[localStyles.cardText, globalStyles.paragraph, { opacity: 0.8 }]}>
-          Estado: {item.descricaoDeEstado ?? "—"}
+        <Text style={localStyles.cardText}>
+          {t('callMoto.state')}: {item.descricaoDeEstado ?? "—"}
         </Text>
 
         <TouchableOpacity 
-          style={[localStyles.button, { marginTop: 12 }]} 
+          style={localStyles.button} 
           onPress={call}
           activeOpacity={0.8}
         >
-          <Text style={[localStyles.buttonText, globalStyles.whiteText]}>
-            Chamar Moto
+          <Text style={localStyles.buttonText}>
+            {t('callMoto.callButton')}
           </Text>
         </TouchableOpacity>
       </View>

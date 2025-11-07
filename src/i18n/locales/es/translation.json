@@ -125,6 +125,18 @@
     "settings": "Configuración",
     "moto": "Motocicleta",
     "qrcode": "Código QR",
-    "scanner": "Escáner"
+    "scanner": "Escáner",
+    "callMoto": "Llamar Motocicleta"
+  },
+  "callMoto": {
+    "title": "Llamar Motocicleta",
+    "subtitle": "Seleccione una motocicleta disponible",
+    "loadingDevices": "Cargando dispositivos...",
+    "callingMoto": "Llamando motocicleta...",
+    "noMotosAvailable": "No hay motocicletas disponibles en este momento",
+    "district": "Distrito",
+    "state": "Estado",
+    "callButton": "Llamar Motocicleta",
+    "successMessage": "✓"
   }
 }

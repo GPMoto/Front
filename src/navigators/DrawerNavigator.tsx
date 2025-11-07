@@ -154,8 +154,7 @@ export default function DrawerNavigator() {
         name="Chamar Moto"
         component={ChamarMoto}
         options={{
-          // title: t("navigation.chamarMoto"),
-          title: "Chamar moto",
+          title: t("navigation.callMoto"),
           headerStyle: { backgroundColor: colors.cardBg },
           headerTitleStyle: {
             fontSize: 24,

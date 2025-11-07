@@ -1,4 +1,4 @@
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import { createStyles } from "./styles";
 import { globalStyles } from "@/styles/styles";
 import { useTranslation } from "react-i18next";
@@ -15,74 +15,73 @@ export const ChamarMoto = () => {
   const colors = useDarkColors();
   const localStyles = createStyles(colors, isDarkTheme);
 
-  const { motos, loading, callMotoData, callMotoLoading, call } = useMotoIOT();
+  const { motos, loading, callMotoData, callMotoLoading, call, refetch, isRefetching } = useMotoIOT();
 
   if (loading || callMotoLoading)
     return (
       <LoadingScreen>
         {loading && (
-          <Text style={globalStyles.whiteText}>Carregando dispositivos...</Text>
+          <Text style={localStyles.loadingText}>{t('callMoto.loadingDevices')}</Text>
         )}
         {callMotoLoading && (
-          <Text style={globalStyles.whiteText}>Chamando moto...</Text>
+          <Text style={localStyles.loadingText}>{t('callMoto.callingMoto')}</Text>
         )}
       </LoadingScreen>
     );
 
   return (
-    <SafeAreaView style={[localStyles.container, globalStyles.pageColor]}>
-      {/* Header Section */}
-      <View style={{ marginBottom: 20, alignItems: 'center' }}>
-        <Text style={globalStyles.highlight}>Chamar Moto</Text>
-        <Text style={[globalStyles.paragraph_center, { marginTop: 8, opacity: 0.8 }]}>
-          Selecione uma moto disponível
-        </Text>
-      </View>
-
-      {/* Empty State */}
-      {(!motos || motos.length === 0) && (
-        <View style={localStyles.emptyContainer}>
-          <Text style={[globalStyles.paragraph_center, { opacity: 0.6 }]}>
-            Nenhuma moto disponível no momento
-          </Text>
-        </View>
-      )}
-
-      {/* Motos List */}
-      {motos && motos.length > 0 && (
-        <FlatList
-          data={motos}
-          keyExtractor={(item) => String(item.id)}
-          renderItem={({ item }) => (
-            <SingleMotoDispositivo
-              item={item}
-              localStyles={localStyles}
-              t={t}
-              call={call}
-            />
-          )}
-          contentContainerStyle={localStyles.listContainer}
-          showsVerticalScrollIndicator={false}
-        />
-      )}
-
-      {/* Success Message */}
-      {callMotoData && (
-        <View
-          style={{
-            backgroundColor: 'rgba(65, 197, 38, 0.1)',
-            borderRadius: 8,
-            padding: 12,
-            marginTop: 16,
-            borderLeftWidth: 4,
-            borderLeftColor: globalStyles.highlight.color,
-          }}
-        >
-          <Text style={[globalStyles.paragraph, { color: globalStyles.highlight.color }]}>
-            ✓ {callMotoData.message}
-          </Text>
-        </View>
-      )}
+    <SafeAreaView style={localStyles.container}>
+      <FlatList
+        data={motos || []}
+        keyExtractor={(item) => String(item.id)}
+        ListHeaderComponent={
+          <>
+            {/* Header Section */}
+            <View style={localStyles.headerSection}>
+              <Text style={globalStyles.highlight}>{t('callMoto.title')}</Text>
+              <Text style={localStyles.subtitle}>
+                {t('callMoto.subtitle')}
+              </Text>
+            </View>
+          </>
+        }
+        ListEmptyComponent={
+          /* Empty State */
+          <View style={localStyles.emptyContainer}>
+            <Text style={localStyles.emptyText}>
+              {t('callMoto.noMotosAvailable')}
+            </Text>
+          </View>
+        }
+        renderItem={({ item }) => (
+          <SingleMotoDispositivo
+            item={item}
+            localStyles={localStyles}
+            t={t}
+            call={call}
+          />
+        )}
+        ListFooterComponent={
+          /* Success Message */
+          callMotoData ? (
+            <View style={localStyles.successContainer}>
+              <Text style={localStyles.successText}>
+                {t('callMoto.successMessage')} {callMotoData.message}
+              </Text>
+            </View>
+          ) : null
+        }
+        contentContainerStyle={localStyles.listContainer}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={refetch}
+            tintColor={colors.primaryText}
+            colors={[colors.primaryText]}
+          />
+        }
+      />
     </SafeAreaView>
   );
 };

@@ -125,6 +125,18 @@
     "settings": "Configurações",
     "moto": "Moto",
     "qrcode": "QRCode",
-    "scanner": "Scanner"
+    "scanner": "Scanner",
+    "callMoto": "Chamar Moto"
+  },
+  "callMoto": {
+    "title": "Chamar Moto",
+    "subtitle": "Selecione uma moto disponível",
+    "loadingDevices": "Carregando dispositivos...",
+    "callingMoto": "Chamando moto...",
+    "noMotosAvailable": "Nenhuma moto disponível no momento",
+    "district": "Distrito",
+    "state": "Estado",
+    "callButton": "Chamar Moto",
+    "successMessage": "✓"
   }
 }
