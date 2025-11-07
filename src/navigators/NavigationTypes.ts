@@ -17,6 +17,7 @@ export type DrawerParamList = {
   Moto: { moto: Moto; editing?: boolean };
   QRCode: { qrCode: QrCodeResponse; placa: string };
   Scanner: undefined;
+  'Chamar Moto': undefined;
 };
 
 export type RootStackNavigationProps =

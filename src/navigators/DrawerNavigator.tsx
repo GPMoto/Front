@@ -15,6 +15,7 @@ import QRCodePlaca from "@/components/QrCode/QrCode";
 import { useTheme } from "@/context/ThemeContext";
 import { useDarkColors } from "@/styles/theme-config";
 import { useTranslation } from "react-i18next";
+import { ChamarMoto } from "@/screens/ChamarMoto/ChamarMoto";
 
 export default function DrawerNavigator() {
   const { Screen, Navigator } = createDrawerNavigator<DrawerParamList>();
@@ -95,7 +96,6 @@ export default function DrawerNavigator() {
         name="Moto"
         options={{
           title: t("navigation.moto"),
-
           drawerItemStyle: { display: "none" },
           headerStyle: { backgroundColor: colors.cardBg },
           headerTitleStyle: {
@@ -148,6 +148,30 @@ export default function DrawerNavigator() {
         component={Scanner}
         options={{
           title: t("navigation.scanner"),
+        }}
+      />
+      <Screen
+        name="Chamar Moto"
+        component={ChamarMoto}
+        options={{
+          // title: t("navigation.chamarMoto"),
+          title: "Chamar moto",
+          headerStyle: { backgroundColor: colors.cardBg },
+          headerTitleStyle: {
+            fontSize: 24,
+            color: colors.primaryText,
+          },
+          headerLeft: (props) => (
+            <Icon
+              size={24}
+              style={{
+                marginHorizontal: 16,
+              }}
+              name={Platform.OS === "android" ? "arrow-back" : "arrow-back-ios"}
+              color="#41C526"
+              onPress={() => navigation.navigate("Adicionar Rastreador")}
+            />
+          ),
         }}
       />
     </Navigator>
