@@ -125,6 +125,18 @@
     "settings": "Settings",
     "moto": "Motorcycle",
     "qrcode": "QRCode",
-    "scanner": "Scanner"
+    "scanner": "Scanner",
+    "callMoto": "Call Motorcycle"
+  },
+  "callMoto": {
+    "title": "Call Motorcycle",
+    "subtitle": "Select an available motorcycle",
+    "loadingDevices": "Loading devices...",
+    "callingMoto": "Calling motorcycle...",
+    "noMotosAvailable": "No motorcycles available at the moment",
+    "district": "District",
+    "state": "State",
+    "callButton": "Call Motorcycle",
+    "successMessage": "✓"
   }
 }

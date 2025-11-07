@@ -5,11 +5,7 @@ import Inicio from "@/screens/Inicio/Inicio";
 import Mapa from "@/screens/Mapa/Mapa";
 import ProcurarMoto from "@/screens/ProcurarMoto/ProcurarMoto";
 import AdicionarRastreador from "@/screens/AdicionarRastreador/AdicionarRastreador";
-<<<<<<< HEAD
 import Scanner from "@/screens/AdicionarRastreador/LeituraRastreador";
-=======
-import Scanner from "@/screens/AdicionarRastreador/LeituraRastreador"
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
 import SingleMoto from "@/screens/Moto/SingleMoto";
 import { AppDrawerNavigationProps, DrawerParamList } from "./NavigationTypes";
 import Settings from "@/screens/Settings";
@@ -18,21 +14,14 @@ import { Platform } from "react-native";
 import QRCodePlaca from "@/components/QrCode/QrCode";
 import { useTheme } from "@/context/ThemeContext";
 import { useDarkColors } from "@/styles/theme-config";
-<<<<<<< HEAD
 import { useTranslation } from "react-i18next";
-=======
-
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
+import { ChamarMoto } from "@/screens/ChamarMoto/ChamarMoto";
 
 export default function DrawerNavigator() {
   const { Screen, Navigator } = createDrawerNavigator<DrawerParamList>();
   const navigation = useNavigation<AppDrawerNavigationProps>();
-<<<<<<< HEAD
   const { t } = useTranslation();
 
-=======
-  
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
   const { isDarkTheme } = useTheme();
   const colors = useDarkColors();
 
@@ -61,7 +50,6 @@ export default function DrawerNavigator() {
         },
       }}
     >
-<<<<<<< HEAD
       <Screen
         name="Inicio"
         options={{
@@ -92,41 +80,22 @@ export default function DrawerNavigator() {
           title: t("navigation.addTracker"),
         }}
       >
-=======
-      <Screen name="Inicio">
-        {(props: ParamListBase) => <Inicio {...props}></Inicio>}
-      </Screen>
-      <Screen name="Mapa">
-        {(props: ParamListBase) => <Mapa {...props}></Mapa>}
-      </Screen>
-      <Screen name="Procurar Moto">
-        {(props: ParamListBase) => <ProcurarMoto {...props}></ProcurarMoto>}
-      </Screen>
-      <Screen name="Adicionar Rastreador">
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
         {(props: ParamListBase) => (
           <AdicionarRastreador {...props}></AdicionarRastreador>
         )}
       </Screen>
-<<<<<<< HEAD
       <Screen
         name="Configurações"
         options={{
           title: t("navigation.settings"),
         }}
       >
-=======
-      <Screen name="Configurações">
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
         {(props: ParamListBase) => <Settings {...props}></Settings>}
       </Screen>
       <Screen
         name="Moto"
         options={{
-<<<<<<< HEAD
           title: t("navigation.moto"),
-=======
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
           drawerItemStyle: { display: "none" },
           headerStyle: { backgroundColor: colors.cardBg },
           headerTitleStyle: {
@@ -151,10 +120,8 @@ export default function DrawerNavigator() {
       <Screen
         name="QRCode"
         options={{
-<<<<<<< HEAD
           title: t("navigation.qrcode"),
-=======
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
+
           drawerItemStyle: { display: "none" },
           headerStyle: { backgroundColor: colors.cardBg },
           headerTitleStyle: {
@@ -179,12 +146,32 @@ export default function DrawerNavigator() {
       <Screen
         name="Scanner"
         component={Scanner}
-<<<<<<< HEAD
         options={{
           title: t("navigation.scanner"),
         }}
-=======
->>>>>>> cee338f32f23dd48f4a42370af22eed620c488e4
+      />
+      <Screen
+        name="Chamar Moto"
+        component={ChamarMoto}
+        options={{
+          title: t("navigation.callMoto"),
+          headerStyle: { backgroundColor: colors.cardBg },
+          headerTitleStyle: {
+            fontSize: 24,
+            color: colors.primaryText,
+          },
+          headerLeft: (props) => (
+            <Icon
+              size={24}
+              style={{
+                marginHorizontal: 16,
+              }}
+              name={Platform.OS === "android" ? "arrow-back" : "arrow-back-ios"}
+              color="#41C526"
+              onPress={() => navigation.navigate("Adicionar Rastreador")}
+            />
+          ),
+        }}
       />
     </Navigator>
   );

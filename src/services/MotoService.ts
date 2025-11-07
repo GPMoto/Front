@@ -26,17 +26,21 @@ class MotoService {
     return data;
   }
 
+  async callMoto(idMoto : number) {
+    console.log(`Chamando moto com ID ${idMoto}`);
+  }
+
   async save(novaMoto: Partial<Moto>): Promise<MotoResponse> {
     let motoErrors: { [key: string]: string } = {};
     try {
       // Preparar dados para validação (converter objetos para IDs)
       const motoParaValidacao = {
         ...novaMoto,
-        idTipoMoto: typeof novaMoto.idTipoMoto === 'object' && novaMoto.idTipoMoto?.id_tipo_moto 
-          ? novaMoto.idTipoMoto.id_tipo_moto 
+        idTipoMoto: typeof novaMoto.idTipoMoto === 'object' && novaMoto.idTipoMoto?.id_tipo_moto
+          ? novaMoto.idTipoMoto.id_tipo_moto
           : novaMoto.idTipoMoto,
-        idSecaoFilial: typeof novaMoto.idSecaoFilial === 'object' && novaMoto.idSecaoFilial?.idSecao 
-          ? novaMoto.idSecaoFilial.idSecao 
+        idSecaoFilial: typeof novaMoto.idSecaoFilial === 'object' && novaMoto.idSecaoFilial?.idSecao
+          ? novaMoto.idSecaoFilial.idSecao
           : novaMoto.idSecaoFilial,
       };
 
@@ -65,17 +69,17 @@ class MotoService {
       // Preparar dados para validação (converter objetos para IDs)
       const motoParaValidacao = {
         ...updateMoto,
-        idTipoMoto: typeof updateMoto.idTipoMoto === 'object' && updateMoto.idTipoMoto?.id_tipo_moto 
-          ? updateMoto.idTipoMoto.id_tipo_moto 
+        idTipoMoto: typeof updateMoto.idTipoMoto === 'object' && updateMoto.idTipoMoto?.id_tipo_moto
+          ? updateMoto.idTipoMoto.id_tipo_moto
           : updateMoto.idTipoMoto,
-        idSecaoFilial: typeof updateMoto.idSecaoFilial === 'object' && updateMoto.idSecaoFilial?.idSecao 
-          ? updateMoto.idSecaoFilial.idSecao 
+        idSecaoFilial: typeof updateMoto.idSecaoFilial === 'object' && updateMoto.idSecaoFilial?.idSecao
+          ? updateMoto.idSecaoFilial.idSecao
           : updateMoto.idSecaoFilial,
       };
 
       // Validar dados antes de atualizar
       await updateMotoSchema.validate(motoParaValidacao, { abortEarly: false });
-      
+
       const updatedMoto = await this.motoFetcher.update(updateMoto.idMoto!, {
         ...updateMoto,
         idSecaoFilial: updateMoto.idSecaoFilial.idSecao,
