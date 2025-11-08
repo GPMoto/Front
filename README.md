@@ -3,7 +3,7 @@
 ## 📱 Nome do App
 **GPMoto** - Aplicativo móvel para gestão completa de motocicletas em concessionárias e pátios organizacionais.
 
-[Link do apk aqui!](https://appdistribution.firebase.google.com/testerapps/1:613771728223:android:8ac119d5c90ddd1b6852ea/releases/5vfqhq1aaluo0?utm_source=firebase-console)
+[Link do apk aqui!]([https://appdistribution.firebase.google.com/testerapps/1:613771728223:android:8ac119d5c90ddd1b6852ea/releases/5vfqhq1aaluo0?utm_source=firebase-console](https://appdistribution.firebase.dev/i/4f8d4b0cb7841a39))
 
 ## 🎯 Proposta e Funcionalidades
 
