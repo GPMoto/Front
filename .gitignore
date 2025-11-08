@@ -40,8 +40,8 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-/android
-/ios
+android
+ios
 
 google-services-android.json
 gpsmottu-firebase*.json
