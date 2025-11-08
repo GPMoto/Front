@@ -4,6 +4,8 @@
 **GPMoto** - Aplicativo móvel para gestão completa de motocicletas em concessionárias e pátios organizacionais.
 
 [Link para baixar o app aqui!](https://appdistribution.firebase.dev/i/4f8d4b0cb7841a39)
+
+[Link para baixar apk](https://appdistribution.firebase.dev/i/4f8d4b0cb7841a39)
 ## 🎯 Proposta e Funcionalidades
 
 ### Proposta
