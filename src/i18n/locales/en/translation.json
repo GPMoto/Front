@@ -138,5 +138,12 @@
     "state": "State",
     "callButton": "Call Motorcycle",
     "successMessage": "✓"
+  },
+  "qrCode": {
+    "title": "Motorcycle QR Code",
+    "message": "The QR code for the motorcycle with plate",
+    "messageEnd": "is shown below",
+    "printButton": "Print",
+    "shareButton": "Share"
   }
 }
