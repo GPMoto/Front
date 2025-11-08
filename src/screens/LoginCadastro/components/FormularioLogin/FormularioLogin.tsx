@@ -13,8 +13,11 @@ import ButtonArea from "@/components/Button/ButtonArea";
 import { useTheme } from "@/context/ThemeContext";
 import { useDarkColors } from "@/styles/theme-config";
 import { createStyles } from "./styles";
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function FormularioLogin(props: any) {
+export default function FormularioLogin() {
   const {
     loading,
     loginUser,
@@ -28,6 +31,18 @@ export default function FormularioLogin(props: any) {
   const { isDarkTheme } = useTheme();
   const colors = useDarkColors();
   const styles = createStyles(colors, isDarkTheme);
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language;
+
+  useEffect(() => {
+    const loadLanguage = async () => {
+      const savedLanguage = await AsyncStorage.getItem("language");
+      if (savedLanguage) {
+        i18n.changeLanguage(savedLanguage);
+      }
+    };
+    loadLanguage();
+  }, [i18n]);
 
   return (
     <View style={styles.container}>
@@ -49,15 +64,8 @@ export default function FormularioLogin(props: any) {
           <View style={styles.loginCard}>
             {/* Header */}
             <View style={styles.header}>
-              <Text style={styles.welcomeText}>
-                Bem-vindo de volta!
-              </Text>
-              <Text style={styles.subtitleText}>
-                Entre na sua conta do{" "}
-                <Text style={styles.brandHighlight}>
-                  GPSMottu
-                </Text>
-              </Text>
+              <Text style={styles.welcomeText}>{t("home.welcome")}</Text>
+              <Text style={styles.subtitleText}>{t("login.subtitle")}</Text>
             </View>
 
             {/* Error Message */}
@@ -77,10 +85,10 @@ export default function FormularioLogin(props: any) {
             <View style={styles.inputContainer}>
               {/* Email Input */}
               <View style={styles.inputWrapper}>
-                <Text style={styles.inputLabel}>Nome</Text>
+                <Text style={styles.inputLabel}>{t("login.emailLabel")}</Text>
                 <TextInput
                   style={styles.inputField}
-                  placeholder="Digite seu nome"
+                  placeholder={t("login.emailPlaceholder")}
                   placeholderTextColor={isDarkTheme ? "#8B8B8B" : "#666"}
                   value={formulario.email}
                   onChangeText={(text) => handleForm(text, "email")}
@@ -92,18 +100,18 @@ export default function FormularioLogin(props: any) {
                   returnKeyType="next"
                 />
                 {loginErrors.email && (
-                  <Text style={styles.fieldErrorText}>
-                    {loginErrors.email}
-                  </Text>
+                  <Text style={styles.fieldErrorText}>{loginErrors.email}</Text>
                 )}
               </View>
 
               {/* Password Input */}
               <View style={styles.inputWrapper}>
-                <Text style={styles.inputLabel}>Senha</Text>
+                <Text style={styles.inputLabel}>
+                  {t("login.passwordLabel")}
+                </Text>
                 <TextInput
                   style={styles.inputField}
-                  placeholder="Digite sua senha"
+                  placeholder={t("login.passwordPlaceholder")}
                   placeholderTextColor={isDarkTheme ? "#8B8B8B" : "#666"}
                   value={formulario.senha}
                   onChangeText={(text) => handleForm(text, "senha")}
@@ -115,17 +123,20 @@ export default function FormularioLogin(props: any) {
                   onSubmitEditing={loginUser}
                 />
                 {loginErrors.senha && (
-                  <Text style={styles.fieldErrorText}>
-                    {loginErrors.senha}
-                  </Text>
+                  <Text style={styles.fieldErrorText}>{loginErrors.senha}</Text>
                 )}
               </View>
             </View>
 
             {/* Login Button */}
             <View style={styles.buttonContainer}>
-              <ButtonArea size="small" title="Entrar" action={() => {
-                loginUser()}} />
+              <ButtonArea
+                size="small"
+                title={t("login.loginButton")}
+                action={() => {
+                  loginUser();
+                }}
+              />
             </View>
 
             {/* Loading Overlay */}
@@ -139,12 +150,9 @@ export default function FormularioLogin(props: any) {
           {/* Footer */}
           <View style={styles.footerContainer}>
             <Text style={styles.footerText}>
-              Não tem uma conta?{" "}
-              <Text
-                style={styles.footerLink}
-                onPress={goToRegisterPage}
-              >
-                Cadastre-se
+              {t("login.noAccount")}{" "}
+              <Text style={styles.footerLink} onPress={goToRegisterPage}>
+                {t("login.registerLink")}
               </Text>
             </Text>
           </View>

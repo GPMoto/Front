@@ -1,9 +1,10 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import profileMockApi from "../mock/fetcher/ProfileFetcherMock";
-import { UserData } from "@/model/User";
+import { LanguagePreferenceResponse, UserData } from "@/model/User";
 import { Perfil } from "@/model/Perfil";
 import { setupAxiosDebug } from "@/utils/axiosDebug";
 import { attachUnauthorizedInterceptor } from "@/services/NetworkInterceptor";
+import { PushNotificationDto } from "@/model/dto/PushNotificationDTO";
 
 class ProfileFetcher {
   private apiClient: AxiosInstance;
@@ -30,22 +31,21 @@ class ProfileFetcher {
   }
 
   private interceptors() {
-  this.apiClient.interceptors.request.use((config) => {
-    
-    if (this.token && !config.headers["X-Skip-Auth"]) {
-      config.headers.Authorization = `Bearer ${this.token}`;
-    }
-    
-    delete config.headers["X-Skip-Auth"];
-    return config;
-  });
-}
+    this.apiClient.interceptors.request.use((config) => {
+      if (this.token && !config.headers["X-Skip-Auth"]) {
+        config.headers.Authorization = `Bearer ${this.token}`;
+      }
+
+      delete config.headers["X-Skip-Auth"];
+      return config;
+    });
+  }
 
   async get(): Promise<UserData> {
     console.log("token: \n\n\n", this.token);
-    this.endpoint = "usuario/me"
+    this.endpoint = "usuario/me";
     const response: AxiosResponse<UserData> = await this.apiClient.get(
-      this.endpoint
+      this.endpoint,
     );
     return response.data;
   }
@@ -56,9 +56,26 @@ class ProfileFetcher {
       this.endpoint,
       {
         headers: { "X-Skip-Auth": "true" },
-      }
+      },
     );
 
+    return response.data;
+  }
+
+  async savePushToken(pushToken: string): Promise<PushNotificationDto> {
+    this.endpoint = "usuario/token";
+    const response: AxiosResponse<PushNotificationDto> =
+      await this.apiClient.post(this.endpoint, { token: pushToken });
+
+    return response.data;
+  }
+
+  async saveLanguagePreference(
+    lang: string,
+  ): Promise<LanguagePreferenceResponse> {
+    this.endpoint = "usuario/language";
+    const response: AxiosResponse<LanguagePreferenceResponse> =
+      await this.apiClient.post(this.endpoint, { language: lang });
     return response.data;
   }
 }

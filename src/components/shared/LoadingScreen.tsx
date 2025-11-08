@@ -1,6 +1,13 @@
 import LottieView from "lottie-react-native";
 import React from "react";
-import { View, StyleSheet, Text, Modal } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Modal,
+  Platform,
+  ActivityIndicator,
+} from "react-native";
 import { useTheme } from "@/context/ThemeContext";
 
 interface LoadingScreenProps {
@@ -8,11 +15,11 @@ interface LoadingScreenProps {
   visible?: boolean;
 }
 
-const LoadingScreen = ({ children, visible = true } : LoadingScreenProps) => {
+const LoadingScreen = ({ children, visible = true }: LoadingScreenProps) => {
   const { isDarkTheme } = useTheme();
 
-  const overlayColor = isDarkTheme 
-    ? "rgba(12, 12, 12, 0.95)" 
+  const overlayColor = isDarkTheme
+    ? "rgba(12, 12, 12, 0.95)"
     : "rgba(255, 255, 255, 0.95)";
 
   return (
@@ -24,17 +31,20 @@ const LoadingScreen = ({ children, visible = true } : LoadingScreenProps) => {
     >
       <View style={[styles.overlay, { backgroundColor: overlayColor }]}>
         <View style={styles.container}>
-          <LottieView
-            source={require("~/assets/splash-bike.json")}
-            autoPlay
-            loop
-            style={styles.animation}
-          />
-          {children && (
-            <View style={styles.textContainer}>
-              {children}
-            </View>
+          {Platform.OS === "android" || Platform.OS === "ios" ? (
+            <LottieView
+              source={require("~/assets/splash-bike.json")}
+              autoPlay
+              loop
+              style={styles.animation}
+            />
+          ) : (
+            <ActivityIndicator
+              size="large"
+              color={isDarkTheme ? "#fff" : "#000"}
+            />
           )}
+          {children && <View style={styles.textContainer}>{children}</View>}
         </View>
       </View>
     </Modal>

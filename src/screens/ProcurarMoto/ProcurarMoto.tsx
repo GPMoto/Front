@@ -22,8 +22,11 @@ import {
 import FloatingButton from "@/components/FloatingButton/FloatingButton";
 import { useTheme } from "@/context/ThemeContext";
 import { useDarkColors } from "@/styles/theme-config";
+import { useTranslation } from "react-i18next";
 
 export default function ProcurarMoto() {
+  const { t } = useTranslation();
+
   const route = useRoute<RouteProp<DrawerParamList, "Procurar Moto">>();
   const params = route.params;
   const { isDarkTheme } = useTheme();
@@ -41,7 +44,7 @@ export default function ProcurarMoto() {
     reloadPage,
     handleDelete,
     deletingId,
-    goToCreateMoto
+    goToCreateMoto,
   } = useMoto({ size: 10, idSecaoFilial: params?.idSecaoFilial });
 
   if (pagedMotos.isLoading) {
@@ -64,7 +67,7 @@ export default function ProcurarMoto() {
           backgroundColor={colors.containerBg}
         />
         <Text style={styles.errorText}>
-          Erro ao carregar motos: {pagedMotos.error.message}
+          {t("searchMoto.loadingError")} {pagedMotos.error.message}
         </Text>
       </SafeAreaView>
     );
@@ -79,7 +82,7 @@ export default function ProcurarMoto() {
       <View style={styles.inputContainer}>
         <View style={styles.inputWrapper}>
           <TextInput
-            placeholder="Digite a placa da moto..."
+            placeholder={t("searchMoto.searchPlaceholder")}
             placeholderTextColor="#999"
             style={styles.textInput}
             onChangeText={setBusca}
@@ -127,14 +130,15 @@ export default function ProcurarMoto() {
             ListHeaderComponent={
               <View style={styles.totalMotosContainer}>
                 <Text style={[styles.pageText, { color: "#FFFFFF" }]}>
-                  Total de motos: {pagedMotos.data!.totalElements || 0}
+                  {t("searchMoto.totalMotos")}{" "}
+                  {pagedMotos.data!.totalElements || 0}
                 </Text>
               </View>
             }
             ListEmptyComponent={
               <View style={styles.emptyStateContainer}>
                 <Text style={styles.emptyStateText}>
-                  Nenhuma moto encontrada
+                  {t("searchMoto.noMotosFound")}
                 </Text>
               </View>
             }
@@ -155,9 +159,7 @@ export default function ProcurarMoto() {
         </View>
       </View>
 
-      <FloatingButton 
-        onPress={goToCreateMoto}
-      />
+      <FloatingButton onPress={goToCreateMoto} />
     </SafeAreaView>
   );
 }
