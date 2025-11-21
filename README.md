@@ -13,7 +13,7 @@ Vídeo no Youtube: https://youtu.be/riLd7DtPDco
 ### Proposta
 O GPMoto é uma solução mobile desenvolvida para facilitar a organização, visualização e gestão de motocicletas em ambientes empresariais como concessionárias, locadoras e pátios de manutenção. O sistema oferece uma interface intuitiva que permite controle total sobre o inventário de motos.
 
-
+[Link do vídeo](https://youtu.be/hFBAfMo3u8w)
 
 ## 📁 Estrutura de Pastas
 
@@ -164,5 +164,3 @@ src/
 - ✅ Validação em tempo real
 - ✅ Cache offline de dados
 - ✅ QR Code scanner/generator
-
-

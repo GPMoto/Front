@@ -138,5 +138,12 @@
     "state": "Estado",
     "callButton": "Chamar Moto",
     "successMessage": "✓"
+  },
+  "qrCode": {
+    "title": "QR Code da Moto",
+    "message": "O QR code da moto com placa",
+    "messageEnd": "é esse abaixo",
+    "printButton": "Imprimir",
+    "shareButton": "Compartilhar"
   }
 }
